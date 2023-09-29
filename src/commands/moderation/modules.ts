@@ -104,11 +104,16 @@ export function modules(message: ChatSendAfterEvent, args: string[]) {
     const antiKillAuraBoolean = dynamicPropertyRegistry.get("antikillaura_b");
     const afkBoolean = dynamicPropertyRegistry.get("afk_b");
     const antiPhaseABoolean = dynamicPropertyRegistry.get("antiphasea_b");
+    const spawnProtectionBoolean = dynamicPropertyRegistry.get("spawnProtection_b") as boolean;
 
     // Numbers
     const worldBorderOverworldNumber = dynamicPropertyRegistry.get("worldborder_n");
     const worldBorderNetherNumber = dynamicPropertyRegistry.get("worldborder_nether_n");
     const worldBorderEndNumber = dynamicPropertyRegistry.get("worldborder_end_n");
+    const spawnProtectionRadius = dynamicPropertyRegistry.get("spawnProtection_Radius") as number;
+
+    //Vectors
+    const spawnProtectionVector3 = dynamicPropertyRegistry.get("spawnProtection_V3") as Vector3;
 
     const status = (b: string | number | boolean | Vector3) => (b ? "§aENABLED" : "§4DISABLED");
 
@@ -159,5 +164,6 @@ export function modules(message: ChatSendAfterEvent, args: string[]) {
         `§o§6|§f AutoBan: ${status(autobanBoolean)}`,
         `§o§6|§f AFK: ${status(afkBoolean)}`,
         `§o§6|§f AntiPhaseA: ${status(antiPhaseABoolean)}`,
+        `§o§6|§f Spawn Protection: ${spawnProtectionBoolean ? `§aENABLED§f (X: §6${spawnProtectionVector3.x}§f Y: §6${spawnProtectionVector3.y}§f Z: §6${spawnProtectionVector3.y}§f Radius: §6${spawnProtectionRadius}§f)` : "§4DISABLED"}`,
     ]);
 }

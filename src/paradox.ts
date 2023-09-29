@@ -34,6 +34,7 @@ import { AutoBan } from "./penrose/TickEvent/ban/autoban.js";
 import { freeze, freezeJoin, freezeLeave } from "./penrose/TickEvent/freeze/freeze.js";
 import { AFK } from "./penrose/TickEvent/afk/afk.js";
 import { AntiPhaseA } from "./penrose/TickEvent/phase/phase_a.js";
+import { SpawnProtection } from "./penrose/TickEvent/spawnProtection/spawnProtection.js";
 // Import PlayerBlockBreakAfter Events
 import { XrayA } from "./penrose/PlayerBreakBlockAfterEvent/xray/xray_a.js";
 // Import PlayerBlockBreakBefore Events
@@ -113,6 +114,7 @@ AntiFallA();
 AutoBan();
 AFK();
 AntiPhaseA();
+SpawnProtection();
 if (config.customcommands.freeze || config.modules.antiKillAura || config.modules.antinukerA) {
     freeze;
     freezeLeave();

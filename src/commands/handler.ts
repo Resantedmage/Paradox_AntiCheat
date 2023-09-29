@@ -86,6 +86,7 @@ import { afk } from "./settings/afk.js";
 import { antiphaseA } from "./settings/antiphasea.js";
 import { chatChannel } from "./utility/channel.js";
 import { pvp } from "./utility/pvp.js";
+import { spawnprotection } from "./settings/spawnprotection.js";
 
 const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, args: string[], fullArgs: string) => void> = Object.setPrototypeOf(
     {
@@ -172,6 +173,7 @@ const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, arg
         antiphasea: antiphaseA,
         channel: chatChannel,
         pvp: pvp,
+        spawnprotection: spawnprotection,
     },
     null
 );

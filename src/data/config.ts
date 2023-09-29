@@ -83,6 +83,7 @@ export default {
         antiphasea: true,
         channel: true,
         pvp: true,
+        spawnprotection: true,
     },
     modules: {
         badpackets1: {
@@ -263,6 +264,9 @@ export default {
         },
         antiphaseA: {
             enabled: true,
+        },
+        spawnprotection: {
+            enabled: false,
         },
     },
     /**

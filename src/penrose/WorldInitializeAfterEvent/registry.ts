@@ -1,4 +1,4 @@
-import { world, DynamicPropertiesDefinition, WorldInitializeAfterEvent, Vector3 } from "@minecraft/server";
+import { world, DynamicPropertiesDefinition, WorldInitializeAfterEvent, Vector3, Vector } from "@minecraft/server";
 import config from "../../data/config.js";
 import { UUIDManager } from "../../classes/UUIDManager.js";
 import { MinecraftEntityTypes } from "../../node_modules/@minecraft/vanilla-data/lib/index.js";
@@ -62,13 +62,17 @@ function registry(data: WorldInitializeAfterEvent) {
         "antikillaura_b",
         "afk_b",
         "antiphasea_b",
+        "spawnProtection_b",
     ];
 
     // String properties
     const defineStringProperties = ["hash", "salt"];
 
     // Number properties
-    const defineNumberProperties = ["worldborder_n", "worldborder_nether_n", "worldborder_end_n"];
+    const defineNumberProperties = ["worldborder_n", "worldborder_nether_n", "worldborder_end_n", "spawnProtection_Radius", "spawnprotection_x_n", "spawnprotection_y_n", "spawnprotection_z_n"];
+
+    // Vector3 properties
+    const defineVector3Properties = ["spawnProtection_V3"];
 
     // Define booleans (property)
     const defineBooleanLength = defineBooleanProperties.length;
@@ -86,6 +90,11 @@ function registry(data: WorldInitializeAfterEvent) {
     const defineNumberLength = defineNumberProperties.length;
     for (let n = 0; n < defineNumberLength; n++) {
         property.defineNumber(defineNumberProperties[n]);
+    }
+    // Define Vector3's (property)
+    const defineVector3Length = defineVector3Properties.length;
+    for (let n = 0; n < defineVector3Length; n++) {
+        property.defineVector(defineVector3Properties[n]);
     }
 
     /**
@@ -167,7 +176,20 @@ function registry(data: WorldInitializeAfterEvent) {
     } else {
         dynamicPropertyRegistry.set("worldborder_end_n", worldborderEnd_n);
     }
-
+    const spawnProtection_V3 = world.getDynamicProperty("spawnProtection_V3");
+    if (spawnProtection_V3 === undefined) {
+        world.setDynamicProperty("spawnProtection_V3", new Vector(0, 0, 0));
+        dynamicPropertyRegistry.set("spawnProtection_V3", new Vector(0, 0, 0));
+    } else {
+        dynamicPropertyRegistry.set("spawnProtection_V3", spawnProtection_V3);
+    }
+    const spawnProtection_Radius = world.getDynamicProperty("spawnProtection_Radius");
+    if (spawnProtection_Radius === undefined) {
+        world.setDynamicProperty("spawnProtection_Radius", 0);
+        dynamicPropertyRegistry.set("spawnProtection_Radius", 0);
+    } else {
+        dynamicPropertyRegistry.set("spawnProtection_Radius", spawnProtection_Radius);
+    }
     /**
      * This is global security for strings where applicable
      */
