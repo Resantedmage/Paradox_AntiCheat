@@ -103,7 +103,6 @@ export function help(message: ChatSendAfterEvent) {
         `§6${prefix}afk§f - ${config.customcommands.afk ? `Kicks players that are AFK for ${config.modules.afk.minutes} minutes.` : textDisabled}`,
         `§6${prefix}antiphasea§f - ${config.customcommands.antiphasea ? `Toggles checks for players phasing through blocks.` : textDisabled}`,
         `§6${prefix}spawnprotection§f - ${config.customcommands.spawnprotection ? `Enables area protection to prevent building/mining.` : textDisabled}`,
-
         ` `,
         `§l§o§6[§4Tools and Utilites§6]§r§o`,
         `§6${prefix}give§f - ${config.customcommands.give ? `Gives player items.` : textDisabled}`,
