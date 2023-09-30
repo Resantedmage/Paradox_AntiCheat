@@ -23,7 +23,7 @@ function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBool
         `§4[§6Module§4]§f: ${moduleStatus}`,
         `§4[§6Usage§4]§f: spawnprotection [optional]`,
         `§4[§6Optional§4]§f: help`,
-        `§4[§6Description§4]§f: Enables or disables the protection module when configured to prevent players building/mining within the area.`,
+        `§4[§6Description§4]§f: Toggles area protection to limit building/mining.`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}spawnprotection disable`,
         `    ${prefix}spawnprotection help`,
