@@ -164,6 +164,6 @@ export function modules(message: ChatSendAfterEvent, args: string[]) {
         `§o§6|§f AutoBan: ${status(autobanBoolean)}`,
         `§o§6|§f AFK: ${status(afkBoolean)}`,
         `§o§6|§f AntiPhaseA: ${status(antiPhaseABoolean)}`,
-        `§o§6|§f Spawn Protection: ${spawnProtectionBoolean ? `§aENABLED§f (X: §6${spawnProtectionVector3.x}§f Y: §6${spawnProtectionVector3.y}§f Z: §6${spawnProtectionVector3.y}§f Radius: §6${spawnProtectionRadius}§f)` : "§4DISABLED"}`,
+        `§o§6|§f Spawn Protection: ${spawnProtectionBoolean ? `§aENABLED§f (X: §6${spawnProtectionVector3.x}§f Y: §6${spawnProtectionVector3.y}§f Z: §6${spawnProtectionVector3.z}§f Radius: §6${spawnProtectionRadius}§f)` : "§4DISABLED"}`,
     ]);
 }

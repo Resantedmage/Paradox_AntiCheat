@@ -1,6 +1,6 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { SpawnProtection } from "../../penrose/TickEvent/spawnprotection/spawnProtection.js";
 
@@ -28,6 +28,7 @@ function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBool
         `    ${prefix}spawnprotection disable`,
         `    ${prefix}spawnprotection help`,
         `    ${prefix}spawnprotection 54 69 -16 90`,
+        `    ${prefix}spawnprotection ~ ~ ~ 90`,
         `    ${prefix}spawnprotection x y z r`,
     ]);
 }
@@ -65,21 +66,41 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
         return spawnprotectionHelp(player, prefix, spawnProtectionBoolean);
     }
 
-    if (spawnProtectionBoolean === false) {
+    if (spawnProtectionBoolean === false || (spawnProtectionBoolean === true && argCheck && args[0].toLowerCase() !== "disable")) {
         // Allow
         if (args.length < 4) {
-            return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f invalid arguments provided please check you are supplying x y z radius, for example 10 64 -10 90`);
+            return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid arguments provided. Please include x y z radius, for example: 10 64 -10 90.`);
         }
+
+        let [x, y, z, radius] = args.slice(0, 4).map((arg) => (arg === "~" ? arg : parseFloat(arg)));
+
+        if ((x !== "~" && isNaN(x as number)) || (y !== "~" && isNaN(y as number)) || (z !== "~" && isNaN(z as number)) || isNaN(radius as number)) {
+            return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid arguments provided. Please make sure x, y, z, and radius are valid numbers.`);
+        }
+
+        if (x === "~") {
+            x = Math.ceil(player.location.x);
+        }
+        if (y === "~") {
+            y = Math.ceil(player.location.y);
+        }
+        if (z === "~") {
+            z = Math.ceil(player.location.z);
+        }
+
         dynamicPropertyRegistry.set("spawnProtection_b", true);
         world.setDynamicProperty("spawnProtection_b", true);
-        const vector3 = new Vector(Number(args[0]), Number(args[1]), Number(args[2]));
+        const vector3 = { x: x, y: y, z: z };
         dynamicPropertyRegistry.set("spawnProtection_V3", vector3);
         world.setDynamicProperty("spawnProtection_V3", vector3);
-        dynamicPropertyRegistry.set("spawnProtection_Radius", Math.abs(Number(args[3])));
-        world.setDynamicProperty("spawnProtection_Radius", Math.abs(Number(args[3])));
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Spawn Protection§f!`);
+        dynamicPropertyRegistry.set("spawnProtection_Radius", Math.abs(radius as number));
+        world.setDynamicProperty("spawnProtection_Radius", Math.abs(radius as number));
+        const messageAction = spawnProtectionBoolean ? "has updated" : "has enabled";
+        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f ${messageAction} §6Spawn Protection§f!`);
         SpawnProtection();
+        return;
     }
+
     if (argCheck && args[0].toLowerCase() === "disable") {
         // Deny
         dynamicPropertyRegistry.set("spawnProtection_b", false);
