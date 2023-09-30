@@ -2,7 +2,7 @@ import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import config from "../../data/config.js";
 import { ChatSendAfterEvent, Player, Vector, Vector3, world } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
-import { SpawnProtection } from "../../penrose/TickEvent/spawnProtection/spawnProtection.js";
+import { SpawnProtection } from "../../penrose/TickEvent/spawnprotection/spawnProtection.js";
 
 function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBoolean: string | number | boolean | Vector3) {
     let commandStatus: string;

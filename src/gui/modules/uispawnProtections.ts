@@ -1,6 +1,6 @@
 import { Player, Vector, world } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
-import { SpawnProtection } from "../../penrose/TickEvent/spawnProtection/spawnProtection.js";
+import { SpawnProtection } from "../../penrose/TickEvent/spawnprotection/spawnProtection.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util.js";
 import { paradoxui } from "../paradoxui.js";
