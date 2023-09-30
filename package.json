@@ -1,6 +1,6 @@
 {
     "name": "paradox-anticheat",
-    "version": "3.3.6",
+    "version": "3.4.0",
     "productName": "Paradox-AntiCheat",
     "description": "A utility to fight against malicious hackers on Bedrock Edition",
     "private": true,
