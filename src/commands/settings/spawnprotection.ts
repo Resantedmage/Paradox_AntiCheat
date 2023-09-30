@@ -62,7 +62,7 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.spawnprotection) {
+    if (!argCheck || (argCheck && args[0].toLowerCase() === "help") || !config.customcommands.spawnprotection) {
         return spawnprotectionHelp(player, prefix, spawnProtectionBoolean);
     }
 
