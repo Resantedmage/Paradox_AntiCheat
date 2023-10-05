@@ -53,12 +53,20 @@
       loadSidebar: true,
       coverpage: "cover.md",
 		  onlyCover: true,
-		  subMaxLevel: 2
+		  subMaxLevel: 2,
+		  search: {
+			paths: 'auto',
+			noData: 'No Results!',
+			placeholder: "Search",
+			depth: 6,
+			hideOtherSidebarContent: true
+		},
     }
   </script>
   <!-- Docsify v4 -->
   <script src="//cdn.jsdelivr.net/npm/docsify@4"></script>
   <script src="https://cdn.jsdelivr.net/npm/docsify-sidebar-collapse/dist/docsify-sidebar-collapse.min.js"></script>
   <script src="//cdn.jsdelivr.net/npm/prismjs@1/components/prism-javascript.min.js"></script>
+  <script src="//cdn.jsdelivr.net/npm/docsify/lib/plugins/search.min.js"></script>
 </body>
 </html>
