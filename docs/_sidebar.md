@@ -6,7 +6,7 @@
 
     -   [Overview](Commands_Features\overview.md "Overview")
     -   [Chat Commands](Commands_Features\chatcommands.md "Chat Commands")
-    -   [ParadoxUI Features](Commands_Features\paradoxui.md "Chat Commands")
+    -   [ParadoxUI Features](Commands_Features\paradoxui.md "ParadoxUI")
 
 -   <aaa style="color:White; font-size: larger; font-weight: bolder">Guides</aaa>
 
