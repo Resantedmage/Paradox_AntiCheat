@@ -8,6 +8,10 @@
     -   [Chat Commands](Commands_Features\chatcommands.md "Chat Commands")
     -   [ParadoxUI Features](Commands_Features\paradoxui.md "ParadoxUI")
 
+-   <aaa style="color: White; font-size: larger; font-weight: bolder">Config.js</aaa>
+
+    - [Why](Configuration\why.md "Why")
+
 -   <aaa style="color:White; font-size: larger; font-weight: bolder">Guides</aaa>
 
     -   [Video Guides](VideoGuides\tutorials.md "Video Tutorials")
