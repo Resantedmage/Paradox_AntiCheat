@@ -1,5 +1,5 @@
 const http = require("http");
-const path = require("path");
+const os = require("os");
 const finalhandler = require("finalhandler");
 const serveStatic = require("serve-static");
 
@@ -9,6 +9,18 @@ const server = http.createServer((req, res) => {
 });
 
 const PORT = process.env.PORT || 4000;
-server.listen(PORT, () => {
-    console.log(`Server is running at http://localhost:${PORT}`);
+
+server.listen(PORT, "0.0.0.0", () => {
+    const interfaces = os.networkInterfaces();
+    let localhostUrl = `http://localhost:${PORT}`;
+    console.log(`Server is running at ${localhostUrl}`);
+
+    // Print IP addresses for all available network interfaces
+    Object.keys(interfaces).forEach((iface) => {
+        interfaces[iface].forEach((details) => {
+            if (details.family === "IPv4") {
+                console.log(`Server is also accessible at http://${details.address}:${PORT}`);
+            }
+        });
+    });
 });
