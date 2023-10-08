@@ -1,3 +1,5 @@
+-   <a href="#/documentation.md" title="Introduction" style="color: white; font-size: larger; font-weight: bolder">Introduction</a>
+
 -   <a href="#" onclick="return false;" title="Getting Started" style="color: white; font-size: larger; font-weight: bolder">Getting Started</a>
 
     -   [Overview](gettingstarted.md "Overview")
