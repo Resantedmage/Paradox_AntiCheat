@@ -1,24 +1,25 @@
--   <aaa style="color: White; font-size: larger; font-weight: bolder">Getting Started</aaa>
+-   <a href="#" onclick="return false;" title="Getting Started" style="color: white; font-size: larger; font-weight: bolder">Getting Started</a>
 
     -   [Overview](gettingstarted.md "Overview")
 
--   <aaa style="color: White; font-size: larger; font-weight: bolder">Commands & Features</aaa>
+-   <a href="#" onclick="return false;" title="Commands & Features" style="color: white; font-size: larger; font-weight: bolder">Commands & Features</a>
 
     -   [Overview](Commands_Features\overview.md "Overview")
     -   [Chat Commands](Commands_Features\chatcommands.md "Chat Commands")
     -   [ParadoxUI Features](Commands_Features\paradoxui.md "ParadoxUI")
 
--   <aaa style="color: White; font-size: larger; font-weight: bolder">Config.js</aaa>
+-   <a href="#" onclick="return false;" title="Config.js" style="color: white; font-size: larger; font-weight: bolder">Config.js</a>
 
     - [Why](Configuration\why.md "Why")
 
--   <aaa style="color:White; font-size: larger; font-weight: bolder">Guides</aaa>
+-   <a href="#" onclick="return false;" title="Guides" style="color: white; font-size: larger; font-weight: bolder">Guides</a>
 
     -   [Video Guides](VideoGuides\tutorials.md "Video Tutorials")
 
--   <aaa style="color:White; font-size: larger; font-weight: bolder">Support</aaa>
+-   <a href="#" onclick="return false;" title="Support" style="color: white; font-size: larger; font-weight: bolder">Support</a>
 
     -   [Support](Support\support.md "Support")
 
--   <aaa style="color:White; font-size: larger; font-weight: bolder">Contributing</aaa>
+-   <a href="#" onclick="return false;" title="Contributing" style="color: white; font-size: larger; font-weight: bolder">Contributing</a>
+
     -   [Getting involved](Contributing\gettinginvolved.md "Getting involved")
