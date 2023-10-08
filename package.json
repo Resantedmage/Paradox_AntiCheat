@@ -6,7 +6,9 @@
     "private": true,
     "devDependencies": {
         "7zip-bin": "5.2.0",
-        "prettier": "3.0.3"
+        "prettier": "3.0.3",
+        "serve-static": "1.15.0",
+        "finalhandler": "1.2.0"
     },
     "dependencies": {
         "@minecraft/server": "1.6.0-beta.1.20.30-stable",
@@ -25,6 +27,7 @@
         "enableMcLoopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-1958404141-86561845-1752920682-3514627264-368642714-62675701-733520436",
         "enableMcPreviewLoopback": "CheckNetIsolation.exe LoopbackExempt -a -p=S-1-15-2-424268864-5579737-879501358-346833251-474568803-887069379-4040235476",
         "format": "npx prettier --write --ignore-path .prettierignore ./",
+        "server": "node server.js",
         "linux//": " --- BUILD (Linux) --- ",
         "clean": "rm -rf build/",
         "mkDirs": "mkdir -p build",
