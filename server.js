@@ -10,6 +10,19 @@ const server = http.createServer((req, res) => {
 
 const PORT = process.env.PORT || 4000;
 
+// Function to handle server shutdown
+const handleShutdown = () => {
+    console.log("\nShutting down server...");
+    server.close(() => {
+        console.log("Server has been gracefully closed.");
+        process.exit(0);
+    });
+};
+
+// Listen for process termination signals
+process.on("SIGINT", handleShutdown);
+process.on("SIGTERM", handleShutdown);
+
 server.listen(PORT, "0.0.0.0", () => {
     const interfaces = os.networkInterfaces();
     let localhostUrl = `http://localhost:${PORT}`;
