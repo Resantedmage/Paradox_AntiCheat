@@ -2,7 +2,7 @@
 
 ## !afk
 
-The AFK command kicks people from the world after 10 minutes providing they are not paradox opped. The command acts as a toggle to enable and disable the module.
+The AFK command kicks people from the world after the specified time in config.js if they are not paradox opped. The command acts as a toggle to enable and disable the module.
 
 > ```Toggle
 > !afk
@@ -10,7 +10,7 @@ The AFK command kicks people from the world after 10 minutes providing they are 
 
 ## !allowgma
 
-!> Note one mode has to stay enabled by default this is Survival.
+!> Note one mode has to stay enabled by default if all modes are not allowed, and this is Adventure.
 
 This modules allows players to be in game mode adventure. All paradox Opped players are excluded from checks.
 
@@ -20,7 +20,7 @@ This modules allows players to be in game mode adventure. All paradox Opped play
 
 ## !allowgmc
 
-!> Note one mode has to stay enabled by default this is Survival.
+!> Note one mode has to stay enabled by default if all modes are not allowed, and this is Adventure.
 
 This modules allows players to be in game mode creative. All paradox Opped players are excluded from checks.
 
@@ -30,7 +30,7 @@ This modules allows players to be in game mode creative. All paradox Opped playe
 
 ## !allowgms
 
-!> Note one mode has to stay enabled by default this is Survival.
+!> Note one mode has to stay enabled by default if all modes are not allowed, and this is Adventure.
 
 This modules allows players to be in game mode survival. All paradox Opped players are excluded from checks.
 
