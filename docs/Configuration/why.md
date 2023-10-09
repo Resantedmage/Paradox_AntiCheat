@@ -1,9 +1,9 @@
-## Introduction 
+## Introduction
 
-Paradox has alot of advanced features, due to the restrictions put in place by mojang we are unable to write to the servers/realms storage, this means some settings within paradox have to be configured by editing a config file this is know as config.js.
+Paradox boasts a plethora of advanced features. However, due to the limitations imposed by Mojang, we are unable to write to the servers'/realms' storage. Consequently, certain settings within Paradox must be configured by editing a configuration file known as `config.js`.
 
-To counter this issue the scripting API had a feature added called dynamic properties, paradox makes use of this throughout its codebase however up until the last release this was very restricted in size which meant advanced settings still could not be moved to this.
+To mitigate this issue, the Scripting API introduced a feature called dynamic properties. Paradox extensively employs this feature throughout its codebase. However, until the last release, the size of dynamic properties was highly restricted, rendering it insufficient for migrating advanced settings.
 
-?>What does this mean?
+?> What does this mean?
 
-Currently paradox still makes use of config.js but as soon as we can move away from this we will do. Now we understand that this can be a issue/struggle for some of our user base, we are always working on ways to improve this and do ask that you reach out to us for assistance where needed 
+Presently, Paradox still relies on `config.js`. However, we are actively working towards moving away from this dependency. We acknowledge that this can pose challenges for some of our user base. We are continuously exploring ways to enhance this experience and encourage you to reach out to us for assistance when needed.
