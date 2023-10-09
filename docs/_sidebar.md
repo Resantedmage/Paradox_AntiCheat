@@ -1,16 +1,3 @@
-<!DOCTYPE html>
-<html>
-<head>
-<style>
-  .logo {
-    width: 400px; /* Adjust the width as needed */
-    height: 200px; /* Maintain aspect ratio */
-    vertical-align: middle;
-    margin-right: 10px; /* Adjust the spacing between the logo and text as needed */
-  }
-</style>
-</head>
-
 -   <a href="#/documentation.md" title="Introduction" style="color: white; font-size: larger; font-weight: bolder">Introduction</a>
 
 -   <a href="#" onclick="return false;" title="Getting Started" style="color: white; font-size: larger; font-weight: bolder">Getting Started</a>
