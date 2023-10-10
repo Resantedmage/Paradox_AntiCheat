@@ -172,6 +172,7 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
         "minecraft:sweet_berry_bush",
         "minecraft:sweet_berries",
         "minecraft:snow_layer",
+        "minecraft:redstone",
     ];
 
     const efficiencyLevels: Record<number, number> = {
