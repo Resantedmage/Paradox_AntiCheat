@@ -1,7 +1,7 @@
 import { world, PlayerBreakBlockAfterEvent, system, EntityQueryOptions, PlayerLeaveAfterEvent, EntityInventoryComponent, ItemEnchantsComponent } from "@minecraft/server";
 import { flag } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
-import { MinecraftEffectTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
+import { MinecraftBlockTypes, MinecraftEffectTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
 
 const lastBreakTime = new Map<string, number>();
 
@@ -172,7 +172,7 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
         "minecraft:sweet_berry_bush",
         "minecraft:sweet_berries",
         "minecraft:snow_layer",
-        "minecraft:redstone",
+        "minecraft:redstone_wire",
     ];
 
     const efficiencyLevels: Record<number, number> = {
