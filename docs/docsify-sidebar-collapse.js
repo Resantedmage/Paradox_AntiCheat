@@ -89,6 +89,15 @@
         var newActiveNode = findTagParent(e.target, "LI", 2);
         if (!newActiveNode) return;
 
+        // Check if the clicked item is a dropdown item
+        var isDropdownItem = !e.target.href || e.target.href === "#";
+        var isHeader = e.target.tagName === "A";
+
+        if (isDropdownItem || (isHeader && e.target.getAttribute("href") === "#")) {
+            // Prevent closing the sidebar for dropdown items
+            e.stopPropagation();
+        }
+
         if (newActiveNode.classList.contains("open")) {
             newActiveNode.classList.remove("open"); // docsify 默认行为会操作 collapse，我们异步之后修补
 
