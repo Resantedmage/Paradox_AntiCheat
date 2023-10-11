@@ -30,6 +30,7 @@ async function spawnProtection(id: number) {
             player.runCommandAsync(`gamemode ${playerGamemodes.get(playerId)} @s`);
         });
         world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
+        playerGamemodes.clear();
         system.clearRun(id);
         return;
     }
