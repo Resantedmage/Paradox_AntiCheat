@@ -22,4 +22,4 @@
 
     -   [Getting involved](Contributing\gettinginvolved.md "Getting involved")
 
-[<img src="./Discord-logo.png" alt="Join our Discord server" width="140">](Support\support.md "Support")
+[<img src="./Media/Discord-logo.png" alt="Join our Discord server" width="140">](Support\support.md "Support")
