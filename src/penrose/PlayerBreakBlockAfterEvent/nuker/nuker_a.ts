@@ -43,12 +43,11 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Oak, Spruce, Birch, Jungle, Acacia, Dark Oak,
          * Azalea, Flowering Azalea, Mangrove, Cherry.
          */
-        "minecraft:leaves",
-        "minecraft:leaves2",
-        "minecraft:azalea_leaves",
-        "minecraft:azalea_leaves_flowered",
-        "minecraft:cherry_leaves",
-        "minecraft:mangrove_leaves",
+        MinecraftBlockTypes.Leaves,
+        MinecraftBlockTypes.Leaves2,
+        MinecraftBlockTypes.AzaleaLeaves,
+        MinecraftBlockTypes.CherryLeaves,
+        MinecraftBlockTypes.MangroveLeaves,
 
         /**
          * Saplings
@@ -57,9 +56,9 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Azalea, Flowering Azalea, Mangove Propagule, Cherry,
          * Bamboo.
          */
-        "minecraft:bamboo_sapling",
-        "minecraft:sapling",
-        "minecraft:cherry_sapling",
+        MinecraftBlockTypes.BambooSapling,
+        MinecraftBlockTypes.Sapling,
+        MinecraftBlockTypes.CherrySapling,
 
         /**
          * Flowers
@@ -69,12 +68,12 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Peony, Pink Tulip, Poppy, Red Tulip, Rose Bush, Sunflower,
          * White Tulip, Wither Rose, Chorus.
          */
-        "minecraft:yellow_flower",
-        "minecraft:red_flower",
-        "minecraft:chorus_flower",
-        "minecraft:flowering_azalea",
-        "minecraft:azalea_leaves_flowered",
-        "minecraft:wither_rose",
+        MinecraftBlockTypes.AzaleaLeavesFlowered,
+        MinecraftBlockTypes.FloweringAzalea,
+        MinecraftBlockTypes.RedFlower,
+        MinecraftBlockTypes.ChorusFlower,
+        MinecraftBlockTypes.YellowFlower,
+        MinecraftBlockTypes.WitherRose,
 
         /**
          * Mushrooms
@@ -82,10 +81,10 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Brown Mushroom, Brown Mushroom Block, Mushroom Stem,
          * Red Mushroom, Red Mushroom Block.
          */
-        "minecraft:brown_mushroom",
-        "minecraft:red_mushroom",
-        "minecraft:brown_mushroom_block",
-        "minecraft:red_mushroom_block",
+        MinecraftBlockTypes.RedMushroom,
+        MinecraftBlockTypes.RedMushroomBlock,
+        MinecraftBlockTypes.BrownMushroom,
+        MinecraftBlockTypes.BrownMushroomBlock,
 
         /**
          * Crops
@@ -94,17 +93,17 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Melon, Pumpkin, Sugar Cane, Potatoes, Carrots
          * Beetroot, Wheat.
          */
-        "minecraft:melon_block",
-        "minecraft:melon_stem",
-        "minecraft:potatoes",
-        "minecraft:pumpkin",
-        "minecraft:carved_pumpkin",
-        "minecraft:pumpkin_stem",
-        "minecraft:beetroot",
-        "minecraft:bamboo",
-        "minecraft:wheat",
-        "minecraft:carrots",
-        "minecraft:reeds",
+        MinecraftBlockTypes.MelonBlock,
+        MinecraftBlockTypes.MelonStem,
+        MinecraftBlockTypes.Potatoes,
+        MinecraftBlockTypes.Pumpkin,
+        MinecraftBlockTypes.CarvedPumpkin,
+        MinecraftBlockTypes.PumpkinStem,
+        MinecraftBlockTypes.Beetroot,
+        MinecraftBlockTypes.Bamboo,
+        MinecraftBlockTypes.Wheat,
+        MinecraftBlockTypes.Carrots,
+        MinecraftBlockTypes.Reeds,
 
         /**
          * Cave Plants
@@ -113,17 +112,16 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Moss Block, Moss Carpet, Small Dripleaf,
          * Spore Blossom, Cave Vines.
          */
-        "minecraft:glow_lichen",
-        "minecraft:small_dripleaf_block",
-        "minecraft:big_dripleaf",
-        "minecraft:cave_vines",
-        "minecraft:cave_vines_body_with_berries",
-        "minecraft:cave_vines_head_with_berries",
-        "minecraft:moss_block",
-        "minecraft:moss_carpet",
-        "minecraft:hanging_roots",
-        "minecraft:spore_blossom",
-        "minecraft:glow_berries",
+        MinecraftBlockTypes.GlowLichen,
+        MinecraftBlockTypes.SmallDripleafBlock,
+        MinecraftBlockTypes.BigDripleaf,
+        MinecraftBlockTypes.CaveVines,
+        MinecraftBlockTypes.CaveVinesBodyWithBerries,
+        MinecraftBlockTypes.CaveVinesHeadWithBerries,
+        MinecraftBlockTypes.MossBlock,
+        MinecraftBlockTypes.MossCarpet,
+        MinecraftBlockTypes.HangingRoots,
+        MinecraftBlockTypes.SporeBlossom,
 
         /**
          * Shrubbery
@@ -131,13 +129,14 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Dead Bush, Fern, Grass, Large Fern,
          * Lily Pad, Tall Grass, Vines
          */
-        "minecraft:double_plant",
-        "minecraft:tallgrass",
-        "minecraft:deadbush",
-        "minecraft:vine",
-        "minecraft:twisting_vines",
-        "minecraft:weeping_vines",
-        "minecraft:chorus_plant",
+        MinecraftBlockTypes.Azalea,
+        MinecraftBlockTypes.DoublePlant,
+        MinecraftBlockTypes.Tallgrass,
+        MinecraftBlockTypes.Deadbush,
+        MinecraftBlockTypes.Vine,
+        MinecraftBlockTypes.TwistingVines,
+        MinecraftBlockTypes.WeepingVines,
+        MinecraftBlockTypes.ChorusPlant,
 
         /**
          * Nether
@@ -145,34 +144,33 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
          * Crimson Fungus, Warped Fungus, Nether Wart,
          * Nether Sprouts, Crimson Roots, Warped Roots.
          */
-        "minecraft:crimson_fungus",
-        "minecraft:warped_fungus",
-        "minecraft:nether_wart",
-        "minecraft:nether_sprouts",
-        "minecraft:crimson_roots",
-        "minecraft:warped_roots",
+        MinecraftBlockTypes.CrimsonFungus,
+        MinecraftBlockTypes.WarpedFungus,
+        MinecraftBlockTypes.NetherWart,
+        MinecraftBlockTypes.NetherSprouts,
+        MinecraftBlockTypes.CrimsonRoots,
+        MinecraftBlockTypes.WarpedRoots,
 
         /**
          * Water Plants
          *
          * Water Lily, Sea Grass, Kelp
          */
-        "minecraft:waterlily",
-        "minecraft:seagrass",
-        "minecraft:kelp",
+        MinecraftBlockTypes.Waterlily,
+        MinecraftBlockTypes.Seagrass,
+        MinecraftBlockTypes.Kelp,
 
         /**
          * Miscellaneous
          *
          * Blocks that I am too lazy to sort out right now
          */
-        "minecraft:cocoa",
-        "minecraft:cactus",
-        "minecraft:azalea",
-        "minecraft:sweet_berry_bush",
-        "minecraft:sweet_berries",
-        "minecraft:snow_layer",
-        "minecraft:redstone_wire",
+        MinecraftBlockTypes.Cocoa,
+        MinecraftBlockTypes.Cactus,
+        MinecraftBlockTypes.SweetBerryBush,
+        MinecraftBlockTypes.SnowLayer,
+        MinecraftBlockTypes.PowderSnow,
+        MinecraftBlockTypes.RedstoneWire,
     ];
 
     const efficiencyLevels: Record<number, number> = {
@@ -197,7 +195,7 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
 
     const requiredTimeDifference = efficiencyLevels[itemEfficiencyLevel];
 
-    if (vegetation.indexOf(brokenBlockPermutation.type.id) === -1 && lastBreakInSeconds && lastBreakInSeconds < requiredTimeDifference) {
+    if (vegetation.includes(brokenBlockPermutation.type.id as MinecraftBlockTypes) && lastBreakInSeconds && lastBreakInSeconds < requiredTimeDifference) {
         if (counter >= 3) {
             const blockLoc = dimension.getBlock({ x: x, y: y, z: z });
             const blockID = brokenBlockPermutation.clone();
