@@ -195,7 +195,7 @@ async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<st
 
     const requiredTimeDifference = efficiencyLevels[itemEfficiencyLevel];
 
-    if (vegetation.includes(brokenBlockPermutation.type.id as MinecraftBlockTypes) && lastBreakInSeconds && lastBreakInSeconds < requiredTimeDifference) {
+    if (!vegetation.includes(brokenBlockPermutation.type.id as MinecraftBlockTypes) && lastBreakInSeconds && lastBreakInSeconds < requiredTimeDifference) {
         if (counter >= 3) {
             const blockLoc = dimension.getBlock({ x: x, y: y, z: z });
             const blockID = brokenBlockPermutation.clone();
