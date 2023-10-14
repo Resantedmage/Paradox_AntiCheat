@@ -65,30 +65,23 @@ function analyzePlayerData(player: Player) {
         return; // Not enough data for analysis yet
     }
 
-    // Analyze falling behavior and surrounded-by-air data to determine potential flying
-    let consistentData = true;
-
-    // Check falling data consistency
+    // Check if falling data is a combination of true and false while surrounded by air
+    let isPotentialFlying = false;
     for (let i = 0; i < minDataCount; i++) {
-        if (!fallingData[fallingData.length - 1 - i]) {
-            consistentData = false;
-            break;
-        }
-    }
-
-    if (consistentData) {
-        // Check surrounded-by-air data consistency
-        for (let i = 0; i < minDataCount; i++) {
-            if (!surroundedByAirData[surroundedByAirData.length - 1 - i]) {
-                consistentData = false;
+        if (surroundedByAirData[surroundedByAirData.length - 1 - i]) {
+            if (fallingData[fallingData.length - 1 - i] === true) {
+                isPotentialFlying = true;
                 break;
             }
         }
     }
 
-    if (consistentData) {
+    if (isPotentialFlying) {
+        // console.log("Player is potentially flying. Taking appropriate action.");
         // Player is potentially flying, take appropriate action
         handlePotentialFlying(player);
+    } else {
+        // console.log("Player is not potentially flying.");
     }
 
     // Clear the data for the player after analysis
@@ -156,7 +149,7 @@ function flya(id: number) {
         }
 
         const fallCheck = player.isFalling;
-        if (!fallCheck) {
+        if (fallCheck) {
             // Record falling data
             recordFallingBehavior(player.id, true);
 
