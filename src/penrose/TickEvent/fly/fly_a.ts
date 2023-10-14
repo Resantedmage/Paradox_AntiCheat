@@ -4,7 +4,6 @@ import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registr
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
 
 interface PlayerData {
-    airTimeStart: number;
     fallingData: boolean[]; // Array to record falling behavior
     surroundedByAirData: boolean[]; // Array to record surrounded-by-air data
 }
@@ -36,7 +35,6 @@ function getRandomizedCoordinates(player: Player): Vector3 {
 function recordFallingBehavior(playerId: string, isFalling: boolean) {
     if (!playerDataMap.has(playerId)) {
         playerDataMap.set(playerId, {
-            airTimeStart: 0,
             fallingData: [],
             surroundedByAirData: [],
         });
