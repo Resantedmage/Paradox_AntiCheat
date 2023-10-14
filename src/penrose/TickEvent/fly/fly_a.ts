@@ -63,7 +63,7 @@ function analyzePlayerData(player: Player) {
     // Check if enough data is available for analysis
     const minDataCount = 3;
     if (fallingData.length < minDataCount || surroundedByAirData.length < minDataCount) {
-        console.log("Not enough data for analysis yet.");
+        // console.log("Not enough data for analysis yet.");
         return; // Not enough data for analysis yet
     }
 
