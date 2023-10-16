@@ -1,9 +1,8 @@
 import { world, DynamicPropertiesDefinition, WorldInitializeAfterEvent, Vector3, Vector } from "@minecraft/server";
 import config from "../../data/config.js";
-import { UUIDManager } from "../../classes/UUIDManager.js";
 import { MinecraftEntityTypes } from "../../node_modules/@minecraft/vanilla-data/lib/index.js";
 import { extendPlayerPrototype } from "../../classes/PlayerExtended/Player.js";
-import { extendWorldPrototype } from "../../classes/WorldExtended/World.js";
+import { WorldExtended, extendWorldPrototype } from "../../classes/WorldExtended/World.js";
 
 export const dynamicPropertyRegistry = new Map<string, string | number | boolean | Vector3>();
 
@@ -202,7 +201,7 @@ function registry(data: WorldInitializeAfterEvent) {
      */
     const salt = world.getDynamicProperty("crypt");
     if (salt === undefined) {
-        world.setDynamicProperty("crypt", UUIDManager.generateRandomUUID());
+        world.setDynamicProperty("crypt", (world as WorldExtended).generateRandomUUID());
     }
 }
 

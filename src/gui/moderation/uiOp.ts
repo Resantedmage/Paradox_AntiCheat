@@ -4,7 +4,6 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
 import config from "../../data/config.js";
-import { UUIDManager } from "../../classes/UUIDManager.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
 
 //Function provided by Visual1mpact
@@ -13,7 +12,7 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
         // Handle canceled form or undefined result
         return;
     }
-    if (!hash || !salt || (hash !== (world as WorldExtended).hashWithSalt(salt as string, config.encryption.password || player.id) && UUIDManager.isValidUUID(salt as string))) {
+    if (!hash || !salt || (hash !== (world as WorldExtended).hashWithSalt(salt as string, config.encryption.password || player.id) && (world as WorldExtended).isValidUUID(salt as string))) {
         if (!config.encryption.password) {
             if (!player.isOp()) {
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Operator to use this command.`);
@@ -50,7 +49,7 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
             const targetHash = targetPlayer.getDynamicProperty("hash");
 
             if (targetHash === undefined) {
-                const targetSalt = UUIDManager.generateRandomUUID();
+                const targetSalt = (world as WorldExtended).generateRandomUUID();
                 targetPlayer.setDynamicProperty("salt", targetSalt);
 
                 // Use either the operator's ID or the encryption password as the key
@@ -80,7 +79,7 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
         // It's an ActionFormResponse
         if (opResult.selection === 0) {
             // player wants to change their own password
-            const targetSalt = UUIDManager.generateRandomUUID();
+            const targetSalt = (world as WorldExtended).generateRandomUUID();
             const newHash = (world as WorldExtended).hashWithSalt(targetSalt, player.id);
 
             player.setDynamicProperty("hash", newHash);
