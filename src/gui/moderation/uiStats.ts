@@ -1,11 +1,11 @@
 import { EntityEquippableComponent, EquipmentSlot, ItemEnchantsComponent, ItemStack, Player, world } from "@minecraft/server";
 import { MinecraftEnchantmentTypes } from "../../node_modules/@minecraft/vanilla-data/lib/index";
 import { ActionFormData, ModalFormResponse } from "@minecraft/server-ui";
-import { getGamemode } from "../../util";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
 import { ScoreManager } from "../../classes/ScoreManager";
+import { PlayerExtended } from "../../classes/PlayerExtended/Player";
 
 export function uiSTATS(statsResult: ModalFormResponse, onlineList: string[], player: Player) {
     if (!statsResult || statsResult.canceled) {
@@ -38,7 +38,7 @@ export function uiSTATS(statsResult: ModalFormResponse, onlineList: string[], pl
 
     const reportBody = [
         `§6All Stats for ${member.name}§f\n\n`,
-        `§fCurrent Gamemode:§6 ${getGamemode(member)}\n`,
+        `§fCurrent Gamemode:§6 ${(member as PlayerExtended).getGameMode()}\n`,
         `§fCurrently at: §4X= ${member.location.x.toFixed(0)} §2Y= ${member.location.y.toFixed(0)} §3Z= ${member.location.z.toFixed(0)}\n`,
         `§f§4--------------------------------§f\n`,
         `§6${member.name}'s Current violations §f\n`,

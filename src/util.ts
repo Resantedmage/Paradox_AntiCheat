@@ -1,4 +1,4 @@
-import { GameMode, Player, PlayerLeaveAfterEvent, Vector, world } from "@minecraft/server";
+import { Player, PlayerLeaveAfterEvent, Vector, world } from "@minecraft/server";
 import config from "./data/config.js";
 import { kickablePlayers } from "./kickcheck.js";
 import { ScoreManager } from "./classes/ScoreManager.js";
@@ -171,35 +171,6 @@ export function isTimerExpired(player: string) {
     }
 
     return false;
-}
-
-/**
- * Get the gamemode of a given player
- * @param player - The player to get the gamemode of
- * @returns The gamemode of the player as a string, or undefined if the player is not found
- */
-export function getGamemode(player: Player): string | undefined {
-    // Loop through each gamemode in the GameMode enum
-    const gamemodeValues = Object.values(GameMode);
-    for (const gameMode of gamemodeValues) {
-        // Use world.getPlayers() to get an iterator of all players in the world with the same name and game mode as the given player
-        const gameModePlayer = world.getPlayers({ name: player.name, gameMode });
-        // If a player is found with the given name and game mode, return the corresponding string representation of the gamemode
-        if (gameModePlayer.length > 0) {
-            switch (gameMode) {
-                case GameMode.creative:
-                    return "creative";
-                case GameMode.survival:
-                    return "survival";
-                case GameMode.adventure:
-                    return "adventure";
-                case GameMode.spectator:
-                    return "spectator";
-            }
-        }
-    }
-    // If no matching player is found, return undefined
-    return undefined;
 }
 
 /**

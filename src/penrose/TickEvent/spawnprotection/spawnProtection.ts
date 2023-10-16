@@ -1,7 +1,7 @@
 import { world, system, Vector3, PlayerLeaveAfterEvent } from "@minecraft/server";
-import { getGamemode } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { PlayerManager } from "../../../classes/PlayerManager.js";
+import { PlayerExtended } from "../../../classes/PlayerExtended/Player.js";
 
 const playerGamemodes = new Map<string, string>(); // Map to store player IDs and gamemodes
 
@@ -62,7 +62,7 @@ async function spawnProtection(id: number) {
             const radiusSquared = radius * radius;
 
             // Retrieve or fetch the player's gamemode
-            const currentGamemode = playerGamemodes.get(player.id) || getGamemode(player);
+            const currentGamemode = playerGamemodes.get(player.id) || (player as PlayerExtended).getGameMode();
 
             // Determine the desired gamemode based on the distance
             const desiredGamemode = squaredDistance <= radiusSquared ? "adventure" : "survival";

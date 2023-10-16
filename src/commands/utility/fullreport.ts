@@ -2,8 +2,9 @@ import { ChatSendAfterEvent, EntityEquippableComponent, EquipmentSlot, ItemEncha
 import { MinecraftEnchantmentTypes } from "../../node_modules/@minecraft/vanilla-data/lib/index";
 import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
-import { getGamemode, getPrefix, sendMsgToPlayer } from "../../util.js";
+import { getPrefix, sendMsgToPlayer } from "../../util.js";
 import { ScoreManager } from "../../classes/ScoreManager";
+import { PlayerExtended } from "../../classes/PlayerExtended/Player";
 
 function fullReportHelp(player: Player, prefix: string) {
     let commandStatus: string;
@@ -78,7 +79,7 @@ async function handleFullReport(message: ChatSendAfterEvent, args: string[]) {
     for (const member of players) {
         const reportBody = [
             `\n§f§4[§6Paradox§4]§f Getting all Paradox Logs from: §6${member.name}§f`,
-            `§f§4[§6Paradox§4]§f §6${member.name}§f is in Gamemode: §7${getGamemode(member)}§f`,
+            `§f§4[§6Paradox§4]§f §6${member.name}§f is in Gamemode: §7${(member as PlayerExtended).getGameMode()}§f`,
             `§f§4[§6Paradox§4]§f §6${member.name}§f is currently at X= §7${member.location.x.toFixed(0)}§f Y= §7${member.location.y.toFixed(0)}§f Z= §7${member.location.z.toFixed(0)}§f`,
         ];
 
