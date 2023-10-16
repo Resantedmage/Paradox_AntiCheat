@@ -3,7 +3,7 @@ import { ModalFormData } from "@minecraft/server-ui";
 import { sendMsgToPlayer } from "../../../util";
 import config from "../../../data/config";
 import { uiSAVEDLOCATIONS } from "../../playerui/uiSavedLocations";
-import { EncryptionManager } from "../../../classes/EncryptionManager";
+import { WorldExtended } from "../../../classes/WorldExtended/World";
 
 export function locationHandler(player: Player) {
     //No Opped Menu to show Saved Locations
@@ -18,7 +18,7 @@ export function locationHandler(player: Player) {
     for (let i = 0; i < tagsLength; i++) {
         if (tags[i].startsWith("1337")) {
             // Decode it so we can verify it
-            tags[i] = EncryptionManager.decryptString(tags[i], salt as string);
+            tags[i] = (world as WorldExtended).decryptString(tags[i], salt as string);
             // If invalid then skip it
             if (tags[i].startsWith("LocationHome:") === false) {
                 continue;

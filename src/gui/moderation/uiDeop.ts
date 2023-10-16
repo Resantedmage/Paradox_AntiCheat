@@ -4,7 +4,7 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
 import config from "../../data/config.js";
-import { EncryptionManager } from "../../classes/EncryptionManager.js";
+import { WorldExtended } from "../../classes/WorldExtended/World.js";
 
 //Function provided by Visual1mpact
 export function uiDEOP(opResult: ModalFormResponse, onlineList: string[], player: Player) {
@@ -30,7 +30,7 @@ export function uiDEOP(opResult: ModalFormResponse, onlineList: string[], player
     const key = config.encryption.password ? config.encryption.password : member.id;
 
     // Generate the hash
-    const memberEncode: string = EncryptionManager.hashWithSalt(memberSalt as string, key);
+    const memberEncode: string = (world as WorldExtended).hashWithSalt(memberSalt as string, key);
 
     if (memberEncode && memberHash !== undefined && memberHash === memberEncode) {
         member.removeDynamicProperty("hash");

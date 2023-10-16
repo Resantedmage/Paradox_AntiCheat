@@ -1,7 +1,7 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
 import config from "../../data/config.js";
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
-import { EncryptionManager } from "../../classes/EncryptionManager.js";
+import { WorldExtended } from "../../classes/WorldExtended/World.js";
 
 function delhomeHelp(player: Player, prefix: string) {
     let commandStatus: string;
@@ -71,7 +71,7 @@ export function delhome(message: ChatSendAfterEvent, args: string[]) {
         if (tags[i].startsWith("1337")) {
             encryptedString = tags[i];
             // Decode it so we can verify it
-            tags[i] = EncryptionManager.decryptString(tags[i], salt as string);
+            tags[i] = (world as WorldExtended).decryptString(tags[i], salt as string);
         }
         if (tags[i].startsWith(args[0].toString() + " X", 13)) {
             verify = true;

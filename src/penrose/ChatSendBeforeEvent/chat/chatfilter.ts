@@ -2,7 +2,7 @@ import { world } from "@minecraft/server";
 import { sendMsgToPlayer } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { ChatChannelManager } from "../../../classes/ChatChannelManager.js";
-import { EncryptionManager } from "../../../classes/EncryptionManager.js";
+import { WorldExtended } from "../../../classes/WorldExtended/World.js";
 
 const beforeChatFilter = () => {
     // Subscribe to the 'beforeChat' event
@@ -31,13 +31,13 @@ const beforeChatFilter = () => {
             // Format the chat message with the rank
             const formattedMessage = `${rank} §7${player.name}: §r${message}`;
             // Encrypt and update the message
-            msg.message = EncryptionManager.encryptString(channelName ? `§4[§6${channelName}§4] §7${player.name}: §r${message}` : formattedMessage, player.id);
+            msg.message = (world as WorldExtended).encryptString(channelName ? `§4[§6${channelName}§4] §7${player.name}: §r${message}` : formattedMessage, player.id);
             msg.sendToTargets = true; // Send the message to targets
         } else if (!msg.sendToTargets && channelName) {
             // Format the chat message for channel
             const formattedMessage = `§4[§6${channelName}§4] §f<${player.name}> §r${message}`;
             // Encrypt and update the message
-            msg.message = EncryptionManager.encryptString(formattedMessage, player.id);
+            msg.message = (world as WorldExtended).encryptString(formattedMessage, player.id);
             msg.sendToTargets = true; // Send the message to targets
         }
     });

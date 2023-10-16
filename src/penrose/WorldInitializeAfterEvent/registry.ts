@@ -3,12 +3,14 @@ import config from "../../data/config.js";
 import { UUIDManager } from "../../classes/UUIDManager.js";
 import { MinecraftEntityTypes } from "../../node_modules/@minecraft/vanilla-data/lib/index.js";
 import { extendPlayerPrototype } from "../../classes/PlayerExtended/Player.js";
+import { extendWorldPrototype } from "../../classes/WorldExtended/World.js";
 
 export const dynamicPropertyRegistry = new Map<string, string | number | boolean | Vector3>();
 
 function registry(data: WorldInitializeAfterEvent) {
     // Extend Prototypes here
     extendPlayerPrototype();
+    extendWorldPrototype();
 
     // World instance
     const property = new DynamicPropertiesDefinition();

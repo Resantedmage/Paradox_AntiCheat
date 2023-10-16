@@ -2,7 +2,7 @@ import { world } from "@minecraft/server";
 import { sendMsg } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { ChatChannelManager } from "../../../classes/ChatChannelManager.js";
-import { EncryptionManager } from "../../../classes/EncryptionManager.js";
+import { WorldExtended } from "../../../classes/WorldExtended/World.js";
 
 const afterChatFilter = () => {
     // Subscribe to the 'afterChat' event
@@ -18,7 +18,7 @@ const afterChatFilter = () => {
 
         if (chatRanksBoolean === true) {
             // Format the chat message
-            const formattedMessage = EncryptionManager.decryptString(message, player.id);
+            const formattedMessage = (world as WorldExtended).decryptString(message, player.id);
             msg.message = formattedMessage;
 
             // Set 'sendToTargets' flag to false
@@ -63,7 +63,7 @@ const afterChatFilter = () => {
             msg.sendToTargets = false;
 
             // Format the chat message
-            const formattedMessage = EncryptionManager.decryptString(message, player.id);
+            const formattedMessage = (world as WorldExtended).decryptString(message, player.id);
             msg.message = formattedMessage;
 
             // Retrieve player objects of members in the same channel

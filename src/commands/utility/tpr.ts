@@ -1,7 +1,7 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
 import config from "../../data/config";
 import { getPrefix, sendMsgToPlayer, setTimer } from "../../util";
-import { EncryptionManager } from "../../classes/EncryptionManager";
+import { WorldExtended } from "../../classes/WorldExtended/World";
 
 interface TeleportRequest {
     requester: Player;
@@ -96,7 +96,7 @@ function teleportRequestHandler({ sender, message }: ChatSendAfterEvent) {
 function teleportRequestApprovalHandler(object: ChatSendAfterEvent) {
     const { sender, message } = object;
 
-    const lowercaseMessage = EncryptionManager.decryptString(message, sender.id).toLowerCase();
+    const lowercaseMessage = (world as WorldExtended).decryptString(message, sender.id).toLowerCase();
     // Extract the response from the decrypted string
     const refChar = lowercaseMessage.split("§r");
     const extractedPhrase = refChar[1];

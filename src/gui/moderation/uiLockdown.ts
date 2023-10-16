@@ -4,7 +4,7 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
 import config from "../../data/config.js";
-import { EncryptionManager } from "../../classes/EncryptionManager.js";
+import { WorldExtended } from "../../classes/WorldExtended/World.js";
 
 /**
  * Handles the result of a modal form used for initiating a server lockdown.
@@ -52,7 +52,7 @@ async function handleUILockdown(lockdownResult: ModalFormResponse, player: Playe
             const key = config.encryption.password ? config.encryption.password : pl.id;
 
             // Generate the hash
-            const encode = EncryptionManager.hashWithSalt(salt as string, key);
+            const encode = (world as WorldExtended).hashWithSalt(salt as string, key);
             if (encode && hash !== undefined && encode === hash) {
                 continue;
             }

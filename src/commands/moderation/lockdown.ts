@@ -2,7 +2,7 @@ import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
 import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import { EncryptionManager } from "../../classes/EncryptionManager.js";
+import { WorldExtended } from "../../classes/WorldExtended/World.js";
 
 function lockdownHelp(player: Player, prefix: string, lockdownBoolean: string | number | boolean | Vector3) {
     let commandStatus: string;
@@ -100,7 +100,7 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
         const key = config.encryption.password ? config.encryption.password : pl.id;
 
         // Generate the hash
-        const encode = EncryptionManager.hashWithSalt(salt as string, key);
+        const encode = (world as WorldExtended).hashWithSalt(salt as string, key);
         if (encode && hash !== undefined && encode === hash) {
             continue;
         }
