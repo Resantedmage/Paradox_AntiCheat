@@ -1,7 +1,7 @@
 import { world, system, Vector3, PlayerLeaveAfterEvent } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
-import { PlayerManager } from "../../../classes/PlayerManager.js";
 import { PlayerExtended } from "../../../classes/PlayerExtended/Player.js";
+import { WorldExtended } from "../../../classes/WorldExtended/World.js";
 
 const playerGamemodes = new Map<string, string>(); // Map to store player IDs and gamemodes
 
@@ -26,7 +26,7 @@ async function spawnProtection(id: number) {
     // Unsubscribe if spawn protection is disabled in-game
     if (!spawnProtectionBoolean) {
         playerGamemodes.forEach((playerId) => {
-            const player = PlayerManager.getPlayerById(playerId);
+            const player = (world as WorldExtended).getPlayerById(playerId);
             player.runCommandAsync(`gamemode ${playerGamemodes.get(playerId)} @s`);
         });
         world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);

@@ -32,7 +32,7 @@ const afterChatFilter = () => {
 
                     // Iterate through channel members
                     for (const memberID of channelMembers) {
-                        const player = ChatChannelManager.getPlayerById(memberID);
+                        const player = (world as WorldExtended).getPlayerById(memberID);
                         if (player !== null) {
                             targetPlayers.push(player.name);
                         }
@@ -72,7 +72,7 @@ const afterChatFilter = () => {
 
             // Iterate through channel members
             for (const memberID of channelMembers) {
-                const player = ChatChannelManager.getPlayerById(memberID);
+                const player = (world as WorldExtended).getPlayerById(memberID);
                 if (player !== null) {
                     targetPlayers.push(player.name);
                 }

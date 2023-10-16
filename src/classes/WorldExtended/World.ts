@@ -1,4 +1,4 @@
-import { World, world } from "@minecraft/server";
+import { Player, World, world } from "@minecraft/server";
 import CryptoJS from "../../node_modules/crypto-es/lib/index.js";
 
 export interface WorldExtended extends World {
@@ -62,6 +62,20 @@ export interface WorldExtended extends World {
      * @returns {boolean} - Returns true if the string is a valid UUID, false otherwise.
      */
     isValidUUID(uuid: string): boolean;
+
+    /**
+     * Gets a player by their name.
+     * @param playerName The name of the player.
+     * @returns The player with the specified name, or null if not found.
+     */
+    getPlayerByName(playerName: string): Player | null;
+
+    /**
+     * Gets a player by their ID.
+     * @param playerId The ID of the player.
+     * @returns The player with the specified ID, or null if not found.
+     */
+    getPlayerById(playerId: string): Player | null;
 }
 
 function hashWithSalt(salt: string, text: string): string | null {
@@ -141,6 +155,24 @@ function isValidUUID(uuid: string): boolean {
     return uuidRegex.test(uuid);
 }
 
+function getPlayerByName(playerName: string): Player | null {
+    const player = world.getPlayers({ name: playerName })[0];
+    if (player.name === playerName) {
+        return player;
+    }
+    return null;
+}
+
+function getPlayerById(playerId: string): Player | null {
+    const players = world.getPlayers();
+    for (const player of players) {
+        if (player.id === playerId) {
+            return player;
+        }
+    }
+    return null;
+}
+
 export function extendWorldPrototype() {
     (World.prototype as WorldExtended).hashWithSalt = function (salt: string, str: string): string | null {
         return hashWithSalt(salt, str);
@@ -172,5 +204,13 @@ export function extendWorldPrototype() {
 
     (World.prototype as WorldExtended).isValidUUID = function (uuid: string): boolean {
         return isValidUUID(uuid);
+    };
+
+    (World.prototype as WorldExtended).getPlayerByName = function (playerName: string): Player {
+        return getPlayerByName(playerName);
+    };
+
+    (World.prototype as WorldExtended).getPlayerById = function (playerId: string): Player {
+        return getPlayerById(playerId);
     };
 }

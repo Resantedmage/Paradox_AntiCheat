@@ -2,6 +2,7 @@ import { ChatSendAfterEvent, Player, PlayerLeaveAfterEvent, world } from "@minec
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
 import config from "../../data/config.js";
 import { ChatChannelManager } from "../../classes/ChatChannelManager.js";
+import { WorldExtended } from "../../classes/WorldExtended/World.js";
 
 function chatChannelHelp(player: Player, prefix: string) {
     let commandStatus: string;
@@ -98,7 +99,7 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
             const memberListTitle = `§f§4[§6Paradox§4]§f Getting all Members from: §6${channelNameForMembers}§f`;
             const membersList = Array.from(channelMembers)
                 .map((memberID) => {
-                    const member = ChatChannelManager.getPlayerById(memberID);
+                    const member = (world as WorldExtended).getPlayerById(memberID);
                     if (member !== null) {
                         const isStatus = member.id === channel.owner ? "Owner" : "Member";
                         return ` §o§6| §4[§6${isStatus}§4] §7${member.name}§f`;
@@ -150,7 +151,7 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
                 return;
             }
 
-            const joinedPlayer = ChatChannelManager.getPlayerByName(playerToInvite);
+            const joinedPlayer = (world as WorldExtended).getPlayerByName(playerToInvite);
 
             if (playerToInvite) {
                 const inviteResult = ChatChannelManager.inviteToChatChannel(playerToInvite, channelNameToInvite);
@@ -162,7 +163,7 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
                     const channel = ChatChannelManager.getChatChannelByName(channelNameToInvite);
 
                     channel.members.forEach((memberId) => {
-                        const member = ChatChannelManager.getPlayerById(memberId);
+                        const member = (world as WorldExtended).getPlayerById(memberId);
                         if (member && member !== joinedPlayer) {
                             sendMsgToPlayer(member, joinMessage);
                         }
@@ -189,14 +190,14 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
             } else if (newChannel === "already_in_channel") {
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You are already in a chat channel. Please leave your current channel first.`);
             } else if (newChannel !== false) {
-                const joinedPlayer = ChatChannelManager.getPlayerById(player.id);
+                const joinedPlayer = (world as WorldExtended).getPlayerById(player.id);
                 const joinedPlayerName = joinedPlayer ? joinedPlayer.name : "Unknown Player";
 
                 const joinMessage = `§f§4[§6Paradox§4]§f §6${joinedPlayerName}§f joined the chat channel.`;
                 const channel = ChatChannelManager.getChatChannelByName(channelNameToJoin);
 
                 channel.members.forEach((memberId) => {
-                    const member = ChatChannelManager.getPlayerById(memberId);
+                    const member = (world as WorldExtended).getPlayerById(memberId);
                     if (member && member !== joinedPlayer) {
                         sendMsgToPlayer(member, joinMessage);
                     }
@@ -243,12 +244,12 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
             ChatChannelManager.clearPlayerFromChannelMap(player.id);
 
             // Inform all remaining members in the channel that the player left
-            const leavingPlayer = ChatChannelManager.getPlayerById(player.id);
+            const leavingPlayer = (world as WorldExtended).getPlayerById(player.id);
             const leavingPlayerName = leavingPlayer ? leavingPlayer.name : "Unknown Player";
             const leaveMessage = `§f§4[§6Paradox§4]§f §6${leavingPlayerName}§f left the chat channel.`;
 
             channelToLeave.members.forEach((memberId) => {
-                const member = ChatChannelManager.getPlayerById(memberId);
+                const member = (world as WorldExtended).getPlayerById(memberId);
                 if (member) {
                     sendMsgToPlayer(member, leaveMessage);
                 }
@@ -259,8 +260,8 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
                 const newOwnerId = Array.from(channelToLeave.members)[0]; // Get the first member as new owner
 
                 if (newOwnerId) {
-                    ChatChannelManager.handOverChannelOwnership(channelNameToLeave, ChatChannelManager.getPlayerById(player.id), ChatChannelManager.getPlayerById(newOwnerId).name);
-                    const newOwnerObject = ChatChannelManager.getPlayerById(newOwnerId);
+                    ChatChannelManager.handOverChannelOwnership(channelNameToLeave, (world as WorldExtended).getPlayerById(player.id), (world as WorldExtended).getPlayerById(newOwnerId).name);
+                    const newOwnerObject = (world as WorldExtended).getPlayerById(newOwnerId);
                     sendMsgToPlayer(newOwnerObject, `§f§4[§6Paradox§4]§f Ownership of chat channel '§7${channelNameToLeave}§f' transferred to '§7${newOwnerObject.name}§f'.`);
                 } else {
                     // If no other members, delete the channel
@@ -294,8 +295,8 @@ function onPlayerLeave(event: PlayerLeaveAfterEvent) {
         const newOwnerId = Array.from(channel.members).find((memberId) => memberId !== playerId);
 
         if (newOwnerId) {
-            ChatChannelManager.handOverChannelOwnership(channelName, ChatChannelManager.getPlayerById(playerId), newOwnerId);
-            const newOwnerObject = ChatChannelManager.getPlayerById(newOwnerId);
+            ChatChannelManager.handOverChannelOwnership(channelName, (world as WorldExtended).getPlayerById(playerId), newOwnerId);
+            const newOwnerObject = (world as WorldExtended).getPlayerById(newOwnerId);
             sendMsgToPlayer(newOwnerObject, `§f§4[§6Paradox§4]§f Ownership of chat channel '§7${channelName}§f' transferred to '§7${newOwnerObject.name}§f'.`);
         } else {
             // If no other members, delete the channel
@@ -309,12 +310,12 @@ function onPlayerLeave(event: PlayerLeaveAfterEvent) {
     ChatChannelManager.clearPlayerFromChannelMap(playerId);
 
     // Inform all remaining members in the channel that the player left
-    const leavingPlayer = ChatChannelManager.getPlayerById(playerId);
+    const leavingPlayer = (world as WorldExtended).getPlayerById(playerId);
     const leavingPlayerName = leavingPlayer ? leavingPlayer.name : "Unknown Player";
 
     const leaveMessage = `§f§4[§6Paradox§4]§f §6${leavingPlayerName}§f left the chat channel.`;
     channel.members.forEach((memberId) => {
-        const member = ChatChannelManager.getPlayerById(memberId);
+        const member = (world as WorldExtended).getPlayerById(memberId);
         if (member) {
             sendMsgToPlayer(member, leaveMessage);
         }
