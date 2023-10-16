@@ -5,7 +5,7 @@ import { flag, sendMsgToPlayer, sendMsg } from "../../../util.js";
 import { kickablePlayers } from "../../../kickcheck.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { illegalItemsBWhitelist } from "../../../data/illegalItemsB_whitelist.js";
-import { StringTransformation } from "../../../classes/StringTransformation.js";
+import { WorldExtended } from "../../../classes/WorldExtended/World.js";
 
 // Create a map of player objects and their enchantment presence
 const enchantmentPresenceMap = new Map<string, Map<Enchantment, boolean>>();
@@ -289,7 +289,7 @@ async function illegalitemsb(object: PlayerPlaceBlockAfterEvent) {
         // Iterate over the unverifiedItemMap
         for (const [slot, itemStackData] of unverifiedItemMap.get(player.id)) {
             // Create a new name tag for the item
-            const newNameTag = StringTransformation.titleCase(itemStackData.typeId.replace("minecraft:", ""));
+            const newNameTag = (world as WorldExtended).titleCase(itemStackData.typeId.replace("minecraft:", ""));
             // Create a new ItemStack with the same type as the original item
             const applyCustomProperties = new ItemStack(itemStackData.typeId);
             // Get the original enchantment component from the item

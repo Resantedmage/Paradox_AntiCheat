@@ -1,4 +1,4 @@
-import { World } from "@minecraft/server";
+import { World, world } from "@minecraft/server";
 import CryptoJS from "../../node_modules/crypto-es/lib/index.js";
 
 export interface WorldExtended extends World {
@@ -28,6 +28,27 @@ export interface WorldExtended extends World {
      * @returns {string} The decrypted string
      */
     decryptString(str: string, salt: string): string;
+
+    /**
+     * Converts a string to camelCase.
+     * @param {string} str - The input string.
+     * @returns {string} The camelCase string.
+     */
+    toCamelCase(str: string): string;
+
+    /**
+     * Converts a string to PascalCase.
+     * @param {string} str - The input string.
+     * @returns {string} The PascalCase string.
+     */
+    toPascalCase(str: string): string;
+
+    /**
+     * Converts a string to Title Case.
+     * @param {string} str - The input string.
+     * @returns {string} The Title Case string.
+     */
+    titleCase(str: string): string;
 }
 
 function hashWithSalt(salt: string, text: string): string | null {
@@ -51,6 +72,22 @@ function decryptString(str: string, salt: string): string {
     return plaintext;
 }
 
+function toCamelCase(str: string): string {
+    const regExp = /[^a-zA-Z0-9]+(.)/gi;
+    return str.replace(regExp, (match) => {
+        return match[1].toUpperCase();
+    });
+}
+
+function toPascalCase(str: string): string {
+    const camelCase = (world as WorldExtended).toCamelCase(str);
+    return camelCase.charAt(0).toUpperCase() + camelCase.slice(1);
+}
+
+function titleCase(str: string): string {
+    return str.replace(/^[-_]*(.)/, (_, c) => c.toUpperCase()).replace(/[-_]+(.)/g, (_, c) => " " + c.toUpperCase());
+}
+
 export function extendWorldPrototype() {
     (World.prototype as WorldExtended).hashWithSalt = function (salt: string, str: string): string | null {
         return hashWithSalt(salt, str);
@@ -62,5 +99,17 @@ export function extendWorldPrototype() {
 
     (World.prototype as WorldExtended).decryptString = function (str: string, salt: string): string {
         return decryptString(str, salt);
+    };
+
+    (World.prototype as WorldExtended).toCamelCase = function (str: string): string {
+        return toCamelCase(str);
+    };
+
+    (World.prototype as WorldExtended).toPascalCase = function (str: string): string {
+        return toPascalCase(str);
+    };
+
+    (World.prototype as WorldExtended).titleCase = function (str: string): string {
+        return titleCase(str);
     };
 }

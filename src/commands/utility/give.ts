@@ -3,7 +3,7 @@ import { MinecraftItemTypes } from "../../node_modules/@minecraft/vanilla-data/l
 import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
-import { StringTransformation } from "../../classes/StringTransformation";
+import { WorldExtended } from "../../classes/WorldExtended/World";
 
 function giveHelp(player: Player, prefix: string) {
     let commandStatus: string;
@@ -92,7 +92,7 @@ export function give(message: ChatSendAfterEvent, args: string[]) {
      * args[3] = data (optional)
      */
     let confirmItem = false;
-    const itemStringConvert = StringTransformation.toPascalCase(args[1]);
+    const itemStringConvert = (world as WorldExtended).toPascalCase(args[1]);
     for (const itemValidate in MinecraftItemTypes) {
         if (itemStringConvert === itemValidate) {
             confirmItem = true;
