@@ -1,7 +1,8 @@
 import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
 import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
-import { resetTag, getPrefix, sendMsgToPlayer, sendMsg } from "../../util.js";
+import { getPrefix, sendMsgToPlayer, sendMsg } from "../../util.js";
+import { PlayerExtended } from "../../classes/PlayerExtended/Player.js";
 
 function rankHelp(player: Player, prefix: string, chatRanksBoolean: string | number | boolean | Vector3) {
     let commandStatus: string;
@@ -105,15 +106,17 @@ export function rank(message: ChatSendAfterEvent, args: string[]) {
 
     // reset rank
     if (argcheck === "reset") {
-        resetTag(member);
+        (member as PlayerExtended).resetTag();
+        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${member.name}§f has reset their rank`);
         return;
     }
 
     // Add new rank if command is utilize correctly
     if (args.length >= 2) {
         const newRank = "Rank:" + rank;
-        resetTag(member);
+        (member as PlayerExtended).resetTag();
         member.addTag(newRank);
+        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${member.name}§f has reset their rank`);
     } else {
         return rankHelp(player, prefix, chatRanksBoolean);
     }

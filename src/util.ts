@@ -112,22 +112,6 @@ export function getPrefix(player: Player) {
 }
 
 /**
- * Resets the rank tag of a player by removing any tags starting with "Rank:".
- *
- * @name resetTag
- * @param {Player} member - The other player object
- */
-export function resetTag(member: Player) {
-    const sanitize = member.getTags();
-    for (const tag of sanitize) {
-        if (tag.startsWith("Rank:")) {
-            member.removeTag(tag);
-        }
-    }
-    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${member.name}§f has reset their rank`);
-}
-
-/**
  * Sets a timer for a given player.
  *
  * @param player - A string representing the player for whom the timer is being set.

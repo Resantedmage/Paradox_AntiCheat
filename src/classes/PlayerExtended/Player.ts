@@ -13,6 +13,11 @@ export interface PlayerExtended extends Player {
      * @returns {string | undefined} The game mode of the player as a string, or undefined if the player is not found.
      */
     getGameMode(): string | undefined;
+
+    /**
+     * Resets the rank tag of a player by removing any tags starting with "Rank:".
+     */
+    resetTag(): void;
 }
 
 function isPlayerInGameMode(player: Player, gamemode: string): boolean {
@@ -43,6 +48,15 @@ function getGameModeForPlayer(player: Player): string | undefined {
     return undefined;
 }
 
+function resetTag(player: Player): void {
+    const sanitize = player.getTags();
+    for (const tag of sanitize) {
+        if (tag.startsWith("Rank:")) {
+            player.removeTag(tag);
+        }
+    }
+}
+
 export function extendPlayerPrototype() {
     (Player.prototype as PlayerExtended).isGameMode = function (gamemode) {
         return isPlayerInGameMode(this, gamemode);
@@ -50,5 +64,9 @@ export function extendPlayerPrototype() {
 
     (Player.prototype as PlayerExtended).getGameMode = function () {
         return getGameModeForPlayer(this);
+    };
+
+    (Player.prototype as PlayerExtended).resetTag = function () {
+        return resetTag(this);
     };
 }
