@@ -4,17 +4,23 @@ import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registr
 
 const breakData = new Map<string, { breakCount: number; lastBreakTimeBefore: number }>();
 
+let antiNukerABoolean: boolean = dynamicPropertyRegistry.get("antinukera_b") as boolean; // Initialize
+
 function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
     // Remove the player's data from the map when they log off
     const playerName = event.playerId;
     breakData.delete(playerName);
+
+    if (!antiNukerABoolean) {
+        // Unsubscribe from the playerLeave event
+        world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
+    }
 }
 
 async function beforenukera(object: PlayerBreakBlockBeforeEvent): Promise<void> {
-    const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b");
+    antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b") as boolean;
     if (antiNukerABoolean === false) {
         breakData.clear();
-        world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
         world.beforeEvents.playerBreakBlock.unsubscribe(beforenukera);
         return;
     }
