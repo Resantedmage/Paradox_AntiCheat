@@ -1,16 +1,16 @@
-import { world, PlayerPlaceBlockAfterEvent, Vector3 } from "@minecraft/server";
+import { world, PlayerPlaceBlockBeforeEvent, Vector3 } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { AfterReachA } from "../../PlayerPlaceBlockAfterEvent/reach/reach_a.js";
 
 const blockPlaceReachData = new Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>();
 
-function beforereacha(object: PlayerPlaceBlockAfterEvent) {
+function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
     // Get Dynamic Property
     const reachABoolean = dynamicPropertyRegistry.get("reacha_b");
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
-        world.afterEvents.playerPlaceBlock.unsubscribe(beforereacha);
+        world.beforeEvents.playerPlaceBlock.unsubscribe(beforereacha);
         return;
     }
 
@@ -32,7 +32,7 @@ function beforereacha(object: PlayerPlaceBlockAfterEvent) {
 }
 
 const BeforeReachA = () => {
-    world.afterEvents.playerPlaceBlock.subscribe(beforereacha);
+    world.beforeEvents.playerPlaceBlock.subscribe(beforereacha);
 };
 
 export { BeforeReachA };
