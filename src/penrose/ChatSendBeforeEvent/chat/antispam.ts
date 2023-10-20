@@ -2,6 +2,8 @@ import { ChatSendBeforeEvent, PlayerLeaveAfterEvent, world } from "@minecraft/se
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { sendMsgToPlayer } from "../../../util.js";
 
+let antiSpamBoolean: boolean = dynamicPropertyRegistry.get("antispam_b") as boolean; // Initialize
+
 const spamTime = 2 * 1000; // The time frame during which the player's messages will be counted.
 const offenseCount = 5; // Total strikes until you are kicked out.
 const strikeReset = 30 * 1000; // The time frame until the strike is reduced
@@ -33,6 +35,11 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
     // Remove the player's data from the map when they log off
     const playerName = event.playerId;
     chatRecords.delete(playerName);
+
+    if (!antiSpamBoolean) {
+        // Unsubscribe from the playerLeave event
+        world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
+    }
 }
 
 function getRandomWarningMessage() {
@@ -42,12 +49,11 @@ function getRandomWarningMessage() {
 
 function beforeantispam(msg: ChatSendBeforeEvent) {
     // Get Dynamic Property
-    const antiSpamBoolean = dynamicPropertyRegistry.get("antispam_b");
+    antiSpamBoolean = dynamicPropertyRegistry.get("antispam_b") as boolean;
 
     // Unsubscribe if disabled in-game
     if (antiSpamBoolean === false) {
         chatRecords.clear();
-        world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
         world.beforeEvents.chatSend.unsubscribe(beforeantispam);
         return;
     }
