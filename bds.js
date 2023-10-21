@@ -75,7 +75,6 @@ function downloadBDS(version) {
 }
 
 // Function to extract the BDS server
-// Function to extract the BDS server
 async function extractBDS(version) {
     const zipFile = `bedrock-server-${version}.zip`;
     const extractionDir = `bedrock-server-${version}`;
