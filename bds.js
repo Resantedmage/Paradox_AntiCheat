@@ -1,8 +1,9 @@
 const fs = require("fs");
 const https = require("https");
-const unzipper = require("unzipper");
 const readline = require("readline");
 const path = require("path");
+const AdmZip = require("adm-zip");
+const stream = require("stream");
 
 // Function to retrieve the latest BDS version
 function getLatestVersion() {
@@ -52,6 +53,8 @@ function downloadBDS(version) {
 
         const request = https.get(downloadURL, (response) => {
             if (response.statusCode !== 200) {
+                file.close();
+                fs.unlinkSync(downloadLocation); // Remove the incomplete file
                 reject(`   - Failed to download. HTTP status code: ${response.statusCode}\n`);
                 return;
             }
@@ -74,7 +77,6 @@ function downloadBDS(version) {
     });
 }
 
-// Function to extract the BDS server
 async function extractBDS(version) {
     const zipFile = `bedrock-server-${version}.zip`;
     const extractionDir = `bedrock-server-${version}`;
@@ -82,17 +84,16 @@ async function extractBDS(version) {
     console.log(`> Extracting Minecraft BDS version ${version}...`);
 
     return new Promise((resolve, reject) => {
-        const extractStream = unzipper.Extract({ path: extractionDir });
-        extractStream.on("finish", () => {
+        try {
+            const zip = new AdmZip(zipFile);
+            zip.extractAllTo(extractionDir, /*overwrite*/ true);
+
             console.log("   - Extraction complete.\n");
             resolve();
-        });
-        extractStream.on("error", (error) => {
+        } catch (error) {
             console.error(`   - Extraction error: ${error.message}\n`);
             reject(error);
-        });
-
-        fs.createReadStream(zipFile).pipe(extractStream);
+        }
     });
 }
 
@@ -154,6 +155,17 @@ function copyFolders(oldVersionDir, newVersionDir) {
 
     let copied = false; // Flag to track if anything was copied
 
+    // Ensure that the destination directories are created before copying
+    if (!fs.existsSync(newWorldsDir)) {
+        fs.mkdirSync(newWorldsDir, { recursive: true });
+    }
+    if (!fs.existsSync(newDevBehavPacksDir)) {
+        fs.mkdirSync(newDevBehavPacksDir, { recursive: true });
+    }
+    if (!fs.existsSync(newDevResPacksDir)) {
+        fs.mkdirSync(newDevResPacksDir, { recursive: true });
+    }
+
     if (fs.existsSync(oldWorldsDir) && fs.existsSync(newWorldsDir)) {
         copyDirectory(oldWorldsDir, newWorldsDir);
         console.log("   - Worlds copied.");
@@ -164,10 +176,10 @@ function copyFolders(oldVersionDir, newVersionDir) {
         const subfolderName = "test_world"; // Specify the subfolder name
         const subfolderPath = path.join(newWorldsDir, subfolderName); // Use path.join for correct path concatenation
         if (!fs.existsSync(newWorldsDir)) {
-            fs.mkdirSync(newWorldsDir); // Create the "worlds" directory if it doesn't exist
+            fs.mkdirSync(newWorldsDir, { recursive: true }); // Create the "worlds" directory if it doesn't exist
         }
         if (!fs.existsSync(subfolderPath)) {
-            fs.mkdirSync(subfolderPath); // Create the subfolder within 'worlds'
+            fs.mkdirSync(subfolderPath, { recursive: true }); // Create the subfolder within 'worlds'
         }
         copyDirectory(newWorldBetaApiDir, subfolderPath); // Copy 'new-world-beta-api' contents to the subfolder
         console.log(`   - '${newWorldBetaApiDir}' folder copied to '${subfolderName}' within 'worlds'.`);
