@@ -149,12 +149,19 @@ function copyFolders(oldVersionDir, newVersionDir) {
     const oldDevResPacksDir = `${oldVersionDir}/development_resource_packs`;
     const newDevResPacksDir = `${newVersionDir}/development_resource_packs`;
 
+    const newWorldBetaApiDir = "new-world-beta-api";
+
     let copied = false; // Flag to track if anything was copied
 
     if (fs.existsSync(oldWorldsDir) && fs.existsSync(newWorldsDir)) {
         copyDirectory(oldWorldsDir, newWorldsDir);
         console.log("   - Worlds copied.");
         copied = true;
+    } else if (fs.existsSync(newWorldBetaApiDir) && !fs.existsSync(newWorldsDir)) {
+        // Copy the 'new-world-beta-api' folder if it exists and 'worlds' is empty
+        console.log("> No folders copied. Copying 'new-world-beta-api' folder...\n");
+        copyDirectory(newWorldBetaApiDir, newWorldsDir);
+        console.log("   - 'new-world-beta-api' folder copied to 'worlds'.\n");
     }
 
     if (fs.existsSync(oldDevBehavPacksDir) && fs.existsSync(newDevBehavPacksDir)) {
