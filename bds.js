@@ -204,7 +204,7 @@ async function updateServerProperties(oldVersionDir, newVersionDir) {
         const oldProperties = readPropertiesFile(oldPropertiesFile);
         const newProperties = readPropertiesFile(newPropertiesFile);
 
-        const updatedProperties = {}; // To store the updated properties
+        const updatedProperties = { ...oldProperties }; // Copy old properties
 
         for (const key in oldProperties) {
             if (newProperties[key] !== oldProperties[key]) {
@@ -219,14 +219,19 @@ async function updateServerProperties(oldVersionDir, newVersionDir) {
                     updatedProperties[key] = oldProperties[key];
                     console.log("Change applied.");
                 }
-            } else {
-                // Preserve the original line
-                updatedProperties[key] = oldProperties[key];
             }
+        }
+
+        // Ensure that "allow-inbound-script-debugging=true" is added
+        if (!updatedProperties["allow-inbound-script-debugging"]) {
+            updatedProperties["allow-inbound-script-debugging"] = "true";
         }
 
         // Write the updated properties back to the new properties file
         writePropertiesFile(newPropertiesFile, updatedProperties);
+
+        // Append "allow-inbound-script-debugging=true" to the end
+        fs.appendFileSync(newPropertiesFile, "allow-inbound-script-debugging=true\n");
 
         console.log("\n> Server properties update complete.");
     } else {
