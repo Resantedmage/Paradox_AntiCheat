@@ -30,7 +30,6 @@ function getLatestVersion() {
 }
 
 // Function to download the BDS server
-// Function to download the BDS server
 function downloadBDS(version) {
     const osType = require("os").platform();
     let downloadURL;
@@ -117,9 +116,6 @@ async function main() {
 
         // Proceed with extraction
         await extractBDS(latestVersion, downloadLocation);
-
-        // At this point, extraction is complete
-        //console.log("   - Extraction complete.");
 
         copyFolders(oldVersionDir, newVersionDir);
         updateServerProperties(oldVersionDir, newVersionDir);
