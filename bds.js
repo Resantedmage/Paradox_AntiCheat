@@ -194,7 +194,7 @@ function copyDirectory(source, destination) {
     }
 }
 
-function updateServerProperties(oldVersionDir, newVersionDir) {
+async function updateServerProperties(oldVersionDir, newVersionDir) {
     const oldPropertiesFile = `${oldVersionDir}/server.properties`;
     const newPropertiesFile = `${newVersionDir}/server.properties`;
 
@@ -204,26 +204,58 @@ function updateServerProperties(oldVersionDir, newVersionDir) {
         const oldProperties = readPropertiesFile(oldPropertiesFile);
         const newProperties = readPropertiesFile(newPropertiesFile);
 
+        const updatedProperties = {}; // To store the updated properties
+
         for (const key in oldProperties) {
             if (newProperties[key] !== oldProperties[key]) {
-                console.log("Difference found:");
-                console.log(`Old: ${key}=${oldProperties[key]}`);
-                console.log(`New: ${key}=${newProperties[key]}`);
-                const choice = askQuestion("Apply this change? (y/n): ");
-                if (choice.toLowerCase() === "y") {
-                    newProperties[key] = oldProperties[key];
-                    savePropertiesFile(newProperties, newPropertiesFile);
+                console.log("\nDifference found:");
+                console.log(`   - Old: ${key}=${oldProperties[key]}`);
+                console.log(`   - New: ${key}=${newProperties[key]}`);
+
+                const validResponses = ["y", "n", "yes", "no"];
+                const choice = await askQuestion("Apply this change? (y/n): ");
+
+                if (validResponses.includes(choice.toLowerCase()) && choice.toLowerCase() === "y") {
+                    updatedProperties[key] = oldProperties[key];
                     console.log("Change applied.");
-                } else {
-                    console.log("Change not applied.");
                 }
+            } else {
+                // Preserve the original line
+                updatedProperties[key] = oldProperties[key];
             }
         }
 
-        console.log("   - Server properties update complete.");
+        // Write the updated properties back to the new properties file
+        writePropertiesFile(newPropertiesFile, updatedProperties);
+
+        console.log("\n> Server properties update complete.");
     } else {
         console.log("   - No file to compare.");
     }
+}
+
+function writePropertiesFile(filePath, properties) {
+    const lines = [];
+    const fileContents = fs.readFileSync(filePath, "utf8");
+    const fileLines = fileContents.split("\n");
+
+    for (const line of fileLines) {
+        if (line.trim() === "" || line.startsWith("#")) {
+            // Preserve empty lines and comments
+            lines.push(line);
+        } else {
+            const parts = line.split("=");
+            if (parts[0] in properties) {
+                // Replace the modified line
+                lines.push(`${parts[0]}=${properties[parts[0]]}`);
+            } else {
+                // Preserve unmodified lines
+                lines.push(line);
+            }
+        }
+    }
+
+    fs.writeFileSync(filePath, lines.join("\n"));
 }
 
 function readPropertiesFile(filePath) {
@@ -237,14 +269,6 @@ function readPropertiesFile(filePath) {
         }
     }
     return properties;
-}
-
-function savePropertiesFile(properties, filePath) {
-    const lines = [];
-    for (const key in properties) {
-        lines.push(`${key}=${properties[key]}`);
-    }
-    fs.writeFileSync(filePath, lines.join("\n"));
 }
 
 function askQuestion(question) {
