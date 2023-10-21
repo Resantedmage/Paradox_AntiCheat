@@ -10,7 +10,8 @@
         "finalhandler": "1.2.0",
         "prettier": "3.0.3",
         "serve-static": "1.15.0",
-        "typescript": "5.2.2"
+        "typescript": "5.2.2",
+        "unzipper": "0.10.14"
     },
     "dependencies": {
         "@minecraft/server": "1.6.0-beta.1.20.30-stable",

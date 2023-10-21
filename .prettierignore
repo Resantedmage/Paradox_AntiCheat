@@ -3,11 +3,8 @@ node_modules
 .distignore
 .mcattributes
 .prettierrc
-dist.bat
 package-lock.json
 package.json
-sync_entities.sh
-sync.bat
 tsconfig.json
 .github
 .vs
@@ -15,3 +12,4 @@ tsconfig.json
 .git
 .prettierignore
 *.md
+bedrock-server-*
