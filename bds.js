@@ -228,10 +228,10 @@ async function updateServerProperties(oldVersionDir, newVersionDir) {
                 console.log(`   - Old: ${key}=${oldProperties[key]}`);
                 console.log(`   - New: ${key}=${newProperties[key]}`);
 
-                const validResponses = ["y", "n", "yes", "no"];
+                const validResponses = ["y", "yes"];
                 const choice = await askQuestion("Apply this change? (y/n): ");
 
-                if (validResponses.includes(choice.toLowerCase()) && choice.toLowerCase() === "y") {
+                if (validResponses.includes(choice.toLowerCase())) {
                     updatedProperties[key] = oldProperties[key];
                     console.log("Change applied.");
                 }
