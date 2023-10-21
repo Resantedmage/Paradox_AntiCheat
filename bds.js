@@ -2,6 +2,7 @@ const fs = require("fs");
 const https = require("https");
 const unzipper = require("unzipper");
 const readline = require("readline");
+const path = require("path");
 
 // Function to retrieve the latest BDS version
 function getLatestVersion() {
@@ -158,10 +159,18 @@ function copyFolders(oldVersionDir, newVersionDir) {
         console.log("   - Worlds copied.");
         copied = true;
     } else if (fs.existsSync(newWorldBetaApiDir) && !fs.existsSync(newWorldsDir)) {
-        // Copy the 'new-world-beta-api' folder if it exists and 'worlds' is empty
-        console.log("> No folders copied. Copying 'new-world-beta-api' folder...\n");
-        copyDirectory(newWorldBetaApiDir, newWorldsDir);
-        console.log("   - 'new-world-beta-api' folder copied to 'worlds'.\n");
+        // Copy the 'new-world-beta-api' folder to a subfolder within 'worlds' if 'worlds' is empty
+        console.log("   - Copying 'new-world-beta-api' folder.");
+        const subfolderName = "test_world"; // Specify the subfolder name
+        const subfolderPath = path.join(newWorldsDir, subfolderName); // Use path.join for correct path concatenation
+        if (!fs.existsSync(newWorldsDir)) {
+            fs.mkdirSync(newWorldsDir); // Create the "worlds" directory if it doesn't exist
+        }
+        if (!fs.existsSync(subfolderPath)) {
+            fs.mkdirSync(subfolderPath); // Create the subfolder within 'worlds'
+        }
+        copyDirectory(newWorldBetaApiDir, subfolderPath); // Copy 'new-world-beta-api' contents to the subfolder
+        console.log(`   - '${newWorldBetaApiDir}' folder copied to '${subfolderName}' within 'worlds'.\n`);
     }
 
     if (fs.existsSync(oldDevBehavPacksDir) && fs.existsSync(newDevBehavPacksDir)) {
@@ -177,7 +186,7 @@ function copyFolders(oldVersionDir, newVersionDir) {
     }
 
     if (!copied) {
-        console.log("   - No folders to copy.\n");
+        console.log("   - No additional folders to copy.\n");
     } else {
         console.log("\n");
     }
