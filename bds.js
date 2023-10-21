@@ -170,7 +170,7 @@ function copyFolders(oldVersionDir, newVersionDir) {
             fs.mkdirSync(subfolderPath); // Create the subfolder within 'worlds'
         }
         copyDirectory(newWorldBetaApiDir, subfolderPath); // Copy 'new-world-beta-api' contents to the subfolder
-        console.log(`   - '${newWorldBetaApiDir}' folder copied to '${subfolderName}' within 'worlds'.\n`);
+        console.log(`   - '${newWorldBetaApiDir}' folder copied to '${subfolderName}' within 'worlds'.`);
     }
 
     if (fs.existsSync(oldDevBehavPacksDir) && fs.existsSync(newDevBehavPacksDir)) {
