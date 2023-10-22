@@ -16,6 +16,7 @@ function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
+        blockPlaceReachData.clear();
         return;
     }
 

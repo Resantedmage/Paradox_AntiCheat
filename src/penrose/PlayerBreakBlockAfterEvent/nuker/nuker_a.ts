@@ -1,4 +1,4 @@
-import { world, PlayerBreakBlockAfterEvent, system, EntityQueryOptions, PlayerLeaveAfterEvent, EntityInventoryComponent, ItemEnchantsComponent } from "@minecraft/server";
+import { world, PlayerBreakBlockAfterEvent, system, EntityQueryOptions, PlayerLeaveAfterEvent, EntityInventoryComponent, ItemEnchantsComponent, PlayerBreakBlockBeforeEvent } from "@minecraft/server";
 import { flag } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { MinecraftBlockTypes, MinecraftEffectTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
@@ -11,12 +11,21 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
     lastBreakTime.delete(playerName);
 }
 
-async function afternukera(object: PlayerBreakBlockAfterEvent, breakData: Map<string, { breakCount: number; lastBreakTimeBefore: number }>, playerBreakBlockCallback: (arg: PlayerBreakBlockAfterEvent) => void): Promise<void> {
+async function afternukera(
+    object: PlayerBreakBlockAfterEvent,
+    breakData: Map<string, { breakCount: number; lastBreakTimeBefore: number }>,
+    beforePlayerBreakBlockCallback: (object: PlayerBreakBlockBeforeEvent) => void,
+    afterPlayerBreakBlockCallback: (object: PlayerBreakBlockAfterEvent) => void,
+    afterPlayerLeaveCallback: (object: PlayerLeaveAfterEvent) => void
+): Promise<void> {
     const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b");
     if (antiNukerABoolean === false) {
+        breakData.clear();
         lastBreakTime.clear();
         world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
-        world.afterEvents.playerBreakBlock.unsubscribe(playerBreakBlockCallback);
+        world.afterEvents.playerLeave.unsubscribe(afterPlayerLeaveCallback);
+        world.afterEvents.playerBreakBlock.unsubscribe(afterPlayerBreakBlockCallback);
+        world.beforeEvents.playerBreakBlock.unsubscribe(beforePlayerBreakBlockCallback);
         return;
     }
 
@@ -262,21 +271,24 @@ function freeze(id: number) {
     }
 }
 
-const AfterNukerA = (breakData: Map<string, { breakCount: number; lastBreakTimeBefore: number }>) => {
-    const playerBreakBlockCallback = (object: PlayerBreakBlockAfterEvent) => {
-        afternukera(object, breakData, playerBreakBlockCallback).catch((error) => {
-            console.error("Paradox Unhandled Rejection: ", error);
-            // Extract stack trace information
-            if (error instanceof Error) {
-                const stackLines = error.stack.split("\n");
-                if (stackLines.length > 1) {
-                    const sourceInfo = stackLines;
-                    console.error("Error originated from:", sourceInfo[0]);
-                }
+const AfterNukerA = (
+    object: PlayerBreakBlockAfterEvent,
+    breakData: Map<string, { breakCount: number; lastBreakTimeBefore: number }>,
+    beforePlayerBreakBlockCallback: (object: PlayerBreakBlockBeforeEvent) => void,
+    afterPlayerBreakBlockCallback: (object: PlayerBreakBlockAfterEvent) => void,
+    afterPlayerLeaveCallback: (object: PlayerLeaveAfterEvent) => void
+) => {
+    afternukera(object, breakData, beforePlayerBreakBlockCallback, afterPlayerBreakBlockCallback, afterPlayerLeaveCallback).catch((error) => {
+        console.error("Paradox Unhandled Rejection: ", error);
+        // Extract stack trace information
+        if (error instanceof Error) {
+            const stackLines = error.stack.split("\n");
+            if (stackLines.length > 1) {
+                const sourceInfo = stackLines;
+                console.error("Error originated from:", sourceInfo[0]);
             }
-        });
-    };
-    world.afterEvents.playerBreakBlock.subscribe(playerBreakBlockCallback);
+        }
+    });
     world.afterEvents.playerLeave.subscribe(onPlayerLogout);
     const id = system.runInterval(() => {
         freeze(id);
