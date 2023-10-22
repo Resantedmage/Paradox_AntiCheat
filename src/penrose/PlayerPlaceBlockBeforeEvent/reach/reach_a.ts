@@ -1,8 +1,14 @@
-import { world, PlayerPlaceBlockBeforeEvent, Vector3, PlayerPlaceBlockAfterEvent } from "@minecraft/server";
+import { world, PlayerPlaceBlockBeforeEvent, Vector3, PlayerPlaceBlockAfterEvent, PlayerLeaveAfterEvent } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { AfterReachA } from "../../PlayerPlaceBlockAfterEvent/reach/reach_a.js";
 
 const blockPlaceReachData = new Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>();
+
+function onPlayerLogout(object: PlayerLeaveAfterEvent): void {
+    // Remove the player's data from the map when they log off
+    const playerName = object.playerId;
+    blockPlaceReachData.delete(playerName);
+}
 
 function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
     // Get Dynamic Property
@@ -34,9 +40,13 @@ const BeforeReachA = () => {
     };
 
     // Subscribe to the after event here
+    const afterPlayerLeaveCallback = (object: PlayerLeaveAfterEvent) => {
+        // Call the AfterReachA function with the stored data
+        onPlayerLogout(object);
+    };
     const afterPlayerPlaceCallback = (object: PlayerPlaceBlockAfterEvent) => {
         // Call the AfterReachA function with the stored data
-        AfterReachA(object, blockPlaceReachData, afterPlayerPlaceCallback, beforePlayerPlaceCallBack);
+        AfterReachA(object, blockPlaceReachData, afterPlayerPlaceCallback, beforePlayerPlaceCallBack, afterPlayerLeaveCallback);
     };
 
     // Subscribe to the before event
@@ -44,6 +54,7 @@ const BeforeReachA = () => {
 
     // Subscribe to the after event
     world.afterEvents.playerPlaceBlock.subscribe(afterPlayerPlaceCallback);
+    world.afterEvents.playerLeave.subscribe(afterPlayerLeaveCallback);
 };
 
 export { BeforeReachA };

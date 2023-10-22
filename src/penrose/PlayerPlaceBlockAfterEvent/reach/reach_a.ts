@@ -1,4 +1,4 @@
-import { world, PlayerPlaceBlockAfterEvent, Vector3, PlayerPlaceBlockBeforeEvent } from "@minecraft/server";
+import { world, PlayerPlaceBlockAfterEvent, Vector3, PlayerPlaceBlockBeforeEvent, PlayerLeaveAfterEvent } from "@minecraft/server";
 import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { flag } from "../../../util.js";
@@ -8,7 +8,8 @@ function afterreacha(
     object: PlayerPlaceBlockAfterEvent,
     blockPlaceReachData: Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>,
     afterPlayerPlaceCallback: (arg: PlayerPlaceBlockAfterEvent) => void,
-    beforePlayerPlaceCallback: (arg: PlayerPlaceBlockBeforeEvent) => void
+    beforePlayerPlaceCallback: (arg: PlayerPlaceBlockBeforeEvent) => void,
+    afterPlayerLeaveCallback: (arg: PlayerLeaveAfterEvent) => void
 ) {
     // Get Dynamic Property
     const reachABoolean = dynamicPropertyRegistry.get("reacha_b");
@@ -16,6 +17,7 @@ function afterreacha(
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
         blockPlaceReachData.clear();
+        world.afterEvents.playerLeave.unsubscribe(afterPlayerLeaveCallback);
         world.beforeEvents.playerPlaceBlock.unsubscribe(beforePlayerPlaceCallback);
         world.afterEvents.playerPlaceBlock.unsubscribe(afterPlayerPlaceCallback);
         return;
@@ -57,9 +59,10 @@ const AfterReachA = (
     object: PlayerPlaceBlockAfterEvent,
     blockPlaceReachData: Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>,
     afterPlayerPlaceCallback: (arg: PlayerPlaceBlockAfterEvent) => void,
-    beforePlayerPlaceCallback: (arg: PlayerPlaceBlockBeforeEvent) => void
+    beforePlayerPlaceCallback: (arg: PlayerPlaceBlockBeforeEvent) => void,
+    afterPlayerLeaveCallback: (arg: PlayerLeaveAfterEvent) => void
 ) => {
-    afterreacha(object, blockPlaceReachData, afterPlayerPlaceCallback, beforePlayerPlaceCallback);
+    afterreacha(object, blockPlaceReachData, afterPlayerPlaceCallback, beforePlayerPlaceCallback, afterPlayerLeaveCallback);
 };
 
 export { AfterReachA };
