@@ -15,6 +15,7 @@ function afterreacha(
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
+        blockPlaceReachData.clear();
         world.beforeEvents.playerPlaceBlock.unsubscribe(beforePlayerPlaceCallback);
         world.afterEvents.playerPlaceBlock.unsubscribe(afterPlayerPlaceCallback);
         return;
