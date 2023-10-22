@@ -13,3 +13,4 @@ tsconfig.json
 .prettierignore
 *.md
 bedrock-server-*
+/docs
