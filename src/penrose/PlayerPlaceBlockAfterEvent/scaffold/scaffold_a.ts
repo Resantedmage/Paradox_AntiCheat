@@ -73,7 +73,19 @@ async function scaffolda(object: PlayerPlaceBlockAfterEvent) {
         // Check rotation and validate if its an integer and not a float
         const rot = player.getRotation();
 
-        if (rot.x % 1 === 0) {
+        // Block coordinates
+        const { x, y, z } = blockLocation;
+
+        // Block below placement
+        const belowBlockLocation = { x, y: y - 1, z };
+
+        // Is it air
+        const blockType = dimension.getBlock(belowBlockLocation).isAir;
+
+        // Are they sprinting
+        const isSprinting = player.isSprinting;
+
+        if (rot.x % 1 === 0 || (blockType && isSprinting)) {
             dimension.getBlock(blockLocation).setType(MinecraftBlockTypes.Air);
             flag(player, "Scaffold", "A", "Placement", null, null, null, null, false);
             const hasFreezeTag = player.hasTag("paradoxFreeze");
