@@ -26,7 +26,12 @@ async function beforenukera(object: PlayerBreakBlockBeforeEvent): Promise<void> 
     }
 
     const { player } = object;
-    const playerID = player.id;
+    const playerID = player?.id;
+
+    const uniqueId = dynamicPropertyRegistry.get(playerID);
+    if (uniqueId === player.name) {
+        return;
+    }
 
     // Retrieve or initialize break data for the player
     const playerBreakData = breakData.get(playerID) || { breakCount: 0, lastBreakTime: 0 };
