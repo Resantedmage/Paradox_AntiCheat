@@ -3,7 +3,6 @@ const https = require("https");
 const readline = require("readline");
 const path = require("path");
 const AdmZip = require("adm-zip");
-const stream = require("stream");
 
 // Function to retrieve the latest BDS version
 function getLatestVersion() {
