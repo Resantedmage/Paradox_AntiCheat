@@ -1,16 +1,22 @@
-import { world, PlayerPlaceBlockAfterEvent, Vector3 } from "@minecraft/server";
+import { world, PlayerPlaceBlockAfterEvent, Vector3, PlayerPlaceBlockBeforeEvent } from "@minecraft/server";
 import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { flag } from "../../../util.js";
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
 
-function afterreacha(object: PlayerPlaceBlockAfterEvent, blockPlaceReachData: Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>, playerPlaceBlockCallback: (arg: PlayerPlaceBlockAfterEvent) => void) {
+function afterreacha(
+    object: PlayerPlaceBlockAfterEvent,
+    blockPlaceReachData: Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>,
+    afterPlayerPlaceCallback: (arg: PlayerPlaceBlockAfterEvent) => void,
+    beforePlayerPlaceCallback: (arg: PlayerPlaceBlockBeforeEvent) => void
+) {
     // Get Dynamic Property
     const reachABoolean = dynamicPropertyRegistry.get("reacha_b");
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
-        world.afterEvents.playerPlaceBlock.unsubscribe(playerPlaceBlockCallback);
+        world.beforeEvents.playerPlaceBlock.unsubscribe(beforePlayerPlaceCallback);
+        world.afterEvents.playerPlaceBlock.unsubscribe(afterPlayerPlaceCallback);
         return;
     }
 
@@ -44,16 +50,15 @@ function afterreacha(object: PlayerPlaceBlockAfterEvent, blockPlaceReachData: Ma
         dimension.getBlock({ x: x, y: y, z: z }).setType(MinecraftBlockTypes.Air);
         flag(player, "Reach", "A", "Placement", null, null, "reach", Math.sqrt(distanceSquared).toFixed(3), false);
     }
-
-    world.afterEvents.playerPlaceBlock.unsubscribe(playerPlaceBlockCallback);
 }
 
-const AfterReachA = (blockPlaceReachData: Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>) => {
-    const playerPlaceBlockCallback = (object: PlayerPlaceBlockAfterEvent) => {
-        afterreacha(object, blockPlaceReachData, playerPlaceBlockCallback);
-    };
-
-    world.afterEvents.playerPlaceBlock.subscribe(playerPlaceBlockCallback);
+const AfterReachA = (
+    object: PlayerPlaceBlockAfterEvent,
+    blockPlaceReachData: Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>,
+    afterPlayerPlaceCallback: (arg: PlayerPlaceBlockAfterEvent) => void,
+    beforePlayerPlaceCallback: (arg: PlayerPlaceBlockBeforeEvent) => void
+) => {
+    afterreacha(object, blockPlaceReachData, afterPlayerPlaceCallback, beforePlayerPlaceCallback);
 };
 
 export { AfterReachA };

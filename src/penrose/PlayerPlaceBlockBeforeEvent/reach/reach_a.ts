@@ -1,4 +1,4 @@
-import { world, PlayerPlaceBlockBeforeEvent, Vector3 } from "@minecraft/server";
+import { world, PlayerPlaceBlockBeforeEvent, Vector3, PlayerPlaceBlockAfterEvent } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { AfterReachA } from "../../PlayerPlaceBlockAfterEvent/reach/reach_a.js";
 
@@ -10,7 +10,6 @@ function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
-        world.beforeEvents.playerPlaceBlock.unsubscribe(beforereacha);
         return;
     }
 
@@ -26,13 +25,25 @@ function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
     }
 
     blockPlaceReachData.set(player.id, { blockLocation: block.location, playerLocation: player.location });
-
-    // Call the After Event
-    AfterReachA(blockPlaceReachData);
 }
 
 const BeforeReachA = () => {
-    world.beforeEvents.playerPlaceBlock.subscribe(beforereacha);
+    // Subscribe to the before event here
+    const beforePlayerPlaceCallBack = (object: PlayerPlaceBlockBeforeEvent) => {
+        beforereacha(object);
+    };
+
+    // Subscribe to the after event here
+    const afterPlayerPlaceCallback = (object: PlayerPlaceBlockAfterEvent) => {
+        // Call the AfterReachA function with the stored data
+        AfterReachA(object, blockPlaceReachData, afterPlayerPlaceCallback, beforePlayerPlaceCallBack);
+    };
+
+    // Subscribe to the before event
+    world.beforeEvents.playerPlaceBlock.subscribe(beforePlayerPlaceCallBack);
+
+    // Subscribe to the after event
+    world.afterEvents.playerPlaceBlock.subscribe(afterPlayerPlaceCallback);
 };
 
 export { BeforeReachA };
