@@ -170,10 +170,10 @@ function copyFolders(oldVersionDir, newVersionDir) {
         copyDirectory(oldWorldsDir, newWorldsDir);
         console.log("   - Worlds copied.");
         copied = true;
-    } else if (fs.existsSync(newWorldBetaApiDir) && !fs.existsSync(newWorldsDir)) {
+    } else if (fs.existsSync(newWorldBetaApiDir)) {
         // Copy the 'new-world-beta-api' folder to a subfolder within 'worlds' if 'worlds' is empty
         console.log("   - Copying 'new-world-beta-api' folder.");
-        const subfolderName = "test_world"; // Specify the subfolder name
+        const subfolderName = "Bedrock level"; // Specify the subfolder name
         const subfolderPath = path.join(newWorldsDir, subfolderName); // Use path.join for correct path concatenation
         if (!fs.existsSync(newWorldsDir)) {
             fs.mkdirSync(newWorldsDir, { recursive: true }); // Create the "worlds" directory if it doesn't exist
