@@ -65,15 +65,32 @@ function analyzePlayerData(player: Player) {
         return; // Not enough data for analysis yet
     }
 
-    // Check if falling data is a combination of true and false while surrounded by air
+    // Check if falling data indicates potential flying
     let isPotentialFlying = false;
+
+    let fallingCount = 0;
+    let airCount = 0;
+
     for (let i = 0; i < minDataCount; i++) {
-        if (surroundedByAirData[surroundedByAirData.length - 1 - i]) {
-            if (fallingData[fallingData.length - 1 - i] === true) {
-                isPotentialFlying = true;
-                break;
-            }
+        const isFalling = fallingData[fallingData.length - 1 - i];
+        const isSurroundedByAir = surroundedByAirData[surroundedByAirData.length - 1 - i];
+
+        if (isFalling) {
+            fallingCount++;
         }
+
+        if (isSurroundedByAir) {
+            airCount++;
+        }
+    }
+
+    // Analyze the majority of the data
+    if (fallingCount > airCount) {
+        // Majority indicates falling
+        isPotentialFlying = false;
+    } else if (airCount > fallingCount) {
+        // Majority indicates surrounded by air (potential flying)
+        isPotentialFlying = true;
     }
 
     if (isPotentialFlying) {
@@ -158,6 +175,10 @@ function flya(id: number) {
             recordSurroundedByAir(player.id, isSurroundedByAir);
         } else {
             recordFallingBehavior(player.id, false);
+
+            // Record if surrounded by air
+            const isSurroundedByAir = checkSurroundedByAir(player);
+            recordSurroundedByAir(player.id, isSurroundedByAir);
         }
 
         // Analyze the player's data
