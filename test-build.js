@@ -9,6 +9,9 @@ const glob = require("glob");
 // Add this line to import exec
 const exec = util.promisify(require("child_process").exec);
 
+// Array to store all spawned child processes
+const spawnedProcesses = [];
+
 // Function to get the latest "bedrock-server-*" directory
 function getLatestBedrockServerDir() {
     return glob.sync("bedrock-server-*")[0];
@@ -31,6 +34,7 @@ async function checkAndBuild() {
         const bdsProcess = spawn("node", ["bds.js"], {
             stdio: "inherit",
         });
+        spawnedProcesses.push(bdsProcess); // Add to the array
 
         await new Promise((resolve) => {
             bdsProcess.on("close", (code) => {
@@ -124,9 +128,14 @@ async function checkAndBuild() {
                     stdio: "inherit",
                     cwd: bedrockServerDir,
                 });
+                spawnedProcesses.push(serverProcess); // Add to the array
 
                 serverProcess.on("exit", (code) => {
-                    console.log(`\n   - Server exited with code ${code}`);
+                    console.log(`\n   - Server exited with code ${code}. Killing all spawned processes...`);
+                    spawnedProcesses.forEach((child) => {
+                        child.kill();
+                    });
+                    process.exit(1);
                 });
             } else {
                 console.error("   - Error setting execute permission for bedrock_server.");
@@ -138,9 +147,14 @@ async function checkAndBuild() {
             stdio: "inherit",
             cwd: bedrockServerDir,
         });
+        spawnedProcesses.push(serverProcess); // Add to the array
 
         serverProcess.on("exit", (code) => {
-            console.log(`   - Server exited with code ${code}`);
+            console.log(`\n   - Server exited with code ${code}. Killing all spawned processes...`);
+            spawnedProcesses.forEach((child) => {
+                child.kill();
+            });
+            process.exit(1);
         });
     } else {
         console.error("   - Unsupported OS: " + os.type());
