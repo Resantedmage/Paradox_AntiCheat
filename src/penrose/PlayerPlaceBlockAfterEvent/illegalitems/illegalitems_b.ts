@@ -236,42 +236,45 @@ async function illegalitemsb(object: PlayerPlaceBlockAfterEvent) {
     // Iterate through the enchantment presence map to perform any necessary operations
     if (illegalEnchantmentBoolean) {
         let isPresent = false;
-        for (const [enchantment, present] of enchantmentPresenceMap.get(player.id)) {
-            if (present) {
-                // Do something with the present enchantment and its data
-                const itemStackData = itemStackDataMap.get(player.id).get(enchantment);
-                const enchantmentData = enchantmentDataMap.get(player.id).get(enchantment);
-                const getEnchantment = enchantmentData.getEnchantment(enchantment.type);
-                const currentLevel = getEnchantment.level;
-                const maxLevel = getEnchantment.type.maxLevel;
-                // Create new ItemStack to validate enchantments
-                const newItemStack = new ItemStack(itemStackData.typeId);
-                // Get the new enchantment component from the new ItemStack
-                const newEnchantmentComponent = newItemStack.getComponent("minecraft:enchantments") as ItemEnchantsComponent;
-                // Get the new enchantment data from the new ItemStack component
-                const newEnchantmentData = newEnchantmentComponent.enchantments;
-                // Verify if enchantment type is allowed on the item
-                const canAddEnchantBoolean = newEnchantmentData.canAddEnchantment(getEnchantment);
-                // Flag for illegal enchantments
-                if (currentLevel > maxLevel || currentLevel < 0 || !canAddEnchantBoolean) {
-                    const itemSlot = inventorySlotMap.get(player.id).get(enchantment);
-                    const enchData = {
-                        id: getEnchantment.type.id,
-                        level: currentLevel,
-                    };
-                    const itemStackId = blockContainer.getItem(itemSlot);
-                    blockContainer.setItem(itemSlot);
-                    sendMsg("@a[tag=notify]", `§f§4[§6Paradox§4]§f Removed ${itemStackId.typeId.replace("minecraft:", "")} with Illegal Enchantments from §7${player.name}§f.`);
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Item with illegal Enchantments are not allowed!`);
-                    enchantmentPresenceMap.clear();
-                    enchantmentDataMap.clear();
-                    inventorySlotMap.clear();
-                    unverifiedItemMap.clear(); // Clear this map since we won't get that far to prevent memory leaks
-                    itemStackDataMap.clear();
-                    rip(player, itemStackId, enchData, block);
-                    break;
+        const enchantmentPresence = enchantmentPresenceMap.get(player.id);
+        if (enchantmentPresence) {
+            for (const [enchantment, present] of enchantmentPresence) {
+                if (present) {
+                    // Do something with the present enchantment and its data
+                    const itemStackData = itemStackDataMap.get(player.id).get(enchantment);
+                    const enchantmentData = enchantmentDataMap.get(player.id).get(enchantment);
+                    const getEnchantment = enchantmentData.getEnchantment(enchantment.type);
+                    const currentLevel = getEnchantment.level;
+                    const maxLevel = getEnchantment.type.maxLevel;
+                    // Create new ItemStack to validate enchantments
+                    const newItemStack = new ItemStack(itemStackData.typeId);
+                    // Get the new enchantment component from the new ItemStack
+                    const newEnchantmentComponent = newItemStack.getComponent("minecraft:enchantments") as ItemEnchantsComponent;
+                    // Get the new enchantment data from the new ItemStack component
+                    const newEnchantmentData = newEnchantmentComponent.enchantments;
+                    // Verify if enchantment type is allowed on the item
+                    const canAddEnchantBoolean = newEnchantmentData.canAddEnchantment(getEnchantment);
+                    // Flag for illegal enchantments
+                    if (currentLevel > maxLevel || currentLevel < 0 || !canAddEnchantBoolean) {
+                        const itemSlot = inventorySlotMap.get(player.id).get(enchantment);
+                        const enchData = {
+                            id: getEnchantment.type.id,
+                            level: currentLevel,
+                        };
+                        const itemStackId = blockContainer.getItem(itemSlot);
+                        blockContainer.setItem(itemSlot);
+                        sendMsg("@a[tag=notify]", `§f§4[§6Paradox§4]§f Removed ${itemStackId.typeId.replace("minecraft:", "")} with Illegal Enchantments from §7${player.name}§f.`);
+                        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Item with illegal Enchantments are not allowed!`);
+                        enchantmentPresenceMap.clear();
+                        enchantmentDataMap.clear();
+                        inventorySlotMap.clear();
+                        unverifiedItemMap.clear(); // Clear this map since we won't get that far to prevent memory leaks
+                        itemStackDataMap.clear();
+                        rip(player, itemStackId, enchData, block);
+                        break;
+                    }
+                    isPresent = true;
                 }
-                isPresent = true;
             }
         }
         // Clear these populated maps if Salvage System is disabled to prevent memory leaks
