@@ -25,8 +25,8 @@ function verification(object: PlayerSpawnAfterEvent) {
         dynamicPropertyRegistry.set(player.id, player.name);
         return;
     } else {
-        player.removeDynamicProperty("hash");
-        player.removeDynamicProperty("salt");
+        player.setDynamicProperty("hash");
+        player.setDynamicProperty("salt");
         const hasTag = player.hasTag("paradoxOpped");
         if (hasTag) {
             player.removeTag("paradoxOpped");

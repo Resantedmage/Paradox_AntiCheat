@@ -33,8 +33,8 @@ export function uiDEOP(opResult: ModalFormResponse, onlineList: string[], player
     const memberEncode: string = (world as WorldExtended).hashWithSalt(memberSalt as string, key);
 
     if (memberEncode && memberHash !== undefined && memberHash === memberEncode) {
-        member.removeDynamicProperty("hash");
-        member.removeDynamicProperty("salt");
+        member.setDynamicProperty("hash");
+        member.setDynamicProperty("salt");
         dynamicPropertyRegistry.delete(member.id);
         member.removeTag("paradoxOpped");
         if (player.name !== member.name) {

@@ -90,8 +90,8 @@ export function deop(message: ChatSendAfterEvent, args: string[]) {
     } catch (error) {}
 
     if (memberEncode && memberHash !== undefined && memberHash === memberEncode) {
-        member.removeDynamicProperty("hash");
-        member.removeDynamicProperty("salt");
+        member.setDynamicProperty("hash");
+        member.setDynamicProperty("salt");
         member.removeTag("paradoxOpped");
         dynamicPropertyRegistry.delete(member.id);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${member.name}§f is no longer Paradox-Opped.`);

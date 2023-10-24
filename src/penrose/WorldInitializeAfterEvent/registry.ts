@@ -1,20 +1,14 @@
-import { world, DynamicPropertiesDefinition, WorldInitializeAfterEvent, Vector3, Vector } from "@minecraft/server";
+import { world, Vector3, Vector } from "@minecraft/server";
 import config from "../../data/config.js";
-import { MinecraftEntityTypes } from "../../node_modules/@minecraft/vanilla-data/lib/index.js";
 import { extendPlayerPrototype } from "../../classes/PlayerExtended/Player.js";
 import { WorldExtended, extendWorldPrototype } from "../../classes/WorldExtended/World.js";
 
 export const dynamicPropertyRegistry = new Map<string, string | number | boolean | Vector3>();
 
-function registry(data: WorldInitializeAfterEvent) {
+function registry() {
     // Extend Prototypes here
     extendPlayerPrototype();
     extendWorldPrototype();
-
-    // World instance
-    const property = new DynamicPropertiesDefinition();
-    // Entity instance
-    const personal = new DynamicPropertiesDefinition();
 
     /**
      * Define property first
@@ -70,49 +64,6 @@ function registry(data: WorldInitializeAfterEvent) {
         "antiphasea_b",
         "spawnProtection_b",
     ];
-
-    // String properties
-    const defineStringProperties = ["hash", "salt"];
-
-    // Number properties
-    const defineNumberProperties = ["worldborder_n", "worldborder_nether_n", "worldborder_end_n", "spawnProtection_Radius", "spawnprotection_x_n", "spawnprotection_y_n", "spawnprotection_z_n"];
-
-    // Vector3 properties
-    const defineVector3Properties = ["spawnProtection_V3"];
-
-    // Define booleans (property)
-    const defineBooleanLength = defineBooleanProperties.length;
-    for (let b = 0; b < defineBooleanLength; b++) {
-        property.defineBoolean(defineBooleanProperties[b]);
-    }
-
-    // Define strings (personal)
-    const defineStringLength = defineStringProperties.length;
-    for (let s = 0; s < defineStringLength; s++) {
-        personal.defineString(defineStringProperties[s], 50);
-    }
-
-    // Define numbers (property)
-    const defineNumberLength = defineNumberProperties.length;
-    for (let n = 0; n < defineNumberLength; n++) {
-        property.defineNumber(defineNumberProperties[n]);
-    }
-    // Define Vector3's (property)
-    const defineVector3Length = defineVector3Properties.length;
-    for (let n = 0; n < defineVector3Length; n++) {
-        property.defineVector(defineVector3Properties[n]);
-    }
-
-    /**
-     * This is global security for strings where applicable
-     */
-    property.defineString("crypt", 50);
-
-    // Register Defined properties in world globally
-    data.propertyRegistry.registerWorldDynamicProperties(property);
-
-    // Register Defined properties in entity globally
-    data.propertyRegistry.registerEntityTypeDynamicProperties(personal, "minecraft:" + MinecraftEntityTypes.Player);
 
     let flag = false;
     // Loop through the identifiers in the array
@@ -206,7 +157,7 @@ function registry(data: WorldInitializeAfterEvent) {
 }
 
 const Registry = () => {
-    world.afterEvents.worldInitialize.subscribe((data) => registry(data));
+    world.afterEvents.worldInitialize.subscribe(registry);
 };
 
 export { Registry };

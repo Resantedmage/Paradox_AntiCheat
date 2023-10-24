@@ -36,8 +36,8 @@ function noperms() {
         const encode = (world as WorldExtended).hashWithSalt(salt as string, key);
         entity.removeTag("paradoxOpped");
         if (encode && encode === hash) {
-            entity.removeDynamicProperty("hash");
-            entity.removeDynamicProperty("salt");
+            entity.setDynamicProperty("hash");
+            entity.setDynamicProperty("salt");
             dynamicPropertyRegistry.delete(entity.id);
         }
 

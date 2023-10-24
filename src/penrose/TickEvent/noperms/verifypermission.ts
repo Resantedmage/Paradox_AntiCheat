@@ -12,18 +12,8 @@ function verifypermission() {
     // Let's check the players for illegal permissions
     for (const player of filteredPlayers) {
         // Check for hash/salt and validate password
-        let hash, salt;
-        try {
-            hash = player.getDynamicProperty("hash");
-            salt = player.getDynamicProperty("salt");
-        } catch (error) {
-            if (config.debug) {
-                console.error(`Error retrieving dynamic properties for player: ${player.name}`);
-                console.error(error);
-                console.log("Player: ", player.name);
-            }
-            continue; // Skip to the next player
-        }
+        const hash = player.getDynamicProperty("hash");
+        const salt = player.getDynamicProperty("salt");
 
         // Use either the operator's ID or the encryption password as the key
         const key = config.encryption.password ? config.encryption.password : player.id;
@@ -37,8 +27,8 @@ function verifypermission() {
             }
             continue;
         } else {
-            player.removeDynamicProperty("hash");
-            player.removeDynamicProperty("salt");
+            player.setDynamicProperty("hash");
+            player.setDynamicProperty("salt");
             dynamicPropertyRegistry.delete(player.id);
             player.removeTag("paradoxOpped");
         }
