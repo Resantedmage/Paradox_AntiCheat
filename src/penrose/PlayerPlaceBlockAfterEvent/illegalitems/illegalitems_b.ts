@@ -289,55 +289,58 @@ async function illegalitemsb(object: PlayerPlaceBlockAfterEvent) {
     // Salvage System
     if (salvageBoolean) {
         let salvagedList = false;
-        // Iterate over the unverifiedItemMap
-        for (const [slot, itemStackData] of unverifiedItemMap.get(player.id)) {
-            // Create a new name tag for the item
-            const newNameTag = (world as WorldExtended).titleCase(itemStackData.typeId.replace("minecraft:", ""));
-            // Create a new ItemStack with the same type as the original item
-            const applyCustomProperties = new ItemStack(itemStackData.typeId);
-            // Get the original enchantment component from the item
-            const originalEnchantmentComponent = itemStackData.getComponent("minecraft:enchantments") as ItemEnchantsComponent;
-            // Get the original enchantment data from the component
-            const originalEnchantmentData = originalEnchantmentComponent.enchantments;
-            // Get the new enchantment component from the new ItemStack
-            const newEnchantmentComponent = applyCustomProperties.getComponent("minecraft:enchantments") as ItemEnchantsComponent;
-            // Get the new enchantment data from the new ItemStack component
-            const newEnchantmentData = newEnchantmentComponent.enchantments;
+        const unverifiedItem = unverifiedItemMap.get(player.id);
+        if (unverifiedItem) {
+            // Iterate over the unverifiedItemMap
+            for (const [slot, itemStackData] of unverifiedItem) {
+                // Create a new name tag for the item
+                const newNameTag = (world as WorldExtended).titleCase(itemStackData.typeId.replace("minecraft:", ""));
+                // Create a new ItemStack with the same type as the original item
+                const applyCustomProperties = new ItemStack(itemStackData.typeId);
+                // Get the original enchantment component from the item
+                const originalEnchantmentComponent = itemStackData.getComponent("minecraft:enchantments") as ItemEnchantsComponent;
+                // Get the original enchantment data from the component
+                const originalEnchantmentData = originalEnchantmentComponent.enchantments;
+                // Get the new enchantment component from the new ItemStack
+                const newEnchantmentComponent = applyCustomProperties.getComponent("minecraft:enchantments") as ItemEnchantsComponent;
+                // Get the new enchantment data from the new ItemStack component
+                const newEnchantmentData = newEnchantmentComponent.enchantments;
 
-            // Iterate over the original enchantment data
-            const iterator = originalEnchantmentData[Symbol.iterator]();
-            let iteratorResult = iterator.next();
-            while (!iteratorResult.done) {
-                // Get the enchantment from the iterator
-                const enchantment: Enchantment = iteratorResult.value;
-                // Check if the enchantment is legal
-                if (!illegalEnchantmentBoolean) {
-                    // Get the enchantment from the original enchantment data
-                    const getEnchantment = originalEnchantmentData.getEnchantment(enchantment.type);
-                    // Check if the new ItemStack can have the enchantment added
-                    const canAddEnchantBoolean = newEnchantmentData.canAddEnchantment(getEnchantment);
-                    // If it can, add the enchantment to the new enchantment data
-                    if (canAddEnchantBoolean) {
+                // Iterate over the original enchantment data
+                const iterator = originalEnchantmentData[Symbol.iterator]();
+                let iteratorResult = iterator.next();
+                while (!iteratorResult.done) {
+                    // Get the enchantment from the iterator
+                    const enchantment: Enchantment = iteratorResult.value;
+                    // Check if the enchantment is legal
+                    if (!illegalEnchantmentBoolean) {
+                        // Get the enchantment from the original enchantment data
+                        const getEnchantment = originalEnchantmentData.getEnchantment(enchantment.type);
+                        // Check if the new ItemStack can have the enchantment added
+                        const canAddEnchantBoolean = newEnchantmentData.canAddEnchantment(getEnchantment);
+                        // If it can, add the enchantment to the new enchantment data
+                        if (canAddEnchantBoolean) {
+                            newEnchantmentData.addEnchantment(enchantment);
+                            // Sets enchantment list to enchantment of new instance
+                            newEnchantmentComponent.enchantments = newEnchantmentData;
+                        }
+                    } else {
+                        // Add the enchantment to the new enchantment data
                         newEnchantmentData.addEnchantment(enchantment);
                         // Sets enchantment list to enchantment of new instance
                         newEnchantmentComponent.enchantments = newEnchantmentData;
                     }
-                } else {
-                    // Add the enchantment to the new enchantment data
-                    newEnchantmentData.addEnchantment(enchantment);
-                    // Sets enchantment list to enchantment of new instance
-                    newEnchantmentComponent.enchantments = newEnchantmentData;
+                    // Get the next item from the iterator
+                    iteratorResult = iterator.next();
+                    salvagedList = true;
                 }
-                // Get the next item from the iterator
-                iteratorResult = iterator.next();
-                salvagedList = true;
-            }
 
-            // Set the name tag and lore of the new ItemStack
-            applyCustomProperties.nameTag = newNameTag;
-            applyCustomProperties.setLore(itemStackData.getLore());
-            // Set the new ItemStack in the player's container in the specified slot
-            blockContainer.setItem(slot, applyCustomProperties);
+                // Set the name tag and lore of the new ItemStack
+                applyCustomProperties.nameTag = newNameTag;
+                applyCustomProperties.setLore(itemStackData.getLore());
+                // Set the new ItemStack in the player's container in the specified slot
+                blockContainer.setItem(slot, applyCustomProperties);
+            }
         }
         // Clear these populated maps to prevent memory leaks
         if (salvagedList) {
