@@ -50,10 +50,7 @@ export class DynamicPropertyManager {
      * @returns The value of the property or undefined if it doesn't exist.
      */
     getProperty(name: string): PropertyValue | undefined {
-        const serializedValue = world.getDynamicProperty(name);
-        if (serializedValue !== undefined) {
-            return JSON.parse(serializedValue as string);
-        }
+        let serializedValue: string | undefined = world.getDynamicProperty(name) as string;
 
         // Check for properties with prefixes
         let index = 0;
@@ -64,12 +61,12 @@ export class DynamicPropertyManager {
                 break;
             }
             // Join the split parts
-            (serializedValue as string) += partValue;
+            serializedValue = serializedValue ? serializedValue + (partValue as string) : (partValue as string);
             index++;
         }
 
         if (serializedValue) {
-            return JSON.parse(serializedValue as string);
+            return JSON.parse(serializedValue);
         }
 
         return undefined;
