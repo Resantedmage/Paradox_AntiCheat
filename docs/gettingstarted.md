@@ -1,4 +1,4 @@
-![Lets Go](https://i.imgur.com/oi5NwOp.png)
+![Lets Go](Media/Paradox_Title.png)
 
 !> Before you import the pack, please read below regarding realms. Failing to do so will lead to issues.
 
@@ -14,8 +14,8 @@ Paradox uses the following experimental flags. You need to make sure these are e
 - Molang
 - EDU
 
-![ScriptingAPI](https://i.imgur.com/bR8AmXn.png)
-![EDU](https://i.imgur.com/djOZoqH.png)
+![ScriptingAPI](Media/BetaAPI_Setting.png)
+![EDU](Media/EDU_Setting.png)
 
 !> The EDU flag is needed for the `!fly` command to work.
 

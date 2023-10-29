@@ -1,4 +1,4 @@
-<img src="https://i.imgur.com/oi5NwOp.png" alt="Let's Go">
+<img src="../Media/Paradox_Title.png" alt="Let's Go">
 
 ## Configuring Paradox OP Password
 
