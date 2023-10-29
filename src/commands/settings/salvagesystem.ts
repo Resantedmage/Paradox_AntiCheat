@@ -1,11 +1,11 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function salvageHelp(player: Player, prefix: string, salvageBoolean: string | number | boolean | Vector3) {
+function salvageHelp(player: Player, prefix: string, salvageBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.salvage) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -43,7 +43,7 @@ export function salvage(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -51,26 +51,26 @@ export function salvage(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const salvageBoolean = dynamicPropertyRegistry.get("salvage_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.salvage) {
-        return salvageHelp(player, prefix, salvageBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.salvage) {
+        return salvageHelp(player, prefix, configuration.modules.salvage.enabled, configuration.customcommands.salvage);
     }
 
-    if (salvageBoolean === false) {
+    if (configuration.modules.salvage.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("salvage_b", true);
-        world.setDynamicProperty("salvage_b", true);
+        configuration.modules.salvage.enabled = true;
+        dynamicPropertyRegistry.setProperty(player, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6Salvage§f!`);
-    } else if (salvageBoolean === true) {
+    } else if (configuration.modules.salvage.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("salvage_b", false);
-        world.setDynamicProperty("salvage_b", false);
+        configuration.modules.salvage.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4Salvage§f!`);
     }
 }

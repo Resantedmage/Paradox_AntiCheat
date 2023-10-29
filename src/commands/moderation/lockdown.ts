@@ -1,12 +1,12 @@
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
-import config from "../../data/config.js";
+import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function lockdownHelp(player: Player, prefix: string, lockdownBoolean: string | number | boolean | Vector3) {
+function lockdownHelp(player: Player, prefix: string, lockdownBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.lockdown) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -60,7 +60,7 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -68,22 +68,23 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const lockdownBoolean = dynamicPropertyRegistry.get("lockdown_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.lockdown) {
-        return lockdownHelp(player, prefix, lockdownBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.lockdown) {
+        return lockdownHelp(player, prefix, configuration.modules.lockdown.enabled, configuration.customcommands.lockdown);
     }
 
     // If already locked down then unlock the server
-    if (lockdownBoolean) {
+    if (configuration.modules.lockdown.enabled) {
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f Server is no longer in lockdown!`);
-        dynamicPropertyRegistry.set("lockdown_b", false);
-        return world.setDynamicProperty("lockdown_b", false);
+        configuration.modules.lockdown.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        return;
     }
 
     // Default reason for locking it down
@@ -97,7 +98,7 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
         const salt = pl.getDynamicProperty("salt");
 
         // Use either the operator's ID or the encryption password as the key
-        const key = config.encryption.password ? config.encryption.password : pl.id;
+        const key = configuration.encryption.password ? configuration.encryption.password : pl.id;
 
         // Generate the hash
         const encode = (world as WorldExtended).hashWithSalt(salt as string, key);
@@ -113,6 +114,7 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
     }
     // Shutting it down
     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f Server is in lockdown!`);
-    dynamicPropertyRegistry.set("lockdown_b", true);
-    return world.setDynamicProperty("lockdown_b", true);
+    configuration.modules.lockdown.enabled = true;
+    dynamicPropertyRegistry.setProperty(undefined, "config", true);
+    return;
 }

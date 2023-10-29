@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { AntiPhaseA } from "../../penrose/TickEvent/phase/phase_a.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function antiphaseaHelp(player: Player, prefix: string, antiphaseABoolean: string | number | boolean | Vector3) {
+function antiphaseaHelp(player: Player, prefix: string, antiphaseABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antiphasea) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function antiphaseA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function antiphaseA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const antiphaseABoolean = dynamicPropertyRegistry.get("antiphasea_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antiphasea) {
-        return antiphaseaHelp(player, prefix, antiphaseABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antiphasea) {
+        return antiphaseaHelp(player, prefix, configuration.modules.antiphaseA.enabled, configuration.customcommands.phase);
     }
 
-    if (antiphaseABoolean === false) {
+    if (configuration.modules.antiphaseA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antiphasea_b", true);
-        world.setDynamicProperty("antiphasea_b", true);
+        configuration.modules.antiphaseA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiPhaseA§f!`);
         AntiPhaseA();
-    } else if (antiphaseABoolean === true) {
+    } else if (configuration.modules.antiphaseA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antiphasea_b", false);
-        world.setDynamicProperty("antiphasea_b", false);
+        configuration.modules.antiphaseA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiPhaseA§f!`);
     }
 }

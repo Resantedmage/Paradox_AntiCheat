@@ -1,12 +1,12 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function deopHelp(player: Player, prefix: string) {
+function deopHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.deop) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -39,25 +39,27 @@ export function deop(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.deop) {
-        return deopHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.deop) {
+        return deopHelp(player, prefix, configuration.customcommands.deop);
     }
 
     // Are there arguements
     if (!args.length) {
-        return deopHelp(player, prefix);
+        return deopHelp(player, prefix, configuration.customcommands.deop);
     }
 
     // try to find the player requested
@@ -81,19 +83,18 @@ export function deop(message: ChatSendAfterEvent, args: string[]) {
     const memberHash = member.getDynamicProperty("hash");
     const memberSalt = member.getDynamicProperty("salt");
     let memberEncode: string;
-    try {
-        // Use either the operator's ID or the encryption password as the key
-        const memberKey = config.encryption.password ? config.encryption.password : member.id;
 
-        // Generate the hash
-        memberEncode = (world as WorldExtended).hashWithSalt(memberSalt as string, memberKey);
-    } catch (error) {}
+    // Use either the operator's ID or the encryption password as the key
+    const memberKey = configuration.encryption.password ? configuration.encryption.password : member.id;
+
+    // Generate the hash
+    memberEncode = (world as WorldExtended).hashWithSalt(memberSalt as string, memberKey);
 
     if (memberEncode && memberHash !== undefined && memberHash === memberEncode) {
         member.setDynamicProperty("hash");
         member.setDynamicProperty("salt");
         member.removeTag("paradoxOpped");
-        dynamicPropertyRegistry.delete(member.id);
+        dynamicPropertyRegistry.deleteProperty(member, member.id);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${member.name}§f is no longer Paradox-Opped.`);
         return sendMsgToPlayer(member, `§f§4[§6Paradox§4]§f Your OP status has been revoked!`);
     }

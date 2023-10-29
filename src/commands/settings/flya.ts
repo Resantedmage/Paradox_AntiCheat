@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { FlyA } from "../../penrose/TickEvent/fly/fly_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function flyaHelp(player: Player, prefix: string, flyABoolean: string | number | boolean | Vector3) {
+function flyaHelp(player: Player, prefix: string, flyABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.flya) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function flyA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function flyA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const flyABoolean = dynamicPropertyRegistry.get("flya_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.flya) {
-        return flyaHelp(player, prefix, flyABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.flya) {
+        return flyaHelp(player, prefix, configuration.modules.flyA.enabled, configuration.customcommands.flya);
     }
 
-    if (flyABoolean === false) {
+    if (configuration.modules.flyA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("flya_b", true);
-        world.setDynamicProperty("flya_b", true);
+        configuration.modules.flyA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6FlyA§f!`);
         FlyA();
-    } else if (flyABoolean === true) {
+    } else if (configuration.modules.flyA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("flya_b", false);
-        world.setDynamicProperty("flya_b", false);
+        configuration.modules.flyA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4FlyA§f!`);
     }
 }

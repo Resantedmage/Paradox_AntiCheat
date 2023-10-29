@@ -1,11 +1,11 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function stackBanHelp(player: Player, prefix: string, stackBanBoolean: string | number | boolean | Vector3) {
+function stackBanHelp(player: Player, prefix: string, stackBanBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.stackban) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -43,7 +43,7 @@ export function stackban(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -51,39 +51,38 @@ export function stackban(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const stackBanBoolean = dynamicPropertyRegistry.get("stackban_b");
-    const illegalItemsABoolean = dynamicPropertyRegistry.get("illegalitemsa_b");
-    const illegalItemsBBoolean = dynamicPropertyRegistry.get("illegalitemsb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.stackban) {
-        return stackBanHelp(player, prefix, stackBanBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.stackban) {
+        return stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
     }
 
-    if (!illegalItemsABoolean && !illegalItemsBBoolean) {
-        if (stackBanBoolean) {
+    if (!configuration.modules.illegalitemsA.enabled && !configuration.modules.illegalitemsB.enabled) {
+        if (configuration.modules.stackBan.enabled) {
             // In this stage they are likely turning it off so oblige their request
-            dynamicPropertyRegistry.set("stackban_b", false);
-            return world.setDynamicProperty("stackban_b", false);
+            configuration.modules.stackBan.enabled = false;
+            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+            return;
         }
         // If illegal items are not enabled then let user know this feature is inaccessible
         // It will not work without one of them
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to enable Illegal Items to use this feature.`);
     }
 
-    if (stackBanBoolean === false) {
+    if (configuration.modules.stackBan.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("stackban_b", true);
-        world.setDynamicProperty("stackban_b", true);
+        configuration.modules.stackBan.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6StackBans§f!`);
-    } else if (stackBanBoolean === true) {
+    } else if (configuration.modules.stackBan.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("stackban_b", false);
-        world.setDynamicProperty("stackban_b", false);
+        configuration.modules.stackBan.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
     }
 }

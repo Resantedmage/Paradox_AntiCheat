@@ -1,18 +1,18 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { AFK } from "../../penrose/TickEvent/afk/afk.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function afkHelp(player: Player, prefix: string, afkBoolean: string | number | boolean | Vector3) {
+function afkHelp(player: Player, prefix: string, configuration: ConfigInterface) {
     let commandStatus: string;
-    if (!config.customcommands.afk) {
+    if (!configuration.customcommands.afk) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
     let moduleStatus: string;
-    if (afkBoolean === false) {
+    if (configuration.modules.afk.enabled === false) {
         moduleStatus = "§6[§4DISABLED§6]§f";
     } else {
         moduleStatus = "§6[§aENABLED§6]§f";
@@ -23,7 +23,7 @@ function afkHelp(player: Player, prefix: string, afkBoolean: string | number | b
         `§4[§6Module§4]§f: ${moduleStatus}`,
         `§4[§6Usage§4]§f: afk [optional]`,
         `§4[§6Optional§4]§f: help`,
-        `§4[§6Description§4]§f: Kicks players that are AFK for ${config.modules.afk.minutes} minutes.`,
+        `§4[§6Description§4]§f: Kicks players that are AFK for ${configuration.modules.afk.minutes} minutes.`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}afk`,
         `    ${prefix}afk help`,
@@ -44,7 +44,7 @@ export function afk(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function afk(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const afkBoolean = dynamicPropertyRegistry.get("afk_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.afk) {
-        return afkHelp(player, prefix, afkBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.afk) {
+        return afkHelp(player, prefix, configuration);
     }
 
-    if (afkBoolean === false) {
+    if (configuration.modules.afk.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("afk_b", true);
-        world.setDynamicProperty("afk_b", true);
+        configuration.modules.afk.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AFK§f!`);
         AFK();
-    } else if (afkBoolean === true) {
+    } else if (configuration.modules.afk.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("afk_b", false);
-        world.setDynamicProperty("afk_b", false);
+        configuration.modules.afk.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AFK§f!`);
     }
 }

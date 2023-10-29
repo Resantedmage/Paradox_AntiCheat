@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { AntiFallA } from "../../penrose/TickEvent/antifalla/antifall_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function antifallaHelp(player: Player, prefix: string, antifallABoolean: string | number | boolean | Vector3) {
+function antifallaHelp(player: Player, prefix: string, antifallABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antifalla) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function antifallA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function antifallA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const antifallABoolean = dynamicPropertyRegistry.get("antifalla_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antifalla) {
-        return antifallaHelp(player, prefix, antifallABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antifalla) {
+        return antifallaHelp(player, prefix, configuration.modules.antifallA.enabled, configuration.customcommands.antifalla);
     }
 
-    if (antifallABoolean === false) {
+    if (configuration.modules.antifallA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antifalla_b", true);
-        world.setDynamicProperty("antifalla_b", true);
+        configuration.modules.antifallA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiFallA§f!`);
         AntiFallA();
-    } else if (antifallABoolean === true) {
+    } else if (configuration.modules.antifallA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antifalla_b", false);
-        world.setDynamicProperty("antifalla_b", false);
+        configuration.modules.antifallA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiFallA§f!`);
     }
 }

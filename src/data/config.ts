@@ -265,7 +265,15 @@ export default {
         antiphaseA: {
             enabled: true,
         },
+        lockdown: {
+            enabled: false,
+        },
         spawnprotection: {
+            enabled: false,
+            radius: 0,
+            vector3: { x: 0, y: 0, z: 0 },
+        },
+        autoclicker: {
             enabled: false,
         },
     },

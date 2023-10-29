@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { BeforeNukerA } from "../../penrose/PlayerBreakBlockBeforeEvent/nuker/nuker_a.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function antinukeraHelp(player: Player, prefix: string, antiNukerABoolean: string | number | boolean | Vector3) {
+function antinukeraHelp(player: Player, prefix: string, antiNukerABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antinukera) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function antinukerA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function antinukerA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antinukera) {
-        return antinukeraHelp(player, prefix, antiNukerABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antinukera) {
+        return antinukeraHelp(player, prefix, configuration.modules.antinukerA.enabled, configuration.customcommands.antinukera);
     }
 
-    if (antiNukerABoolean === false) {
+    if (configuration.modules.antinukerA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antinukera_b", true);
-        world.setDynamicProperty("antinukera_b", true);
+        configuration.modules.antinukerA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiNukerA§f!`);
         BeforeNukerA();
-    } else if (antiNukerABoolean === true) {
+    } else if (configuration.modules.antinukerA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antinukera_b", false);
-        world.setDynamicProperty("antinukera_b", false);
+        configuration.modules.antinukerA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiNukerA§f!`);
     }
 }

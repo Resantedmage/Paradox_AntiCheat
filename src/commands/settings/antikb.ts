@@ -1,12 +1,12 @@
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
-import config from "../../data/config.js";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { AntiKnockbackA } from "../../penrose/TickEvent/knockback/antikb_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function antikbHelp(player: Player, prefix: string, antikbBoolean: string | number | boolean | Vector3) {
+function antikbHelp(player: Player, prefix: string, antikbBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antikb) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -58,7 +58,7 @@ async function handleAntiKnockback(message: ChatSendAfterEvent, args: string[]) 
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -66,27 +66,27 @@ async function handleAntiKnockback(message: ChatSendAfterEvent, args: string[]) 
     }
 
     // Get Dynamic Property Boolean
-    const antikbBoolean = dynamicPropertyRegistry.get("antikb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antikb) {
-        return antikbHelp(player, prefix, antikbBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antikb) {
+        return antikbHelp(player, prefix, configuration.modules.antikbA.enabled, configuration.customcommands.antikb);
     }
 
-    if (antikbBoolean === false) {
+    if (configuration.modules.antikbA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antikb_b", true);
-        world.setDynamicProperty("antikb_b", true);
+        configuration.modules.antikbA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Knockback§f!`);
         AntiKnockbackA();
-    } else if (antikbBoolean === true) {
+    } else if (configuration.modules.antikbA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antikb_b", false);
-        world.setDynamicProperty("antikb_b", false);
+        configuration.modules.antikbA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Knockback§f!`);
     }
 }

@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { BeforeReachA } from "../../penrose/PlayerPlaceBlockBeforeEvent/reach/reach_a.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function reachAHelp(player: Player, prefix: string, reachABoolean: string | number | boolean | Vector3) {
+function reachAHelp(player: Player, prefix: string, reachABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.reacha) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function reachA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function reachA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const reachABoolean = dynamicPropertyRegistry.get("reacha_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.reacha) {
-        return reachAHelp(player, prefix, reachABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.reacha) {
+        return reachAHelp(player, prefix, configuration.modules.reachA.enabled, configuration.customcommands.reacha);
     }
 
-    if (reachABoolean === false) {
+    if (configuration.modules.reachA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("reacha_b", true);
-        world.setDynamicProperty("reacha_b", true);
+        configuration.modules.reachA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ReachA§f!`);
         BeforeReachA();
-    } else if (reachABoolean === true) {
+    } else if (configuration.modules.reachA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("reacha_b", false);
-        world.setDynamicProperty("reacha_b", false);
+        configuration.modules.reachA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ReachA§f!`);
     }
 }

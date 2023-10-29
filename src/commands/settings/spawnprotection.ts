@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { SpawnProtection } from "../../penrose/TickEvent/spawnprotection/spawnProtection.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBoolean: string | number | boolean | Vector3) {
+function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.spawnprotection) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -47,7 +47,7 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -55,18 +55,18 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const spawnProtectionBoolean = dynamicPropertyRegistry.get("spawnProtection_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if (!argCheck || (argCheck && args[0].toLowerCase() === "help") || !config.customcommands.spawnprotection) {
-        return spawnprotectionHelp(player, prefix, spawnProtectionBoolean);
+    if (!argCheck || (argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.spawnprotection) {
+        return spawnprotectionHelp(player, prefix, configuration.modules.spawnprotection.enabled, configuration.customcommands.spawnprotection);
     }
 
-    if (spawnProtectionBoolean === false || (spawnProtectionBoolean === true && argCheck && args[0].toLowerCase() !== "disable")) {
+    if (configuration.modules.spawnprotection.enabled === false || (configuration.modules.spawnprotection.enabled === true && argCheck && args[0].toLowerCase() !== "disable")) {
         // Allow
         if (args.length < 4) {
             return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid arguments provided. Please include x y z radius, for example: 10 64 -10 90.`);
@@ -88,14 +88,12 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
             z = Math.ceil(player.location.z);
         }
 
-        dynamicPropertyRegistry.set("spawnProtection_b", true);
-        world.setDynamicProperty("spawnProtection_b", true);
         const vector3 = { x: x, y: y, z: z };
-        dynamicPropertyRegistry.set("spawnProtection_V3", vector3);
-        world.setDynamicProperty("spawnProtection_V3", vector3);
-        dynamicPropertyRegistry.set("spawnProtection_Radius", Math.abs(radius as number));
-        world.setDynamicProperty("spawnProtection_Radius", Math.abs(radius as number));
-        const messageAction = spawnProtectionBoolean ? "has updated" : "has enabled";
+        configuration.modules.spawnprotection.enabled = true;
+        configuration.modules.spawnprotection.vector3 = vector3;
+        configuration.modules.spawnprotection.radius = Math.abs(radius as number);
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        const messageAction = configuration.modules.spawnprotection.enabled ? "has updated" : "has enabled";
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f ${messageAction} §6Spawn Protection§f!`);
         SpawnProtection();
         return;
@@ -103,8 +101,8 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
 
     if (argCheck && args[0].toLowerCase() === "disable") {
         // Deny
-        dynamicPropertyRegistry.set("spawnProtection_b", false);
-        world.setDynamicProperty("spawnProtection_b", false);
+        configuration.modules.spawnprotection.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Spawn Protection§f!`);
     }
 }

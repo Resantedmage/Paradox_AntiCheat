@@ -1,11 +1,11 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function muteHelp(player: Player, prefix: string) {
+function muteHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.mute) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -54,25 +54,27 @@ async function handleMute(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.mute) {
-        return muteHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.mute) {
+        return muteHelp(player, prefix, configuration.customcommands.mute);
     }
 
     // Are there arguements
     if (!args.length) {
-        return muteHelp(player, prefix);
+        return muteHelp(player, prefix, configuration.customcommands.mute);
     }
 
     // Modify the argument handling
@@ -106,7 +108,7 @@ async function handleMute(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get unique ID
-    const uniqueId2 = dynamicPropertyRegistry.get(member?.id);
+    const uniqueId2 = dynamicPropertyRegistry.getProperty(member, member?.id);
 
     // Make sure they dont mute themselves
     if (uniqueId2 === uniqueId) {

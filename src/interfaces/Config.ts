@@ -1,3 +1,5 @@
+import { Vector3 } from "@minecraft/server";
+
 // config.ts
 interface ConfigInterface {
     debug: boolean;
@@ -263,7 +265,15 @@ interface ConfigInterface {
         antiphaseA: {
             enabled: boolean;
         };
+        lockdown: {
+            enabled: boolean;
+        };
         spawnprotection: {
+            enabled: boolean;
+            radius: number;
+            vector3: Vector3;
+        };
+        autoclicker: {
             enabled: boolean;
         };
     };

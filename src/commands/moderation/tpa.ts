@@ -1,11 +1,11 @@
 import { world, Player, ChatSendAfterEvent } from "@minecraft/server";
-import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsgToPlayer, setTimer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function tpaHelp(player: Player, prefix: string) {
+function tpaHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.tpa) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -40,25 +40,27 @@ export function tpa(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.tpa) {
-        return tpaHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.tpa) {
+        return tpaHelp(player, prefix, configuration.customcommands.tpa);
     }
 
     // Are there arguements
     if (!args.length) {
-        return tpaHelp(player, prefix);
+        return tpaHelp(player, prefix, configuration.customcommands.tpa);
     }
 
     let artificalPlayer: Player;
@@ -92,6 +94,6 @@ export function tpa(message: ChatSendAfterEvent, args: string[]) {
     } else {
         // Need to specify who
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You forgot to mention 'from' and 'who' to teleport.`);
-        return tpaHelp(player, prefix);
+        return tpaHelp(player, prefix, configuration.customcommands.tpa);
     }
 }

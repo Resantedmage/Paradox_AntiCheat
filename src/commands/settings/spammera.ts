@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { SpammerA } from "../../penrose/ChatSendBeforeEvent/spammer/spammer_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function spammerAHelp(player: Player, prefix: string, spammerABoolean: string | number | boolean | Vector3) {
+function spammerAHelp(player: Player, prefix: string, spammerABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.spammera) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function spammerA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function spammerA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const spammerABoolean = dynamicPropertyRegistry.get("spammera_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.spammera) {
-        return spammerAHelp(player, prefix, spammerABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.spammera) {
+        return spammerAHelp(player, prefix, configuration.modules.spammerA.enabled, configuration.customcommands.spammera);
     }
 
-    if (spammerABoolean === false) {
+    if (configuration.modules.spammerA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("spammera_b", true);
-        world.setDynamicProperty("spammera_b", true);
+        configuration.modules.spammerA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SpammerA§f!`);
         SpammerA();
-    } else if (spammerABoolean === true) {
+    } else if (configuration.modules.spammerA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("spammera_b", false);
-        world.setDynamicProperty("spammera_b", false);
+        configuration.modules.spammerA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SpammerA§f!`);
     }
 }

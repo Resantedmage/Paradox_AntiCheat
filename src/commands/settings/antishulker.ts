@@ -1,11 +1,11 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function antishulkerHelp(player: Player, prefix: string, antiShulkerBoolean: string | number | boolean | Vector3) {
+function antishulkerHelp(player: Player, prefix: string, antiShulkerBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antishulker) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -43,7 +43,7 @@ export function antishulker(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -51,26 +51,26 @@ export function antishulker(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const antiShulkerBoolean = dynamicPropertyRegistry.get("antishulker_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antishulker) {
-        return antishulkerHelp(player, prefix, antiShulkerBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antishulker) {
+        return antishulkerHelp(player, prefix, configuration.modules.antishulker.enabled, configuration.customcommands.antishulker);
     }
 
-    if (antiShulkerBoolean === false) {
+    if (configuration.modules.antishulker.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antishulker_b", true);
-        world.setDynamicProperty("antishulker_b", true);
+        configuration.modules.antishulker.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti-Shulkers§f!`);
-    } else if (antiShulkerBoolean === true) {
+    } else if (configuration.modules.antishulker.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antishulker_b", false);
-        world.setDynamicProperty("antishulker_b", false);
+        configuration.modules.antishulker.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti-Shulkers§f!`);
     }
 }

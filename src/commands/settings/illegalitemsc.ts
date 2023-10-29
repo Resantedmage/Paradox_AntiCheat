@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { IllegalItemsC } from "../../penrose/TickEvent/illegalitems/illegalitems_c.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function illegalItemsCHelp(player: Player, prefix: string, illegalItemsCBoolean: string | number | boolean | Vector3) {
+function illegalItemsCHelp(player: Player, prefix: string, illegalItemsCBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.illegalitemsc) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function illegalitemsC(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function illegalitemsC(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const illegalItemsCBoolean = dynamicPropertyRegistry.get("illegalitemsc_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.illegalitemsc) {
-        return illegalItemsCHelp(player, prefix, illegalItemsCBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.illegalitemsc) {
+        return illegalItemsCHelp(player, prefix, configuration.modules.illegalitemsC.enabled, configuration.customcommands.illegalitemsc);
     }
 
-    if (illegalItemsCBoolean === false) {
+    if (configuration.modules.illegalitemsC.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("illegalitemsc_b", true);
-        world.setDynamicProperty("illegalitemsc_b", true);
+        configuration.modules.illegalitemsC.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsC§f!`);
         IllegalItemsC();
-    } else if (illegalItemsCBoolean === true) {
+    } else if (configuration.modules.illegalitemsC.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("illegalitemsc_b", false);
-        world.setDynamicProperty("illegalitemsc_b", false);
+        configuration.modules.illegalitemsC.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsC§f!`);
     }
 }

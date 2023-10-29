@@ -1,19 +1,26 @@
-import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { KillAura } from "../../penrose/EntityHitEntityAfterEvent/killaura.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function auraCheckHelp(player: Player, prefix: string) {
+function auraCheckHelp(player: Player, prefix: string, antiKillAuraBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antikillaura) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
+    let moduleStatus: string;
+    if (antiKillAuraBoolean === false) {
+        moduleStatus = "§6[§4DISABLED§6]§f";
+    } else {
+        moduleStatus = "§6[§aENABLED§6]§f";
+    }
     return sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: antikillaura`,
         `§4[§6Status§4]§f: ${commandStatus}`,
+        `§4[§6Module§4]§f: ${moduleStatus}`,
         `§4[§6Usage§4]§f: antikillaura [optional]`,
         `§4[§6Optional§4]§f: username, help`,
         `§4[§6Description§4]§f: Toggles checks for attacks outside a 90 degree angle.`,
@@ -51,7 +58,7 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -59,31 +66,26 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const antiKillAuraBoolean = dynamicPropertyRegistry.get("antikillaura_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    // Are there arguements
-    if (!args.length) {
-        return auraCheckHelp(player, prefix);
-    }
-
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antikillaura) {
-        return auraCheckHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antikillaura) {
+        return auraCheckHelp(player, prefix, configuration.modules.antiKillAura.enabled, configuration.customcommands.antikillaura);
     }
 
-    if (antiKillAuraBoolean === true) {
+    if (configuration.modules.antiKillAura.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antikillaura_b", false);
-        world.setDynamicProperty("antikillaura_b", false);
+        configuration.modules.antiKillAura.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiKillAura§f!`);
-    } else if (antiKillAuraBoolean === false) {
+    } else if (configuration.modules.antiKillAura.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antikillaura_b", true);
-        world.setDynamicProperty("antikillaura_b", true);
+        configuration.modules.antiKillAura.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiKillAura§f!`);
         KillAura();
     }

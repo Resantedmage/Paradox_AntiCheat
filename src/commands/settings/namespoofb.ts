@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { NamespoofB } from "../../penrose/TickEvent/namespoof/namespoof_b.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function namespoofBHelp(player: Player, prefix: string, nameSpoofBoolean: string | number | boolean | Vector3) {
+function namespoofBHelp(player: Player, prefix: string, nameSpoofBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.namespoofb) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function namespoofB(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function namespoofB(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const nameSpoofBoolean = dynamicPropertyRegistry.get("namespoofb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.namespoofb) {
-        return namespoofBHelp(player, prefix, nameSpoofBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.namespoofb) {
+        return namespoofBHelp(player, prefix, configuration.modules.namespoofB.enabled, configuration.customcommands.namespoofb);
     }
 
-    if (nameSpoofBoolean === false) {
+    if (configuration.modules.namespoofB.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("namespoofb_b", true);
-        world.setDynamicProperty("namespoofb_b", true);
+        configuration.modules.namespoofB.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6NamespoofB§f!`);
         NamespoofB;
-    } else if (nameSpoofBoolean === true) {
+    } else if (configuration.modules.namespoofB.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("namespoofb_b", false);
-        world.setDynamicProperty("namespoofb_b", false);
+        configuration.modules.namespoofB.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4NamespoofB§f!`);
     }
 }

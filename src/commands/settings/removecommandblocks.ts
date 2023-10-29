@@ -1,12 +1,12 @@
 import { ChatSendAfterEvent, Player } from "@minecraft/server";
-import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { ScoreManager } from "../../classes/ScoreManager.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function removeCBEHelp(player: Player, prefix: string, commandblocksscore: number) {
+function removeCBEHelp(player: Player, prefix: string, commandblocksscore: number, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.removecommandblocks) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -58,7 +58,7 @@ async function handleRemoveCommandBlocks(message: ChatSendAfterEvent, args: stri
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -67,13 +67,15 @@ async function handleRemoveCommandBlocks(message: ChatSendAfterEvent, args: stri
 
     const commandblocksscore = ScoreManager.getScore("commandblocks", player);
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.removecommandblocks) {
-        return removeCBEHelp(player, prefix, commandblocksscore);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.removecommandblocks) {
+        return removeCBEHelp(player, prefix, commandblocksscore, configuration.customcommands.removecommandblocks);
     }
 
     if (commandblocksscore <= 0) {

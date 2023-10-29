@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { AutoBan } from "../../penrose/TickEvent/ban/autoban.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function autobanHelp(player: Player, prefix: string, autoBanBoolean: string | number | boolean | Vector3) {
+function autobanHelp(player: Player, prefix: string, autoBanBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.autoban) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function autoban(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function autoban(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const autoBanBoolean = dynamicPropertyRegistry.get("autoban_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.autoban) {
-        return autobanHelp(player, prefix, autoBanBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.autoban) {
+        return autobanHelp(player, prefix, configuration.modules.autoBan.enabled, configuration.customcommands.autoban);
     }
 
-    if (autoBanBoolean === false) {
+    if (configuration.modules.autoBan.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("autoban_b", true);
-        world.setDynamicProperty("autoban_b", true);
+        configuration.modules.autoBan.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6autoban§f!`);
         AutoBan();
-    } else if (autoBanBoolean === true) {
+    } else if (configuration.modules.autoBan.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("autoban_b", false);
-        world.setDynamicProperty("autoban_b", false);
+        configuration.modules.autoBan.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4autoban§f!`);
     }
 }

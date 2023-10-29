@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { ReachB } from "../../penrose/EntityHitEntityAfterEvent/reach_b.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function reachBHelp(player: Player, prefix: string, reachBBoolean: string | number | boolean | Vector3) {
+function reachBHelp(player: Player, prefix: string, reachBBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.reachb) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function reachB(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function reachB(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const reachBBoolean = dynamicPropertyRegistry.get("reachb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.reachb) {
-        return reachBHelp(player, prefix, reachBBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.reachb) {
+        return reachBHelp(player, prefix, configuration.modules.reachB.enabled, configuration.customcommands.reachb);
     }
 
-    if (reachBBoolean === false) {
+    if (configuration.modules.reachB.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("reachb_b", true);
-        world.setDynamicProperty("reachb_b", true);
+        configuration.modules.reachB.enabled = true;
+        dynamicPropertyRegistry.setProperty(player, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ReachB§f!`);
         ReachB();
-    } else if (reachBBoolean === true) {
+    } else if (configuration.modules.reachB.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("reachb_b", false);
-        world.setDynamicProperty("reachb_b", false);
+        configuration.modules.reachB.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ReachB§f!`);
     }
 }

@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { BadPackets2 } from "../../penrose/TickEvent/badpackets2/badpackets2.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function badpackets2Help(player: Player, prefix: string, badPackets2Boolean: string | number | boolean | Vector3) {
+function badpackets2Help(player: Player, prefix: string, badPackets2Boolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.badpackets2) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const badPackets2Boolean = dynamicPropertyRegistry.get("badpackets2_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.badpackets2) {
-        return badpackets2Help(player, prefix, badPackets2Boolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.badpackets2) {
+        return badpackets2Help(player, prefix, configuration.modules.badpackets2.enabled, configuration.customcommands.badpackets2);
     }
 
-    if (badPackets2Boolean === false) {
+    if (configuration.modules.badpackets2.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("badpackets2_b", true);
-        world.setDynamicProperty("badpackets2_b", true);
+        configuration.modules.badpackets2.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Badpackets2§f!`);
         BadPackets2();
-    } else if (badPackets2Boolean === true) {
+    } else if (configuration.modules.badpackets2.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("badpackets2_b", false);
-        world.setDynamicProperty("badpackets2_b", false);
+        configuration.modules.badpackets2.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
     }
 }

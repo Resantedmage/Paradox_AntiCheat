@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { ScaffoldA } from "../../penrose/PlayerPlaceBlockAfterEvent/scaffold/scaffold_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function antiscaffoldaHelp(player: Player, prefix: string, antiScaffoldABoolean: string | number | boolean | Vector3) {
+function antiscaffoldaHelp(player: Player, prefix: string, antiScaffoldABoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.antiscaffolda) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function antiscaffoldA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function antiscaffoldA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const antiScaffoldABoolean = dynamicPropertyRegistry.get("antiscaffolda_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.antiscaffolda) {
-        return antiscaffoldaHelp(player, prefix, antiScaffoldABoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antiscaffolda) {
+        return antiscaffoldaHelp(player, prefix, configuration.modules.antiscaffoldA.enabled, configuration.customcommands.antiscaffolda);
     }
 
-    if (antiScaffoldABoolean === false) {
+    if (configuration.modules.antiscaffoldA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("antiscaffolda_b", true);
-        world.setDynamicProperty("antiscaffolda_b", true);
+        configuration.modules.antiscaffoldA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiScaffoldA§f!`);
         ScaffoldA();
-    } else if (antiScaffoldABoolean === true) {
+    } else if (configuration.modules.antiscaffoldA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("antiscaffolda_b", false);
-        world.setDynamicProperty("antiscaffolda_b", false);
+        configuration.modules.antiscaffoldA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiScaffoldA§f!`);
     }
 }

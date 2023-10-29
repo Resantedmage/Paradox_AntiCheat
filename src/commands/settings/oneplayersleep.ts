@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { OPS } from "../../penrose/TickEvent/oneplayersleep/oneplayersleep.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function opsHelp(player: Player, prefix: string, opsBoolean: string | number | boolean | Vector3) {
+function opsHelp(player: Player, prefix: string, opsBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.ops) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function ops(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function ops(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const opsBoolean = dynamicPropertyRegistry.get("ops_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.ops) {
-        return opsHelp(player, prefix, opsBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.ops) {
+        return opsHelp(player, prefix, configuration.modules.ops.enabled, configuration.customcommands.ops);
     }
 
-    if (opsBoolean === false) {
+    if (configuration.modules.ops.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("ops_b", true);
-        world.setDynamicProperty("ops_b", true);
+        configuration.modules.ops.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6OPS§f!`);
         OPS();
-    } else if (opsBoolean === true) {
+    } else if (configuration.modules.ops.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("ops_b", false);
-        world.setDynamicProperty("ops_b", false);
+        configuration.modules.ops.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4OPS§f!`);
     }
 }

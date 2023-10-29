@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { XrayA } from "../../penrose/PlayerBreakBlockAfterEvent/xray/xray_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function xrayAHelp(player: Player, prefix: string, xrayBoolean: string | number | boolean | Vector3) {
+function xrayAHelp(player: Player, prefix: string, xrayBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.xraya) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function xrayA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function xrayA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const xrayBoolean = dynamicPropertyRegistry.get("xraya_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.xraya) {
-        return xrayAHelp(player, prefix, xrayBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.xraya) {
+        return xrayAHelp(player, prefix, configuration.modules.xrayA.enabled, configuration.customcommands.xraya);
     }
 
-    if (xrayBoolean === false) {
+    if (configuration.modules.xrayA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("xraya_b", true);
-        world.setDynamicProperty("xraya_b", true);
+        configuration.modules.xrayA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6XrayA§f!`);
         XrayA();
-    } else if (xrayBoolean === true) {
+    } else if (configuration.modules.xrayA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("xraya_b", false);
-        world.setDynamicProperty("xraya_b", false);
+        configuration.modules.xrayA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4XrayA§f!`);
     }
 }

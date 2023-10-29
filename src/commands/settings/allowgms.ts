@@ -1,13 +1,13 @@
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
-import config from "../../data/config.js";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { Adventure } from "../../penrose/TickEvent/gamemode/adventure.js";
 import { Survival } from "../../penrose/TickEvent/gamemode/survival.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function allowgmsHelp(player: Player, prefix: string, survivalGMBoolean: string | number | boolean | Vector3) {
+function allowgmsHelp(player: Player, prefix: string, survivalGMBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.allowgms) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -45,7 +45,7 @@ export function allowgms(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -53,38 +53,36 @@ export function allowgms(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const adventureGMBoolean = dynamicPropertyRegistry.get("adventuregm_b");
-    const creativeGMBoolean = dynamicPropertyRegistry.get("creativegm_b");
-    const survivalGMBoolean = dynamicPropertyRegistry.get("survivalgm_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.allowgms) {
-        return allowgmsHelp(player, prefix, survivalGMBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.allowgms) {
+        return allowgmsHelp(player, prefix, configuration.modules.survivalGM.enabled, configuration.customcommands.allowgms);
     }
 
-    if (survivalGMBoolean === false) {
+    if (configuration.modules.survivalGM.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("survivalgm_b", true);
-        world.setDynamicProperty("survivalgm_b", true);
+        configuration.modules.survivalGM.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         // Make sure at least one is allowed since this could cause serious issues if all were locked down
         // We will allow Adventure Mode in this case
-        if (adventureGMBoolean === true && creativeGMBoolean === true) {
-            dynamicPropertyRegistry.set("adventuregm_b", false);
-            world.setDynamicProperty("adventuregm_b", false);
+        if (configuration.modules.adventureGM.enabled === true && configuration.modules.creativeGM.enabled === true) {
+            configuration.modules.adventureGM.enabled = false;
+            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f Since all gamemodes were disallowed, Adventure mode has been enabled.`);
             Adventure();
             return;
         }
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disallowed §4Gamemode 0 (Survival)§f to be used!`);
         Survival();
-    } else if (survivalGMBoolean === true) {
+    } else if (configuration.modules.survivalGM.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("survivalgm_b", false);
-        world.setDynamicProperty("survivalgm_b", false);
+        configuration.modules.survivalGM.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 0 (Survival)§f to be used!`);
     }
 }

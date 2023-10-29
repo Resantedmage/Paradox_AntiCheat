@@ -1,12 +1,12 @@
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
-import config from "../../data/config.js";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { WorldBorder } from "../../penrose/TickEvent/worldborder/worldborder.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function worldBorderHelp(player: Player, prefix: string, worldBorderBoolean: string | number | boolean | Vector3) {
+function worldBorderHelp(player: Player, prefix: string, worldBorderBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.worldborder) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -36,16 +36,13 @@ function worldBorderHelp(player: Player, prefix: string, worldBorderBoolean: str
     ]);
 }
 
-function setWorldBorder(player: Player, overworldSize: number, netherSize: number, endSize: number) {
+function setWorldBorder(player: Player, overworldSize: number, netherSize: number, endSize: number, configuration: ConfigInterface) {
     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set the §6World Border§f! Overworld: §7${overworldSize}§f Nether: §7${netherSize}§f End: §7${endSize}§f`);
-    dynamicPropertyRegistry.set("worldborder_b", true);
-    dynamicPropertyRegistry.set("worldborder_n", Math.abs(overworldSize));
-    dynamicPropertyRegistry.set("worldborder_nether_n", Math.abs(netherSize));
-    dynamicPropertyRegistry.set("worldborder_end_n", Math.abs(endSize));
-    world.setDynamicProperty("worldborder_b", true);
-    world.setDynamicProperty("worldborder_n", Math.abs(overworldSize));
-    world.setDynamicProperty("worldborder_nether_n", Math.abs(netherSize));
-    world.setDynamicProperty("worldborder_end_n", Math.abs(endSize));
+    configuration.modules.worldBorder.overworld = Math.abs(overworldSize);
+    configuration.modules.worldBorder.nether = Math.abs(netherSize);
+    configuration.modules.worldBorder.nether = Math.abs(endSize);
+    configuration.modules.worldBorder.enabled = true;
+    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
     WorldBorder();
 }
 
@@ -60,34 +57,31 @@ export function worldborders(message: ChatSendAfterEvent, args: string[]) {
     }
 
     const player = message.sender;
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
     const prefix = getPrefix(player);
-    const worldBorderBoolean = dynamicPropertyRegistry.get("worldborder_b");
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Cache
     const length = args.length;
 
-    if (!length || args[0].toLowerCase() === "help" || !config.customcommands.worldborder) {
-        return worldBorderHelp(player, prefix, worldBorderBoolean);
+    if (!length || args[0].toLowerCase() === "help" || !configuration.customcommands.worldborder) {
+        return worldBorderHelp(player, prefix, configuration.modules.worldBorder.enabled, configuration.customcommands.worldborder);
     }
 
     // Shutdown worldborder
     if (args[0] === "disable") {
         // Disable Worldborder
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled the §6World Border§f!`);
-        dynamicPropertyRegistry.set("worldborder_b", false);
-        dynamicPropertyRegistry.set("worldborder_n", 0);
-        dynamicPropertyRegistry.set("worldborder_nether_n", 0);
-        dynamicPropertyRegistry.set("worldborder_end_n", 0);
-        world.setDynamicProperty("worldborder_b", false);
-        world.setDynamicProperty("worldborder_n", 0);
-        world.setDynamicProperty("worldborder_nether_n", 0);
-        world.setDynamicProperty("worldborder_end_n", 0);
+        configuration.modules.worldBorder.overworld = 0;
+        configuration.modules.worldBorder.nether = 0;
+        configuration.modules.worldBorder.nether = 0;
+        configuration.modules.worldBorder.enabled = false;
         return;
     }
 
@@ -106,9 +100,9 @@ export function worldborders(message: ChatSendAfterEvent, args: string[]) {
         }
     }
 
-    let overworldSize = dynamicPropertyRegistry.get("worldborder_n") || 0;
-    let netherSize = dynamicPropertyRegistry.get("worldborder_nether_n") || 0;
-    let endSize = dynamicPropertyRegistry.get("worldborder_end_n") || 0;
+    let overworldSize = configuration.modules.worldBorder.overworld || 0;
+    let netherSize = configuration.modules.worldBorder.nether || 0;
+    let endSize = configuration.modules.worldBorder.end || 0;
 
     for (let i = 0; i < length; i++) {
         const arg = args[i].toLowerCase();
@@ -129,9 +123,9 @@ export function worldborders(message: ChatSendAfterEvent, args: string[]) {
     }
 
     if (overworldSize || netherSize || endSize) {
-        setWorldBorder(player, overworldSize as number, netherSize as number, endSize as number);
+        setWorldBorder(player, overworldSize as number, netherSize as number, endSize as number, configuration);
         return;
     }
 
-    return worldBorderHelp(player, prefix, worldBorderBoolean);
+    return worldBorderHelp(player, prefix, configuration.modules.worldBorder.enabled, configuration.customcommands.worldborder);
 }

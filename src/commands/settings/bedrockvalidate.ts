@@ -1,12 +1,12 @@
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
-import config from "../../data/config.js";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { BedrockValidate } from "../../penrose/TickEvent/bedrock/bedrockvalidate.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function bedrockValidateHelp(player: Player, prefix: string, bedrockValidateBoolean: string | number | boolean | Vector3) {
+function bedrockValidateHelp(player: Player, prefix: string, bedrockValidateBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.bedrockvalidate) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function bedrockvalidate(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function bedrockvalidate(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const bedrockValidateBoolean = dynamicPropertyRegistry.get("bedrockvalidate_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.bedrockvalidate) {
-        return bedrockValidateHelp(player, prefix, bedrockValidateBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.bedrockvalidate) {
+        return bedrockValidateHelp(player, prefix, configuration.modules.bedrockValidate.enabled, configuration.customcommands.bedrockvalidate);
     }
 
-    if (bedrockValidateBoolean === false) {
+    if (configuration.modules.bedrockValidate.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("bedrockvalidate_b", true);
-        world.setDynamicProperty("bedrockvalidate_b", true);
+        configuration.modules.bedrockValidate.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6BedrockValidate§f!`);
         BedrockValidate();
-    } else if (bedrockValidateBoolean === true) {
+    } else if (configuration.modules.bedrockValidate.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("bedrockvalidate_b", false);
-        world.setDynamicProperty("bedrockvalidate_b", false);
+        configuration.modules.bedrockValidate.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4BedrockValidate§f!`);
     }
 }

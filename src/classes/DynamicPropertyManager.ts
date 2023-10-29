@@ -1,4 +1,4 @@
-import { world, Vector3 } from "@minecraft/server";
+import { world, Vector3, Player } from "@minecraft/server";
 
 type PropertyValue = string | number | boolean | Vector3 | object;
 
@@ -26,11 +26,12 @@ export class DynamicPropertyManager {
     }
 
     /**
-     * Set a dynamic property with a name and value.
+     * Set a dynamic property with a name and value for a specific player or globally.
+     * @param player The player object (use undefined for global properties).
      * @param name The name of the property.
      * @param value The value of the property.
      */
-    setProperty(name: string, value: PropertyValue): void {
+    setProperty(player: Player | undefined, name: string, value: PropertyValue): void {
         const serializedValue = typeof value === "string" ? value : JSON.stringify(value);
         let currentIndex = 0;
         let remainingValue = serializedValue;
@@ -38,25 +39,33 @@ export class DynamicPropertyManager {
         while (remainingValue.length > 0) {
             const chunk = remainingValue.slice(0, 32766);
             const propertyName = currentIndex === 0 ? name : `${name}_${currentIndex}`;
-            world.setDynamicProperty(propertyName, chunk);
+
+            // Conditionally select the appropriate method
+            if (player) {
+                player.setDynamicProperty(propertyName, chunk);
+            } else {
+                world.setDynamicProperty(propertyName, chunk);
+            }
+
             remainingValue = remainingValue.slice(32766);
             currentIndex++;
         }
     }
 
     /**
-     * Get the value of a dynamic property by its name.
+     * Get the value of a dynamic property by its name for a specific player or globally.
+     * @param player The player object (use undefined for global properties).
      * @param name The name of the property.
      * @returns The value of the property or undefined if it doesn't exist.
      */
-    getProperty(name: string): PropertyValue | undefined {
-        let serializedValue: string | undefined = world.getDynamicProperty(name) as string;
+    getProperty(player: Player | undefined, name: string): PropertyValue | undefined {
+        let serializedValue: string | undefined = player ? (player.getDynamicProperty(name) as string) : (world.getDynamicProperty(name) as string);
 
         // Check for properties with prefixes
         let index = 0;
         while (true) {
             const propertyName = `${name}_${index}`;
-            const partValue = world.getDynamicProperty(propertyName);
+            const partValue = player ? player.getDynamicProperty(propertyName) : world.getDynamicProperty(propertyName);
             if (partValue === undefined) {
                 break;
             }
@@ -73,18 +82,26 @@ export class DynamicPropertyManager {
     }
 
     /**
-     * Delete a dynamic property and its affiliated properties by name.
+     * Delete a dynamic property and its affiliated properties for a specific player or globally by name.
+     * @param player The player object (use undefined for global properties).
      * @param name The name of the property to delete.
      */
-    deleteProperty(name: string): void {
+    deleteProperty(player: Player | undefined, name: string): void {
         let index = 0;
         while (true) {
             const dynamicPropertyName = `${name}_${index}`;
-            const existingValue = world.getDynamicProperty(dynamicPropertyName);
+            const existingValue = player ? player.getDynamicProperty(dynamicPropertyName) : world.getDynamicProperty(dynamicPropertyName);
             if (existingValue === undefined) {
                 break; // Stop the loop when there are no more properties to delete
             }
-            world.setDynamicProperty(dynamicPropertyName, undefined); // Use undefined to delete the property for clarity
+
+            // Conditionally select the appropriate method
+            if (player) {
+                player.setDynamicProperty(dynamicPropertyName, undefined);
+            } else {
+                world.setDynamicProperty(dynamicPropertyName, undefined);
+            }
+
             index++;
         }
     }

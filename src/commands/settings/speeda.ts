@@ -1,12 +1,12 @@
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
-import { ChatSendAfterEvent, Player, Vector3, world } from "@minecraft/server";
+import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { SpeedA } from "../../penrose/TickEvent/speed/speed_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function speedAHelp(player: Player, prefix: string, speedBoolean: string | number | boolean | Vector3) {
+function speedAHelp(player: Player, prefix: string, speedBoolean: boolean, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.speeda) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -44,7 +44,7 @@ export function speedA(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
@@ -52,27 +52,27 @@ export function speedA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const speedBoolean = dynamicPropertyRegistry.get("speeda_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.speeda) {
-        return speedAHelp(player, prefix, speedBoolean);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.speeda) {
+        return speedAHelp(player, prefix, configuration.modules.speedA.enabled, configuration.customcommands.speeda);
     }
 
-    if (speedBoolean === false) {
+    if (configuration.modules.speedA.enabled === false) {
         // Allow
-        dynamicPropertyRegistry.set("speeda_b", true);
-        world.setDynamicProperty("speeda_b", true);
+        configuration.modules.speedA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SpeedA§f!`);
         SpeedA();
-    } else if (speedBoolean === true) {
+    } else if (configuration.modules.speedA.enabled === true) {
         // Deny
-        dynamicPropertyRegistry.set("speeda_b", false);
-        world.setDynamicProperty("speeda_b", false);
+        configuration.modules.speedA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SpeedA§f!`);
     }
 }
