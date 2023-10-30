@@ -1,4 +1,4 @@
-<img src="../Media/Paradox_Title.png" alt="Let's Go"></img>
+![Paradox](../Media/Paradox_Title.png)
 
 ## Command System Via Chat
 
@@ -8,4 +8,4 @@ Paradox utilizes chat commands; all commands are executed in chat. If you are un
 
 Paradox also has a GUI. This can be accessed by running `!paradoxui` and then closing chat, allowing the menu to load. You will be prompted by a response in the chat UI to close it. Once loaded, you can then browse all the modules, features, and other options available in Paradox. Some features are exclusive to the GUI, such as InventoryUI and Item Editor.
 
-<img src="../Media/gui.png" alt="ParadoxUI" width="500" height="500">
+![Paradox](../Media/gui.png)

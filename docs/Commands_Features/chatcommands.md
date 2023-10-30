@@ -1,4 +1,4 @@
-<img src="../Media/Paradox_Title.png" alt="Lets Go"> </img>
+![Paradox](../Media/Paradox_Title.png)
 
 ## !afk
 
