@@ -1,12 +1,13 @@
 import { ChatSendAfterEvent, Player, PlayerLeaveAfterEvent, world } from "@minecraft/server";
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
-import config from "../../data/config.js";
 import { ChatChannelManager } from "../../classes/ChatChannelManager.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 
-function chatChannelHelp(player: Player, prefix: string) {
+function chatChannelHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.channel) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -76,8 +77,10 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
 
     const commandArgs = args;
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     if (commandArgs[0] !== "members" && commandArgs[0] !== "leave" && (commandArgs[0] === "help" || commandArgs.length < 2)) {
-        chatChannelHelp(player, prefix);
+        chatChannelHelp(player, prefix, configuration.customcommands.channel);
         return;
     }
 

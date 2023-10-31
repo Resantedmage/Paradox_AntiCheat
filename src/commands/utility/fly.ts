@@ -1,11 +1,11 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function flyHelp(player: Player, prefix: string | number | boolean) {
+function flyHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.fly) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -60,25 +60,27 @@ async function handleFly(message: ChatSendAfterEvent, args: string[]) {
     const player = message.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Check for custom prefix
     const prefix = getPrefix(player);
 
     // Are there arguements
     if (!args.length) {
-        return flyHelp(player, prefix);
+        return flyHelp(player, prefix, configuration.customcommands.fly);
     }
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.fly) {
-        return flyHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.fly) {
+        return flyHelp(player, prefix, configuration.customcommands.fly);
     }
 
     // try to find the player requested

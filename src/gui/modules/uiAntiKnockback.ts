@@ -1,9 +1,10 @@
-import { Player, world } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
 import { AntiKnockbackA } from "../../penrose/TickEvent/knockback/antikb_a.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
 /**
  * Handles the result of a modal form used for toggling anti-knockback mode.
@@ -33,26 +34,26 @@ async function handleUIAntiKnockback(antiknockbackResult: ModalFormResponse, pla
     }
     const [AntiKnockBackToggle] = antiknockbackResult.formValues;
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
-
-    // Get Dynamic Property Boolean
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Anti Knockback`);
     }
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     if (AntiKnockBackToggle === true) {
         // Allow
-        dynamicPropertyRegistry.set("antikb_b", true);
-        world.setDynamicProperty("antikb_b", true);
+        configuration.modules.antikbA.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Knockback§f!`);
         AntiKnockbackA();
     }
     if (AntiKnockBackToggle === false) {
         // Deny
-        dynamicPropertyRegistry.set("antikb_b", false);
-        world.setDynamicProperty("antikb_b", false);
+        configuration.modules.antikbA.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Knockback§f!`);
     }
 

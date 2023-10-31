@@ -231,6 +231,7 @@ export default {
         },
         showrules: {
             enabled: true,
+            kick: false,
             rule1: "Rule1: No hacking allowed.",
             rule2: "Rule2: Don't grief other players' builds.",
             rule3: "Rule3: Be kind to everyone on the server.",

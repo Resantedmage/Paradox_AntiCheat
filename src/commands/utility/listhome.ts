@@ -1,11 +1,12 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 
-function listHomeHelp(player: Player, prefix: string) {
+function listHomeHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.listhome) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -40,10 +41,12 @@ export function listhome(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.listhome) {
-        return listHomeHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.listhome) {
+        return listHomeHelp(player, prefix, configuration.customcommands.listhome);
     }
 
     // Hash the coordinates for security

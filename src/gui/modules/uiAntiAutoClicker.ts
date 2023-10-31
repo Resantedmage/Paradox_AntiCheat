@@ -4,6 +4,7 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
 import { AutoClicker } from "../../penrose/EntityHitEntityAfterEvent/autoclicker";
+import ConfigInterface from "../../interfaces/Config";
 
 /**
  * Handles the result of a modal form used for toggling anti-auto clicker mode.
@@ -33,7 +34,7 @@ async function handleUIAntiAutoClicker(antiautoclickerResult: ModalFormResponse,
     }
     const [AntiAutoClickerToggle] = antiautoclickerResult.formValues;
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Get Dynamic Property Boolean
 
@@ -41,17 +42,20 @@ async function handleUIAntiAutoClicker(antiautoclickerResult: ModalFormResponse,
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Auto Clicker`);
     }
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     if (AntiAutoClickerToggle === true) {
         // Allow
-        dynamicPropertyRegistry.set("autoclicker_b", true);
-        world.setDynamicProperty("autoclicker_b", true);
+        configuration.modules.autoclicker.enabled = true;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AutoClicker§f!`);
         AutoClicker();
     }
     if (AntiAutoClickerToggle === false) {
         // Deny
-        dynamicPropertyRegistry.set("autoclicker_b", false);
-        world.setDynamicProperty("autoclicker_b", false);
+        configuration.modules.autoclicker.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AutoClicker§f!`);
     }
 

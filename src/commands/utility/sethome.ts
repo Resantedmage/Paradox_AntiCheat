@@ -1,11 +1,12 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function setHomeHelp(player: Player, prefix: string) {
+function setHomeHelp(player: Player, prefix: string, configuration: ConfigInterface) {
     let commandStatus: string;
-    if (!config.customcommands.sethome) {
+    if (!configuration.customcommands.sethome) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -15,7 +16,7 @@ function setHomeHelp(player: Player, prefix: string) {
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Usage§4]§f: sethome [optional]`,
         `§4[§6Optional§4]§f: name, help`,
-        `§4[§6Description§4]§f: Saves home location based on current coordinates. Up to ${config.modules.setHome.max} total.`,
+        `§4[§6Description§4]§f: Saves home location based on current coordinates. Up to ${configuration.modules.setHome.max} total.`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}sethome barn`,
         `        §4- §6Save a home location with the name "barn"§f`,
@@ -40,15 +41,17 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Are there arguements
     if (!args.length) {
-        return setHomeHelp(player, prefix);
+        return setHomeHelp(player, prefix, configuration);
     }
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.sethome) {
-        return setHomeHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.sethome) {
+        return setHomeHelp(player, prefix, configuration);
     }
 
     // Get current location
@@ -61,7 +64,7 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
 
     // Don't allow spaces
     if (args.length > 1 || args[0].trim().length === 0) {
-        setHomeHelp(player, prefix);
+        setHomeHelp(player, prefix, configuration);
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f No spaces in names please!`);
     }
 
@@ -86,9 +89,9 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
         if (tags[i].startsWith("LocationHome:")) {
             counter = ++counter;
         }
-        if (counter >= config.modules.setHome.max && config.modules.setHome.enabled) {
+        if (counter >= configuration.modules.setHome.max && configuration.modules.setHome.enabled) {
             verify = true;
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You can only have §7${config.modules.setHome.max}§f saved locations at a time!`);
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You can only have §7${configuration.modules.setHome.max}§f saved locations at a time!`);
             break;
         }
     }

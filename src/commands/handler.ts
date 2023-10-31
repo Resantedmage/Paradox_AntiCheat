@@ -1,5 +1,4 @@
 import { ChatSendAfterEvent, ChatSendBeforeEvent, Player } from "@minecraft/server";
-import config from "../data/config.js";
 import { sendMsgToPlayer } from "../util.js";
 
 // import all our commands
@@ -87,6 +86,8 @@ import { antiphaseA } from "./settings/antiphasea.js";
 import { chatChannel } from "./utility/channel.js";
 import { pvp } from "./utility/pvp.js";
 import { spawnprotection } from "./settings/spawnprotection.js";
+import { dynamicPropertyRegistry } from "../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../interfaces/Config.js";
 
 const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, args: string[], fullArgs: string) => void> = Object.setPrototypeOf(
     {
@@ -185,25 +186,27 @@ const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, arg
  */
 
 export function commandHandler(player: Player, message: ChatSendBeforeEvent): Promise<void> | void {
-    if (config.debug) {
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
+    if (configuration.debug) {
         console.warn(`${new Date()} | did run command handler`);
     }
 
     // checks if the message starts with our prefix, if not exit
-    if (!message.message.startsWith(config.customcommands.prefix)) return void 0;
+    if (!message.message.startsWith(configuration.customcommands.prefix)) return void 0;
 
-    const args = message.message.slice(config.customcommands.prefix.length).split(/ +/);
+    const args = message.message.slice(configuration.customcommands.prefix.length).split(/ +/);
 
     const commandName = args.shift().toLowerCase();
 
-    if (config.debug) console.warn(`${new Date()} | "${player.name}" used the command: ${config.customcommands.prefix}${commandName} ${args.join(" ")}`);
+    if (configuration.debug) console.warn(`${new Date()} | "${player.name}" used the command: ${configuration.customcommands.prefix}${commandName} ${args.join(" ")}`);
 
     if (!(commandName in commandDefinitions)) {
         message.cancel = true;
         message.sendToTargets = true;
         message.setTargets([]);
         message.message = "";
-        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f The command §7${config.customcommands.prefix}${commandName}§f does not exist. Try again!`);
+        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f The command §7${configuration.customcommands.prefix}${commandName}§f does not exist. Try again!`);
     }
 
     // Do not broadcast any message to any targets
@@ -211,17 +214,19 @@ export function commandHandler(player: Player, message: ChatSendBeforeEvent): Pr
 }
 
 export function handleCommandAfterSend(chatSendAfterEvent: ChatSendAfterEvent): void {
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Logic for handling the command after the message is sent
-    if (!chatSendAfterEvent.message.startsWith(config.customcommands.prefix)) return;
+    if (!chatSendAfterEvent.message.startsWith(configuration.customcommands.prefix)) return;
 
     // Do not broadcast any message to any targets
     chatSendAfterEvent.sendToTargets = true;
 
-    const args = chatSendAfterEvent.message.slice(config.customcommands.prefix.length).split(/ +/);
+    const args = chatSendAfterEvent.message.slice(configuration.customcommands.prefix.length).split(/ +/);
 
     const commandName = args.shift().toLowerCase();
 
-    commandDefinitions[commandName](chatSendAfterEvent, args, chatSendAfterEvent.message.slice(config.customcommands.prefix.length + commandName.length + 1));
+    commandDefinitions[commandName](chatSendAfterEvent, args, chatSendAfterEvent.message.slice(configuration.customcommands.prefix.length + commandName.length + 1));
 
     chatSendAfterEvent.message = "";
 }

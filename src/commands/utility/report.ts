@@ -1,10 +1,11 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
-function reportHelp(player: Player, prefix: string) {
+function reportHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.report) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -42,15 +43,17 @@ export function report(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Are there arguements
     if (!args.length) {
-        return reportHelp(player, prefix);
+        return reportHelp(player, prefix, configuration.customcommands.report);
     }
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.report) {
-        return reportHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.report) {
+        return reportHelp(player, prefix, configuration.customcommands.report);
     }
 
     // Try to find the player requested

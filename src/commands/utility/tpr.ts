@@ -1,7 +1,8 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config";
 import { getPrefix, sendMsgToPlayer, setTimer } from "../../util";
 import { WorldExtended } from "../../classes/WorldExtended/World";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry";
+import ConfigInterface from "../../interfaces/Config";
 
 interface TeleportRequest {
     requester: Player;
@@ -17,9 +18,9 @@ export function getTeleportRequests(): TeleportRequest[] {
     return teleportRequests;
 }
 
-function tprHelp(player: Player, prefix: string) {
+function tprHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.tpr) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -39,7 +40,7 @@ function tprHelp(player: Player, prefix: string) {
 }
 
 // This handles the submission of requests
-function teleportRequestHandler({ sender, message }: ChatSendAfterEvent) {
+function teleportRequestHandler({ sender, message }: ChatSendAfterEvent, configuration: ConfigInterface) {
     const player = sender;
     const args = message.split(" ");
     if (args.length < 2) return;
@@ -79,7 +80,7 @@ function teleportRequestHandler({ sender, message }: ChatSendAfterEvent) {
      * 60 minutes per hour, or 3600000 milliseconds per hour
      * 24 hours per day, or 86400000 milliseconds per day
      */
-    const { tprExpiration } = config.modules;
+    const { tprExpiration } = configuration.modules;
     const durationInMs = tprExpiration.seconds * 1000 + tprExpiration.minutes * 60000 + tprExpiration.hours * 3600000 + tprExpiration.days * 86400000;
 
     teleportRequests.push({
@@ -146,15 +147,17 @@ export function TeleportRequestHandler({ sender, message }: ChatSendAfterEvent, 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Are there arguements
     if (!args.length) {
-        return tprHelp(player, prefix);
+        return tprHelp(player, prefix, configuration.customcommands.tpr);
     }
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.tpr) {
-        return tprHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.tpr) {
+        return tprHelp(player, prefix, configuration.customcommands.tpr);
     }
 
     // Handle submitted requests here
@@ -163,7 +166,7 @@ export function TeleportRequestHandler({ sender, message }: ChatSendAfterEvent, 
             sender,
             message,
         } as ChatSendAfterEvent;
-        teleportRequestHandler(event);
+        teleportRequestHandler(event, configuration);
     }
 
     // This is for the GUI when sending approvals or denials
@@ -181,7 +184,8 @@ export function TeleportRequestHandler({ sender, message }: ChatSendAfterEvent, 
 // Subscribe to teleportRequestApprovalHandler
 const TpRequestListener = () => {
     // If TPR is not disabled
-    const validate = config.customcommands.tpr;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const validate = configuration.customcommands.tpr;
     if (validate) {
         world.afterEvents.chatSend.subscribe(teleportRequestApprovalHandler);
     }

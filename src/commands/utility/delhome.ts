@@ -1,11 +1,12 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { getPrefix, sendMsgToPlayer } from "../../util.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 
-function delhomeHelp(player: Player, prefix: string) {
+function delhomeHelp(player: Player, prefix: string, setting: boolean) {
     let commandStatus: string;
-    if (!config.customcommands.delhome) {
+    if (!setting) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
@@ -37,6 +38,8 @@ export function delhome(message: ChatSendAfterEvent, args: string[]) {
 
     const player = message.sender;
 
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     // Check for custom prefix
     const prefix = getPrefix(player);
 
@@ -45,13 +48,13 @@ export function delhome(message: ChatSendAfterEvent, args: string[]) {
 
     // Are there arguements
     if (!length) {
-        return delhomeHelp(player, prefix);
+        return delhomeHelp(player, prefix, configuration.customcommands.delhome);
     }
 
     // Was help requested
     const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !config.customcommands.delhome) {
-        return delhomeHelp(player, prefix);
+    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.delhome) {
+        return delhomeHelp(player, prefix, configuration.customcommands.delhome);
     }
 
     // Don't allow spaces

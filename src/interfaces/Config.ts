@@ -232,6 +232,7 @@ interface ConfigInterface {
         };
         showrules: {
             enabled: boolean;
+            kick: boolean;
             rule1: string;
             rule2: string;
             rule3: string;

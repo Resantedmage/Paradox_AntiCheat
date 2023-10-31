@@ -1,15 +1,19 @@
 import { Player, world } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
-import config from "../../data/config.js";
 import { sendMsgToPlayer, setTimer } from "../../util.js";
 import { paradoxui } from "../paradoxui.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
+import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 
 export function uiSAVEDLOCATIONS(savedlocationsResult: ModalFormResponse, Locations: string[], player: Player, coordArray: string[]) {
     if (!savedlocationsResult || savedlocationsResult.canceled) {
         // Handle canceled form or undefined result
         return;
     }
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     const [selectedLocationvalue, teleportToSelectedLocation, deleteSelectedLocation, newLocationName] = savedlocationsResult.formValues;
     let x: number;
     let y: number;
@@ -71,8 +75,8 @@ export function uiSAVEDLOCATIONS(savedlocationsResult: ModalFormResponse, Locati
                 return paradoxui(player);
             }
             //Check to make sure they havent exceeded the max locations in config.js
-            if (counter >= config.modules.setHome.max && config.modules.setHome.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You can only have §7${config.modules.setHome.max}§f saved locations at a time!`);
+            if (counter >= configuration.modules.setHome.max && configuration.modules.setHome.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You can only have §7${configuration.modules.setHome.max}§f saved locations at a time!`);
                 return paradoxui(player);
             }
             continue;
