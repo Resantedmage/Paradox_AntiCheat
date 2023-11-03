@@ -33,7 +33,7 @@ async function handleUICommandBlocks(commandblocksResult: ModalFormResponse, pla
     }
     const [CommandBlockOverrideToggle, RemoveCommandBlocksToggle] = commandblocksResult.formValues;
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Get Dynamic Property Boolean
     //get the current scores

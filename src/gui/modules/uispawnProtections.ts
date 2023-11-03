@@ -1,9 +1,10 @@
-import { Player, Vector, world } from "@minecraft/server";
+import { Player, Vector } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
 import { SpawnProtection } from "../../penrose/TickEvent/spawnprotection/spawnProtection.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util.js";
 import { paradoxui } from "../paradoxui.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
 export function uiSpawnProtection(spawnProtectionResult: ModalFormResponse, player: Player) {
     if (!spawnProtectionResult || spawnProtectionResult.canceled) {
@@ -12,30 +13,30 @@ export function uiSpawnProtection(spawnProtectionResult: ModalFormResponse, play
     }
     const [spawnProtectionToggle, spawnProtection_X, spawnProtection_Y, spawnProtection_Z, spawnProtection_Radius] = spawnProtectionResult.formValues;
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Spawn Protection`);
     }
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
     if (spawnProtectionToggle === true) {
         // Allow
-        dynamicPropertyRegistry.set("spawnProtection_b", true);
-        world.setDynamicProperty("spawnProtection_b", true);
+        configuration.modules.spawnprotection.enabled = true;
         const vector3 = new Vector(Number(spawnProtection_X), Number(spawnProtection_Y), Number(spawnProtection_Z));
-        console.log(vector3);
-        dynamicPropertyRegistry.set("spawnProtection_V3", vector3);
-        world.setDynamicProperty("spawnProtection_V3", vector3);
-        console.log(spawnProtection_Radius);
-        dynamicPropertyRegistry.set("spawnProtection_Radius", Math.abs(Number(spawnProtection_Radius)));
-        world.setDynamicProperty("spawnProtection_Radius", Math.abs(Number(spawnProtection_Radius)));
+        configuration.modules.spawnprotection.enabled = true;
+        configuration.modules.spawnprotection.vector3 = vector3;
+        configuration.modules.spawnprotection.radius = Math.abs(Number(spawnProtection_Radius));
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Spawn Protection§f!`);
         SpawnProtection();
     }
     if (spawnProtectionToggle === false) {
         // Deny
-        dynamicPropertyRegistry.set("spawnProtection_b", false);
-        world.setDynamicProperty("spawnProtection_b", false);
+        configuration.modules.spawnprotection.enabled = false;
+        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Spawn Protection§f!`);
     }
 

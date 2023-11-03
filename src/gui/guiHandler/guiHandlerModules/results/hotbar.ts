@@ -1,13 +1,14 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
-import config from "../../../../data/config";
 import { uiHOTBAR } from "../../../modules/uiHotbar";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function hotbarHandler(player: Player) {
     const moduleshotbarui = new ModalFormData();
-    const hotbarBoolean = dynamicPropertyRegistry.get("hotbar_b") as boolean;
-    const CurrentHotbarConfig = config.modules.hotbar.message;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const hotbarBoolean = configuration.modules.hotbar.enabled;
+    const CurrentHotbarConfig = configuration.modules.hotbar.message;
     moduleshotbarui.title("§4Paradox Modules - Hotbar§4");
     moduleshotbarui.textField("Hotbar Message: ", "", CurrentHotbarConfig);
     moduleshotbarui.toggle("Enable Hotbar - Displays a hotbar message for all player's currently online:", hotbarBoolean);

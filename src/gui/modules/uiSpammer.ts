@@ -1,4 +1,4 @@
-import { Player, world } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
 import { SpammerA } from "../../penrose/ChatSendBeforeEvent/spammer/spammer_a.js";
 import { SpammerB } from "../../penrose/ChatSendBeforeEvent/spammer/spammer_b.js";
@@ -6,6 +6,7 @@ import { SpammerC } from "../../penrose/ChatSendBeforeEvent/spammer/spammer_c.js
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
 export function uiSPAMMER(spamResult: ModalFormResponse, player: Player) {
     if (!spamResult || spamResult.canceled) {
@@ -14,55 +15,55 @@ export function uiSPAMMER(spamResult: ModalFormResponse, player: Player) {
     }
     const [SpammerAToggle, SpammerBToggle, SpammerCToggle] = spamResult.formValues;
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
-    // Get Dynamic Property Boolean
-    const spammerABoolean = dynamicPropertyRegistry.get("spammera_b");
-    const spammerBBoolean = dynamicPropertyRegistry.get("spammerb_b");
-    const spammerCBoolean = dynamicPropertyRegistry.get("spammerc_b");
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Spammer`);
     }
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
+    // Get Dynamic Property Boolean
+    const spammerABoolean = configuration.modules.spammerA.enabled;
+    const spammerBBoolean = configuration.modules.spammerB.enabled;
+    const spammerCBoolean = configuration.modules.spammerC.enabled;
+
     if (SpammerAToggle === true && spammerABoolean === false) {
         // Allow
-        dynamicPropertyRegistry.set("spammera_b", true);
-        world.setDynamicProperty("spammera_b", true);
+        configuration.modules.spammerA.enabled = true;
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SpammerA§f!`);
         SpammerA();
     }
     if (SpammerAToggle === false && spammerABoolean === true) {
         //Deny
-        dynamicPropertyRegistry.set("spammera_b", false);
-        world.setDynamicProperty("spammera_b", false);
+        configuration.modules.spammerA.enabled = false;
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SpammerA§f!`);
     }
     if (SpammerBToggle === true && spammerBBoolean === false) {
         // Allow
-        dynamicPropertyRegistry.set("spammerb_b", true);
-        world.setDynamicProperty("spammerb_b", true);
+        configuration.modules.spammerB.enabled = true;
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SpammerB§f!`);
         SpammerB();
     }
     if (SpammerBToggle === false && spammerBBoolean === true) {
         // Deny
-        dynamicPropertyRegistry.set("spammerb_b", false);
-        world.setDynamicProperty("spammerb_b", false);
+        configuration.modules.spammerB.enabled = false;
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SpammerB§f!`);
     }
     if (SpammerCToggle === true && spammerCBoolean === false) {
         // Allow
-        dynamicPropertyRegistry.set("spammerc_b", true);
-        world.setDynamicProperty("spammerc_b", true);
+        configuration.modules.spammerC.enabled = true;
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SpammerC§f!`);
         SpammerC();
     }
     if (SpammerCToggle === false && spammerCBoolean === true) {
         // Deny
-        dynamicPropertyRegistry.set("spammerc_b", false);
-        world.setDynamicProperty("spammerc_b", false);
+        configuration.modules.spammerC.enabled = false;
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SpammerC§f!`);
     }
+
+    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
 
     //show the main ui to the player once complete.
     return paradoxui(player);

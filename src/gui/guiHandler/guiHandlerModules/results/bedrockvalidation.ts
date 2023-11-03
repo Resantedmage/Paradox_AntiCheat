@@ -2,10 +2,12 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiBEDROCKVALIDATION } from "../../../modules/uiBedrockValidation";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function bedrockValidationHandler(player: Player) {
     const modulesbedrockvalidateui = new ModalFormData();
-    const bedrockValidateBoolean = dynamicPropertyRegistry.get("bedrockvalidate_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const bedrockValidateBoolean = configuration.modules.bedrockValidate.enabled;
     modulesbedrockvalidateui.title("§4Paradox Modules - Bedrock Validation§4");
     modulesbedrockvalidateui.toggle("Bedrock Validate - Checks for bedrock validations:", bedrockValidateBoolean);
     modulesbedrockvalidateui

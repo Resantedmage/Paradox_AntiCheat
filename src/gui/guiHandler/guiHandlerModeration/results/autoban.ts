@@ -2,9 +2,11 @@ import { Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { ModalFormData } from "@minecraft/server-ui";
 import { uiAUTOBAN } from "../../../moderation/uiAutoBan";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function autobanHandler(player: Player) {
-    const autoBanBoolean = dynamicPropertyRegistry.get("autoban_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const autoBanBoolean = configuration.modules.autoBan.enabled;
     const autobanui = new ModalFormData();
     autobanui.title("§4Paradox - Auto Ban§4");
     autobanui.toggle("Enable or disable auto ban:", autoBanBoolean);

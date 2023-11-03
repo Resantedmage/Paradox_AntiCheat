@@ -2,11 +2,13 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiEXPSALVAGESYSTEM } from "../../../modules/uiExpSalvageSystem";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function salvageHandler(player: Player) {
     //New Slavage System
     const modulesexpsavlagesystem = new ModalFormData();
-    const salvageBoolean = dynamicPropertyRegistry.get("salvage_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const salvageBoolean = configuration.modules.salvage.enabled;
     modulesexpsavlagesystem.title("§4Paradox Modules - Salvage System§4");
     modulesexpsavlagesystem.toggle("Salvage System - Salvage all item's:", salvageBoolean);
     modulesexpsavlagesystem

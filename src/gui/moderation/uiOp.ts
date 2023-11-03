@@ -3,8 +3,8 @@ import { ActionFormResponse, ModalFormResponse } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
-import config from "../../data/config.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
 //Function provided by Visual1mpact
 export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: string | number | boolean, hash: string | number | boolean, player: Player, onlineList?: string[]) {
@@ -12,8 +12,11 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
         // Handle canceled form or undefined result
         return;
     }
-    if (!hash || !salt || (hash !== (world as WorldExtended).hashWithSalt(salt as string, config.encryption.password || player.id) && (world as WorldExtended).isValidUUID(salt as string))) {
-        if (!config.encryption.password) {
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
+    if (!hash || !salt || (hash !== (world as WorldExtended).hashWithSalt(salt as string, configuration.encryption.password || player.id) && (world as WorldExtended).isValidUUID(salt as string))) {
+        if (!configuration.encryption.password) {
             if (!player.isOp()) {
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Operator to use this command.`);
                 return paradoxui(player);
@@ -39,7 +42,7 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
             }
         } else {
             targetPlayer = player;
-            if (config.encryption.password !== value) {
+            if (configuration.encryption.password !== value) {
                 // Incorrect password
                 return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Incorrect password. You need to be Operator to use this command.`);
             }
@@ -53,14 +56,14 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
                 targetPlayer.setDynamicProperty("salt", targetSalt);
 
                 // Use either the operator's ID or the encryption password as the key
-                const targetKey = config.encryption.password ? config.encryption.password : targetPlayer.id;
+                const targetKey = configuration.encryption.password ? configuration.encryption.password : targetPlayer.id;
 
                 // Generate the hash
                 const newHash = (world as WorldExtended).hashWithSalt(targetSalt, targetKey);
 
                 targetPlayer.setDynamicProperty("hash", newHash);
 
-                dynamicPropertyRegistry.set(targetPlayer.id, targetPlayer.name);
+                dynamicPropertyRegistry.setProperty(targetPlayer, targetPlayer.id, targetPlayer.name);
 
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You have granted Paradox-Op to §7${targetPlayer.name}§f.`);
                 sendMsgToPlayer(targetPlayer, `§f§4[§6Paradox§4]§f You are now op!`);
@@ -88,7 +91,7 @@ export function uiOP(opResult: ModalFormResponse | ActionFormResponse, salt: str
 
             sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You are now Paradox-Opped!`);
 
-            dynamicPropertyRegistry.set(player.id, player.name);
+            dynamicPropertyRegistry.setProperty(player, player.id, player.name);
 
             return paradoxui(player);
         }

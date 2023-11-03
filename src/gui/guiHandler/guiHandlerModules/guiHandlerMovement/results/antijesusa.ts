@@ -2,11 +2,13 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiANTIJESUS } from "../../../../modules/uiAntiJesus";
+import ConfigInterface from "../../../../../interfaces/Config";
 
 export function antiJesusAHandler(player: Player) {
     //Jesus UI
     const modulesantijesusui = new ModalFormData();
-    const jesusaBoolean = dynamicPropertyRegistry.get("jesusa_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const jesusaBoolean = configuration.modules.jesusA.enabled;
     modulesantijesusui.title("§4Paradox Modules - Anti Jesus§4");
     modulesantijesusui.toggle("Anti Jesus - Toggles checks for walking/sprinting on water or lava:", jesusaBoolean);
     modulesantijesusui

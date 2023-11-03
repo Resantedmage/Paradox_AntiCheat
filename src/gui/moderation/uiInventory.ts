@@ -41,7 +41,7 @@ async function handleUIInventory(inventoryUIResult: ModalFormResponse, onlineLis
         }
     }
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped.`);
@@ -1257,7 +1257,7 @@ async function handleUIInventory(inventoryUIResult: ModalFormResponse, onlineLis
     }
 
     // Output the updated itemArray(Debugging)
-    console.log(itemArray);
+    // console.log(itemArray);
 
     //once the loop is done then move to the next part
 

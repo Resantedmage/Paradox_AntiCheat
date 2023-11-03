@@ -2,10 +2,12 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiANTINUKER } from "../../../modules/uiAntiNuker";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiNukerAHandler(player: Player) {
     const modulesantinukerui = new ModalFormData();
-    const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const antiNukerABoolean = configuration.modules.antinukerA.enabled;
     modulesantinukerui.title("§4Paradox Modules - Anti Nuker§4");
     modulesantinukerui.toggle("Anti Nuker - Checks player's for nuking blocks:", antiNukerABoolean);
     modulesantinukerui

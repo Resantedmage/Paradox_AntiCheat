@@ -2,10 +2,12 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiOPS } from "../../../modules/uiOnePlayerSleep";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function opsHandler(player: Player) {
     const modulesopsui = new ModalFormData();
-    const opsBoolean = dynamicPropertyRegistry.get("ops_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const opsBoolean = configuration.modules.ops.enabled;
     modulesopsui.title("§4Paradox Modules - OPS§4");
     modulesopsui.toggle("One Player Sleep - Allows 1 player to sleep through the night:", opsBoolean);
     modulesopsui

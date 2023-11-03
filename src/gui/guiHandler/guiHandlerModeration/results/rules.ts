@@ -2,13 +2,15 @@ import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiRULES } from "../../../moderation/uiRules";
 import { Player } from "@minecraft/server";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function rulesHandler(player: Player) {
     //show rules ui
     const rulesui = new ModalFormData();
     rulesui.title("§4Paradox - Configure Rules§4");
-    const showrulesBoolean = dynamicPropertyRegistry.get("showrules_b") as boolean;
-    const KickOnDeclineBoolean = dynamicPropertyRegistry.get("kickondecline_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const showrulesBoolean = configuration.modules.showrules.enabled;
+    const KickOnDeclineBoolean = configuration.modules.showrules.kick;
     rulesui.toggle("Enable Rules:", showrulesBoolean);
     rulesui.toggle("Kick On Decline:", KickOnDeclineBoolean);
     rulesui

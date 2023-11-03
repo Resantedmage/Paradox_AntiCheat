@@ -2,12 +2,14 @@ import { Player, world } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiCHATRANKS } from "../../../../moderation/uiChatranks";
+import ConfigInterface from "../../../../../interfaces/Config";
 
 export function chatRanksHandler(player: Player) {
     //Chat Ranks ui
     const chatranksui = new ModalFormData();
     let onlineList: string[] = [];
-    const chatRanksBoolean = dynamicPropertyRegistry.get("chatranks_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const chatRanksBoolean = configuration.modules.chatranks.enabled;
     chatranksui.title("§4Change A Player's Chat Rank§4");
     onlineList = Array.from(world.getPlayers(), (player) => player.name);
     const predefinedrank: string[] = ["Owner", "Admin", "Mod", "Member"];

@@ -1,13 +1,14 @@
 import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
-import config from "../../../../data/config";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiAFK } from "../../../modules/uiAFK";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function afkHandler(player: Player) {
     const modulesafkui = new ModalFormData();
-    const currentAFKConifg = config.modules.afk.minutes;
-    const afkBoolean = dynamicPropertyRegistry.get("afk_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const currentAFKConifg = configuration.modules.afk.minutes;
+    const afkBoolean = configuration.modules.afk.enabled;
     modulesafkui.title("§4Paradox Modules - AFK§4");
     modulesafkui.toggle("Enable AFK - Kicks players that are AFK for " + currentAFKConifg + " minutes:", afkBoolean);
     modulesafkui

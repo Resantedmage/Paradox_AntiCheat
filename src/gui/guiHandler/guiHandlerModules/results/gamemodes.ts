@@ -2,13 +2,15 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiGAMEMODES } from "../../../modules/uiGamemodes";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function gamemodesHandler(player: Player) {
     //GameModes UI
     const gamemodesui = new ModalFormData();
-    const adventureGMBoolean = dynamicPropertyRegistry.get("adventuregm_b") as boolean;
-    const creativeGMBoolean = dynamicPropertyRegistry.get("creativegm_b") as boolean;
-    const survivalGMBoolean = dynamicPropertyRegistry.get("survivalgm_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const adventureGMBoolean = configuration.modules.adventureGM.enabled;
+    const creativeGMBoolean = configuration.modules.creativeGM.enabled;
+    const survivalGMBoolean = configuration.modules.survivalGM.enabled;
     gamemodesui.title("§4Paradox - Configure Gamemodes§4");
     gamemodesui.toggle("Disable Adventure:", adventureGMBoolean);
     gamemodesui.toggle("Disable Creative:", creativeGMBoolean);

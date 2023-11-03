@@ -2,10 +2,12 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiANTISHULKER } from "../../../modules/uiAntiShulker";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiShulkerHandler(player: Player) {
     const modulesantishulkerui = new ModalFormData();
-    const antiShulkerBoolean = dynamicPropertyRegistry.get("antishulker_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const antiShulkerBoolean = configuration.modules.antishulker.enabled;
     modulesantishulkerui.title("§4Paradox Modules - Anti Shulker§4");
     modulesantishulkerui.toggle("Anti Shulker - Allows or denies shulker boxes in the world:", antiShulkerBoolean);
     modulesantishulkerui

@@ -1,4 +1,4 @@
-import { Player, world } from "@minecraft/server";
+import { Player } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry";
 import { sendMsg, sendMsgToPlayer } from "../../util";
@@ -35,8 +35,6 @@ async function handleUIAntiAutoClicker(antiautoclickerResult: ModalFormResponse,
     const [AntiAutoClickerToggle] = antiautoclickerResult.formValues;
     // Get unique ID
     const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
-
-    // Get Dynamic Property Boolean
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {

@@ -3,6 +3,7 @@ import { ModalFormResponse } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
 export function uiCHATRANKS(notifyResult: ModalFormResponse, onlineList: string[], predefinedrank: string[], player: Player) {
     if (!notifyResult || notifyResult.canceled) {
@@ -18,13 +19,19 @@ export function uiCHATRANKS(notifyResult: ModalFormResponse, onlineList: string[
             break;
         }
     }
+
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
-    const chatRanksBoolean = dynamicPropertyRegistry.get("chatranks_b");
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
+
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to enable Notifications.`);
     }
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
+    const chatRanksBoolean = configuration.modules.chatranks.enabled;
+
     if (!customrank) {
         try {
             const memberscurrentags = member.getTags();
@@ -65,14 +72,14 @@ export function uiCHATRANKS(notifyResult: ModalFormResponse, onlineList: string[
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has updated §7${member.name}'s§f Rank.`);
         if (ChatRanksToggle === true && chatRanksBoolean === false) {
             // Allow
-            dynamicPropertyRegistry.set("chatranks_b", true);
-            world.setDynamicProperty("chatranks_b", true);
+            configuration.modules.chatranks.enabled = true;
+            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ChatRanks§f!`);
         }
         if (ChatRanksToggle === false && chatRanksBoolean === true) {
             // Deny
-            dynamicPropertyRegistry.set("chatranks_b", false);
-            world.setDynamicProperty("chatranks_b", false);
+            configuration.modules.chatranks.enabled = false;
+            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ChatRanks§f!`);
         }
         return paradoxui(player);

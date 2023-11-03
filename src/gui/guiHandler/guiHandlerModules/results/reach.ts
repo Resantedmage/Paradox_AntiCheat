@@ -2,11 +2,13 @@ import { Player } from "@minecraft/server";
 import { ModalFormData } from "@minecraft/server-ui";
 import { dynamicPropertyRegistry } from "../../../../penrose/WorldInitializeAfterEvent/registry";
 import { uiREACH } from "../../../modules/uiReach";
+import ConfigInterface from "../../../../interfaces/Config";
 
 export function reachHandler(player: Player) {
     const modulesreachui = new ModalFormData();
-    const reachABoolean = dynamicPropertyRegistry.get("reacha_b") as boolean;
-    const reachBBoolean = dynamicPropertyRegistry.get("reachb_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const reachABoolean = configuration.modules.reachA.enabled;
+    const reachBBoolean = configuration.modules.reachB.enabled;
     modulesreachui.title("§4Paradox Modules - Reach§4");
     modulesreachui.toggle("Reach A - Checks for player's placing blocks beyond reach:", reachABoolean);
     modulesreachui.toggle("Reach C - Checks for player's attacking beyond reach:", reachBBoolean);
