@@ -43,7 +43,7 @@ export function uiTPA(tpaResult: ModalFormResponse, onlineList: string[], player
         // tp the op to the target
         // Let's teleport you to that player
         setTimer(player.id);
-        player.teleport(member.location, { dimension: member.dimension, rotation: { x: 0, y: 0 }, facingLocation: { x: 0, y: 0, z: 0 }, checkForBlocks: false, keepVelocity: false });
+        player.teleport(member.location, { dimension: member.dimension, rotation: { x: 0, y: 0 }, facingLocation: { x: 0, y: 0, z: 0 }, checkForBlocks: true, keepVelocity: false });
         // Let you know that you have been teleported
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Teleported §7${player.name}§f to §7${member.name}§f`);
     }
@@ -51,7 +51,7 @@ export function uiTPA(tpaResult: ModalFormResponse, onlineList: string[], player
     if (toggleTargetTo === true) {
         //tp the target to the op
         setTimer(member.id);
-        member.teleport(player.location, { dimension: player.dimension, rotation: { x: 0, y: 0 }, facingLocation: { x: 0, y: 0, z: 0 }, checkForBlocks: false, keepVelocity: false });
+        member.teleport(player.location, { dimension: player.dimension, rotation: { x: 0, y: 0 }, facingLocation: { x: 0, y: 0, z: 0 }, checkForBlocks: true, keepVelocity: false });
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Teleported §7${member.name}§f to §7${player.name}§f`);
     }
 
