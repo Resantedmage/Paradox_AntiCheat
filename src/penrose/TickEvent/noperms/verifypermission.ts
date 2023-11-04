@@ -1,8 +1,8 @@
 import { world, EntityQueryOptions, system } from "@minecraft/server";
-import config from "../../../data/config.js";
 import { sendMsg } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { WorldExtended } from "../../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 function verifypermission() {
     const filter: EntityQueryOptions = {
@@ -15,8 +15,10 @@ function verifypermission() {
         const hash = player.getDynamicProperty("hash");
         const salt = player.getDynamicProperty("salt");
 
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
         // Use either the operator's ID or the encryption password as the key
-        const key = config.encryption.password ? config.encryption.password : player.id;
+        const key = configuration.encryption.password ? configuration.encryption.password : player.id;
 
         // Generate the hash
         const encode = (world as WorldExtended).hashWithSalt(salt as string, key);

@@ -1,6 +1,5 @@
 import { Player, world, system } from "@minecraft/server";
 import { flag } from "../../../util.js";
-import config from "../../../data/config.js";
 import { kickablePlayers } from "../../../kickcheck.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
@@ -39,11 +38,11 @@ function namespoofb(id: number) {
             continue;
         }
         // Namespoof/B = regex check
-        if (config.modules.namespoofB.banregex.test(player.name)) {
-            player.nameTag = player.name.replace(config.modules.namespoofB.banregex, "");
+        if (configuration.modules.namespoofB.banregex.test(player.name)) {
+            player.nameTag = player.name.replace(configuration.modules.namespoofB.banregex, "");
             rip(player);
-        } else if (config.modules.namespoofB.kickregex.test(player.name)) {
-            player.nameTag = player.name.replace(config.modules.namespoofB.kickregex, "");
+        } else if (configuration.modules.namespoofB.kickregex.test(player.name)) {
+            player.nameTag = player.name.replace(configuration.modules.namespoofB.kickregex, "");
             flag(player, "Namespoof", "B", "Exploit", null, null, null, null, false);
         }
     }

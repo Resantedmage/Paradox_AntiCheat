@@ -1,6 +1,5 @@
 import { Player } from "@minecraft/server";
 import { ModalFormResponse } from "@minecraft/server-ui";
-//import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { sendMsg, sendMsgToPlayer } from "../../util";
 import { paradoxui } from "../paradoxui.js";

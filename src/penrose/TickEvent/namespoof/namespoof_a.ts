@@ -1,6 +1,5 @@
 import { world, system } from "@minecraft/server";
 import { flag } from "../../../util.js";
-import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
 
@@ -26,7 +25,7 @@ function namespoofa(id: number) {
         }
         // Namespoof/A = username length check.
         try {
-            if (player.name.length < config.modules.namespoofA.minNameLength || player.name.length > config.modules.namespoofA.maxNameLength) {
+            if (player.name.length < configuration.modules.namespoofA.minNameLength || player.name.length > configuration.modules.namespoofA.maxNameLength) {
                 flag(player, "Namespoof", "A", "Exploit", null, null, "nameLength", String(player.name.length), false);
             }
         } catch (error) {}

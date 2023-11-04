@@ -1,4 +1,3 @@
-import config from "../../../data/config.js";
 import { world, system } from "@minecraft/server";
 import { sendMsg } from "../../../util.js";
 import { clearItems } from "../../../data/clearlag.js";
@@ -10,15 +9,17 @@ const cooldownTimer = new WeakMap();
 // Just a dummy object to use with set/get
 const object = { cooldown: "String" };
 
-const countdown = {
-    days: config.modules.clearLag.days,
-    hours: config.modules.clearLag.hours,
-    minutes: config.modules.clearLag.minutes,
-    seconds: config.modules.clearLag.seconds,
-};
-
 let warned = false; // variable to track whether the 60 second warning has been displayed
 let clearLagId: number = null;
+
+function createCountdown(configuration: ConfigInterface) {
+    return {
+        days: configuration.modules.clearLag.days,
+        hours: configuration.modules.clearLag.hours,
+        minutes: configuration.modules.clearLag.minutes,
+        seconds: configuration.modules.clearLag.seconds,
+    };
+}
 
 function clearEntityItems() {
     const filter = { type: "item" };
@@ -61,6 +62,8 @@ function clearLag(id: number) {
         cooldownVerify = Date.now();
         cooldownTimer.set(object, cooldownVerify);
     }
+
+    const countdown = createCountdown(configuration);
 
     const msSettings = countdown.days * 24 * 60 * 60 * 1000 + countdown.hours * 60 * 60 * 1000 + countdown.minutes * 60 * 1000 + countdown.seconds * 1000;
     const timeLeft = msSettings - (Date.now() - cooldownVerify);

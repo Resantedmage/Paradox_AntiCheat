@@ -54,7 +54,7 @@ import { ReachB } from "./penrose/EntityHitEntityAfterEvent/reach_b.js";
 import { KillAura } from "./penrose/EntityHitEntityAfterEvent/killaura.js";
 import { PVP } from "./penrose/EntityHitEntityAfterEvent/pvpManager.js";
 // Import WorldInitializeAfter Events
-import { Registry } from "./penrose/WorldInitializeAfterEvent/registry.js";
+import { Registry, dynamicPropertyRegistry } from "./penrose/WorldInitializeAfterEvent/registry.js";
 // Import SystemBefore Events
 import { WatchDog } from "./penrose/SystemEvent/watchdog.js";
 // Import ChatSendAfter Events
@@ -67,11 +67,13 @@ import { DeathCoordinates } from "./penrose/EntityDieAfterEvent/death_coordinate
 // Import PlayerLeaveAfter Events
 import { onChannelLeave } from "./commands/utility/channel.js";
 // Custom
-import config from "./data/config.js";
+import ConfigInterface from "./interfaces/Config.js";
 
 async function main() {
     // WorldInitializeAfter Events
     await Registry();
+
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
 
     // ChatSendBefore Events
     BadPackets1();
@@ -116,7 +118,7 @@ async function main() {
     AFK();
     AntiPhaseA();
     SpawnProtection();
-    if (config.customcommands.freeze || config.modules.antiKillAura || config.modules.antinukerA) {
+    if (configuration.customcommands.freeze || configuration.modules.antiKillAura || configuration.modules.antinukerA) {
         freeze;
         freezeLeave();
         freezeJoin();
@@ -144,7 +146,7 @@ async function main() {
     // EntityHitEntityAfter Events
     ReachB();
     KillAura();
-    if (config.customcommands.pvp === true) {
+    if (configuration.customcommands.pvp === true) {
         PVP();
     }
 
@@ -155,7 +157,7 @@ async function main() {
     WatchDog();
 
     // playerLeaveAfter Events
-    if (config.customcommands.channel === true) {
+    if (configuration.customcommands.channel === true) {
         onChannelLeave();
     }
 }

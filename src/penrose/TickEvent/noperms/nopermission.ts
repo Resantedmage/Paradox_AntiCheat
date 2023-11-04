@@ -1,8 +1,8 @@
 import { world, Player, EntityQueryOptions, system } from "@minecraft/server";
 import { sendMsg } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
-import config from "../../../data/config.js";
 import { WorldExtended } from "../../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 function noperms() {
     const filter: EntityQueryOptions = {
@@ -29,8 +29,10 @@ function noperms() {
         const hash = entity.getDynamicProperty("hash");
         const salt = entity.getDynamicProperty("salt");
 
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+
         // Use either the operator's ID or the encryption password as the key
-        const key = config.encryption.password ? config.encryption.password : entity.id;
+        const key = configuration.encryption.password ? configuration.encryption.password : entity.id;
 
         // Generate the hash
         const encode = (world as WorldExtended).hashWithSalt(salt as string, key);

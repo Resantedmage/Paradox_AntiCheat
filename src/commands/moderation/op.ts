@@ -1,20 +1,19 @@
 import { ChatSendAfterEvent, Player, world } from "@minecraft/server";
-import config from "../../data/config.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { WorldExtended } from "../../classes/WorldExtended/World.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function opHelp(player: Player, prefix: string, setting: boolean) {
+function opHelp(player: Player, prefix: string, configuration: ConfigInterface) {
     let commandStatus: string;
-    if (!setting) {
+    if (!configuration.customcommands.op) {
         commandStatus = "§6[§4DISABLED§6]§f";
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
 
-    const passwordDescription = config.encryption.password ? `§4- §6Use your password to gain Paradox-Op§f` : `§4- §6Give yourself Paradox-Op§f`;
-    const commandUsage = config.encryption.password ? `${prefix}op <password>` : `${prefix}op`;
+    const passwordDescription = configuration.encryption.password ? `§4- §6Use your password to gain Paradox-Op§f` : `§4- §6Give yourself Paradox-Op§f`;
+    const commandUsage = configuration.encryption.password ? `${prefix}op <password>` : `${prefix}op`;
 
     return sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: op`,
@@ -62,7 +61,7 @@ export function op(message: ChatSendAfterEvent, args: string[]) {
 
     // Check if args is null, empty, or for help
     if (args[0]?.toLowerCase() === "help") {
-        return opHelp(operator, prefix, configuration.customcommands.op);
+        return opHelp(operator, prefix, configuration);
     }
 
     if (args.length >= 1 && operatorHash === (world as WorldExtended).hashWithSalt(operatorSalt as string, configuration.encryption.password || operator.id)) {
@@ -145,6 +144,6 @@ export function op(message: ChatSendAfterEvent, args: string[]) {
             sendMsgToPlayer(operator, `§f§4[§6Paradox§4]§f Incorrect password. You need to be Operator to use this command.`);
         }
     } else {
-        return opHelp(operator, prefix, configuration.customcommands.op);
+        return opHelp(operator, prefix, configuration);
     }
 }

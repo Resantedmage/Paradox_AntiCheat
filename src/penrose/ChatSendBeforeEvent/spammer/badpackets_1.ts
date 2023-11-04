@@ -1,6 +1,5 @@
 import { ChatSendAfterEvent, world } from "@minecraft/server";
 import { flag } from "../../../util.js";
-import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
 
@@ -26,7 +25,7 @@ function badpackets1(msg: ChatSendAfterEvent) {
     }
 
     // BadPackets/1 = chat message length check
-    if (message.length > config.modules.badpackets1.maxlength || message.length < config.modules.badpackets1.minLength) {
+    if (message.length > configuration.modules.badpackets1.maxlength || message.length < configuration.modules.badpackets1.minLength) {
         flag(player, "BadPackets", "1", "messageLength", null, null, "Characters", String(message.length), false);
     }
 }

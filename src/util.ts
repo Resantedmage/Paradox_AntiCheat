@@ -1,10 +1,15 @@
 import { Player, PlayerLeaveAfterEvent, Vector, world } from "@minecraft/server";
-import config from "./data/config.js";
 import { kickablePlayers } from "./kickcheck.js";
 import { ScoreManager } from "./classes/ScoreManager.js";
+import { dynamicPropertyRegistry } from "./penrose/WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "./interfaces/Config.js";
 
 const overworld = world.getDimension("overworld");
 const timerMap = new Map<string, number>();
+
+function getRegistry() {
+    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+}
 
 function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
     // Remove the player's data from the map when they log off
@@ -58,6 +63,7 @@ export function flag(player: Player, check: string, checkType: string, hackType:
  * @param {Player} player - The player object
  */
 export function banMessage(player: Player) {
+    const configuration = getRegistry();
     const tags = player.getTags();
 
     let reason: string;
@@ -71,8 +77,8 @@ export function banMessage(player: Player) {
         }
     }
 
-    if (config.modules.banAppeal.enabled === true) {
-        const appealLink = `\n§4[§6Appeal§4]§f: §b${config.modules.banAppeal.discordLink}`;
+    if (configuration.modules.banAppeal.enabled === true) {
+        const appealLink = `\n§4[§6Appeal§4]§f: §b${configuration.modules.banAppeal.discordLink}`;
         player.runCommandAsync(`kick "${player.name}" §f\n§l§4YOU ARE BANNED!§r\n§4[§6Banned By§4]§f: §7${by || "§7N/A"}§f\n§4[§6Reason§4]§f: §7${reason || "§7N/A"}§f${appealLink}`).catch(() => {
             // If we can't kick them with /kick, then we instantly despawn them
             kickablePlayers.add(player);
@@ -97,6 +103,7 @@ export function banMessage(player: Player) {
  * @param {Player} player - The player object
  */
 export function getPrefix(player: Player) {
+    const configuration = getRegistry();
     const tags = player.getTags();
     let customprefix = null;
 
@@ -107,8 +114,8 @@ export function getPrefix(player: Player) {
         }
     }
 
-    config.customcommands.prefix = customprefix || config.customcommands.prefix;
-    return config.customcommands.prefix;
+    configuration.customcommands.prefix = customprefix || configuration.customcommands.prefix;
+    return configuration.customcommands.prefix;
 }
 
 /**

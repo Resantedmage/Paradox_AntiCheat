@@ -1,5 +1,4 @@
 import { world, PlayerPlaceBlockAfterEvent, Vector3, PlayerPlaceBlockBeforeEvent, PlayerLeaveAfterEvent } from "@minecraft/server";
-import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { flag } from "../../../util.js";
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
@@ -51,7 +50,7 @@ function afterreacha(
     const distanceSquared = dx * dx + dy * dy + dz * dz;
     const roundedDistanceSquared = Math.floor(distanceSquared); // Round down the distanceSquared
 
-    if (roundedDistanceSquared > config.modules.reachA.reach * config.modules.reachA.reach) {
+    if (roundedDistanceSquared > configuration.modules.reachA.reach * configuration.modules.reachA.reach) {
         dimension.getBlock({ x: x, y: y, z: z }).setType(MinecraftBlockTypes.Air);
         flag(player, "Reach", "A", "Placement", null, null, "reach", Math.sqrt(distanceSquared).toFixed(3), false);
     }

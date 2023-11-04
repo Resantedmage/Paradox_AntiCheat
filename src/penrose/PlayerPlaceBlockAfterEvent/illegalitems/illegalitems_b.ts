@@ -1,6 +1,5 @@
 import { world, ItemStack, Enchantment, Player, Block, PlayerPlaceBlockAfterEvent, BlockInventoryComponent, ItemEnchantsComponent, EnchantmentList, PlayerLeaveAfterEvent } from "@minecraft/server";
 import { illegalitems } from "../../../data/itemban.js";
-import config from "../../../data/config.js";
 import { flag, sendMsgToPlayer, sendMsg } from "../../../util.js";
 import { kickablePlayers } from "../../../kickcheck.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
@@ -188,7 +187,7 @@ async function illegalitemsb(object: PlayerPlaceBlockAfterEvent) {
                 }
 
                 // Illegal Lores
-                if (illegalLoresBoolean && !config.modules.illegalLores.exclude.includes(String(blockItemStack.getLore()))) {
+                if (illegalLoresBoolean && !configuration.modules.illegalLores.exclude.includes(String(blockItemStack.getLore()))) {
                     blockContainer.setItem(i);
                     sendMsg("@a[tag=notify]", `§f§4[§6Paradox§4]§f Removed ${itemStackId.replace("minecraft:", "")} with lore from §7${player.name}§f.`);
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Item with illegal lores are not allowed!`);

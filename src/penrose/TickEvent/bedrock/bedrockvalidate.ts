@@ -1,5 +1,4 @@
 import { world, system, Dimension } from "@minecraft/server";
-import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
 
@@ -31,14 +30,14 @@ async function bedrockvalidate(id: number) {
             command1: "fill ~-5 -64 ~-5 ~5 -64 ~5 bedrock",
             command2: "fill ~-4 -59 ~-4 ~4 319 ~4 air [] replace bedrock",
             command3: undefined,
-            config: config.modules.bedrockValidate.overworld,
+            config: configuration.modules.bedrockValidate.overworld,
         },
         nether: {
             dimension: world.getDimension("nether"),
             command1: "fill ~-5 0 ~-5 ~5 0 ~5 bedrock",
             command2: "fill ~-5 127 ~-5 ~5 127 ~5 bedrock",
             command3: "fill ~-5 5 ~-5 ~5 120 ~5 air [] replace bedrock",
-            config: config.modules.bedrockValidate.nether,
+            config: configuration.modules.bedrockValidate.nether,
         },
     };
 

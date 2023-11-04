@@ -1,6 +1,5 @@
 import { EntityInventoryComponent, world, system } from "@minecraft/server";
 import { flag } from "../../../util.js";
-import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
 
@@ -39,7 +38,7 @@ async function antiknockbacka(id: number) {
         const velocity = player.getVelocity();
         const velocitySum = Math.abs(velocity.y) + Math.abs(velocity.x) + Math.abs(velocity.z);
 
-        if (velocitySum <= config.modules.antikbA.magnitude) {
+        if (velocitySum <= configuration.modules.antikbA.magnitude) {
             const tags = player.getTags();
             if (tags.includes("attacked") && !tags.includes("dead") && !player.isGliding && !tags.includes("levitating") && !tags.includes("flying")) {
                 flag(player, "AntiKB", "A", "Movement", null, null, "Magnitude", velocitySum.toFixed(3), true);

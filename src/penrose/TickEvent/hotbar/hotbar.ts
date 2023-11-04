@@ -1,5 +1,4 @@
 import { world, EntityQueryOptions, system } from "@minecraft/server";
-import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
 
@@ -20,7 +19,7 @@ async function hotbar(id: number) {
     const filteredPlayers = world.getPlayers(filter);
     // run as each player
     for (const player of filteredPlayers) {
-        hotbarMessage = config.modules.hotbar.message;
+        hotbarMessage = configuration.modules.hotbar.message;
         player.onScreenDisplay.setActionBar(hotbarMessage);
     }
 }

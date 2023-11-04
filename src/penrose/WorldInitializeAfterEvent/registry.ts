@@ -11,8 +11,13 @@ function registry() {
     extendPlayerPrototype();
     extendWorldPrototype();
 
-    // Store the config object as a JSON string in DynamicPropertyManager
-    dynamicPropertyRegistry.setProperty(undefined, "config", config);
+    // Check if the "config" property already exists
+    const existingConfig = dynamicPropertyRegistry.getProperty(undefined, "config");
+
+    if (!existingConfig || JSON.stringify(existingConfig) !== JSON.stringify(config)) {
+        // "config" property doesn't exist or there are changes
+        dynamicPropertyRegistry.setProperty(undefined, "config", config);
+    }
 }
 
 const Registry = () => {
