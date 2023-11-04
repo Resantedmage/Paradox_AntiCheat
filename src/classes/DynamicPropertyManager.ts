@@ -76,7 +76,12 @@ export class DynamicPropertyManager {
         }
 
         if (serializedValue) {
-            const deserializedValue = JSON.parse(serializedValue);
+            let deserializedValue;
+            if (typeof serializedValue === "object") {
+                deserializedValue = JSON.parse(serializedValue);
+            } else {
+                deserializedValue = serializedValue;
+            }
             // Cache the value for future access
             this.propertyCache.set(name, deserializedValue);
             return deserializedValue;
@@ -103,12 +108,21 @@ export class DynamicPropertyManager {
             }
 
             if (player) {
-                player.setDynamicProperty(dynamicPropertyName, undefined);
+                player.setDynamicProperty(dynamicPropertyName);
             } else {
-                world.setDynamicProperty(dynamicPropertyName, undefined);
+                world.setDynamicProperty(dynamicPropertyName);
             }
 
             index++;
+        }
+
+        if (index === 0) {
+            // Delete the dynamic property using the exact name
+            if (player) {
+                player.setDynamicProperty(name);
+            } else {
+                world.setDynamicProperty(name);
+            }
         }
     }
 
