@@ -3,6 +3,7 @@ import { world, Vector3, Player, Entity } from "@minecraft/server";
 type PropertyValue = string | number | boolean | Vector3 | object;
 
 export class DynamicPropertyManager {
+    // Singleton instance
     private static instance: DynamicPropertyManager | null = null;
     private propertyCache: Map<string, PropertyValue> = new Map<string, PropertyValue>();
 
@@ -20,6 +21,12 @@ export class DynamicPropertyManager {
         return DynamicPropertyManager.instance;
     }
 
+    /**
+     * Set a dynamic property for a player or the world.
+     * @param player The player for whom to set the property. Pass undefined for the world.
+     * @param name The name of the property.
+     * @param value The value to set.
+     */
     setProperty(player: Player | undefined, name: string, value: PropertyValue): void {
         // Update the cache with the new value
         this.propertyCache.set(name, value);
@@ -43,6 +50,12 @@ export class DynamicPropertyManager {
         }
     }
 
+    /**
+     * Get a dynamic property for a player or the world.
+     * @param player The player for whom to get the property. Pass undefined for the world.
+     * @param name The name of the property.
+     * @returns The value of the property, or undefined if it doesn't exist.
+     */
     getProperty(player: Player | undefined, name: string): PropertyValue | undefined {
         // Check the cache first
         if (this.propertyCache.has(name)) {
@@ -72,6 +85,11 @@ export class DynamicPropertyManager {
         return undefined;
     }
 
+    /**
+     * Delete a dynamic property for a player, entity, or the world.
+     * @param player The player or entity for whom to delete the property. Pass undefined for the world.
+     * @param name The name of the property to delete.
+     */
     deleteProperty(player: Player | Entity | undefined, name: string): void {
         // Clear the cache for the deleted property
         this.propertyCache.delete(name);
