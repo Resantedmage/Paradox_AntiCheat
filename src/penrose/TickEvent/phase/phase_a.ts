@@ -54,8 +54,6 @@ function antiphasea(id: number) {
             blockType = player.dimension.getBlock(lowerBody);
         } catch {}
 
-        console.log(blockType.typeId);
-
         const unsafeConditions = blockType && ((blockType.typeId === "minecraft:soul_sand" && y - lowerBody.y <= 0.125) || passableSolids.has(blockType.typeId.replace("minecraft:", "")) || blockType.isSolid);
 
         if (!unsafeConditions) {
