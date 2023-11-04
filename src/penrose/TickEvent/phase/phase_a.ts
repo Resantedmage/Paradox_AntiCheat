@@ -47,14 +47,16 @@ function antiphasea(id: number) {
         const { x, y, z } = player.location;
 
         // Calculate block locations
-        const lowerBody = { x, y, z };
+        const lowerBody = { x, y: y + 0.5, z };
 
         let blockType;
         try {
             blockType = player.dimension.getBlock(lowerBody);
         } catch {}
 
-        const unsafeConditions = blockType && ((blockType.typeId === "minecraft:soul_sand" && y - lowerBody.y <= 0.125) || player.hasTag("riding") || passableSolids.has(blockType.typeId.replace("minecraft:", "")));
+        console.log(blockType.typeId);
+
+        const unsafeConditions = blockType && ((blockType.typeId === "minecraft:soul_sand" && y - lowerBody.y <= 0.125) || passableSolids.has(blockType.typeId.replace("minecraft:", "")) || blockType.isSolid);
 
         if (!unsafeConditions) {
             // Update last safe location
@@ -68,7 +70,7 @@ function antiphasea(id: number) {
                     dimension: player.dimension,
                     rotation: { x: 0, y: 0 },
                     facingLocation: { x: 0, y: 0, z: 0 },
-                    checkForBlocks: false,
+                    checkForBlocks: true,
                     keepVelocity: false,
                 });
             }
