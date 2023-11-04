@@ -16,7 +16,12 @@ function registry() {
 }
 
 const Registry = () => {
-    world.afterEvents.worldInitialize.subscribe(registry);
+    return new Promise<void>((resolve) => {
+        world.afterEvents.worldInitialize.subscribe(() => {
+            registry();
+            resolve(); // Resolve the promise when the registry function is done.
+        });
+    });
 };
 
 export { Registry, dynamicPropertyRegistry };

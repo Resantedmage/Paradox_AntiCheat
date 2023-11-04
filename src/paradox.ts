@@ -69,91 +69,95 @@ import { onChannelLeave } from "./commands/utility/channel.js";
 // Custom
 import config from "./data/config.js";
 
-// WorldInitializeAfter Events
-Registry();
+async function main() {
+    // WorldInitializeAfter Events
+    await Registry();
 
-// ChatSendBefore Events
-BadPackets1();
-SpammerA();
-SpammerB();
-SpammerC();
-beforeAntiSpam();
-BeforePrefixCommand();
-beforeChatFilter();
+    // ChatSendBefore Events
+    BadPackets1();
+    SpammerA();
+    SpammerB();
+    SpammerC();
+    beforeAntiSpam();
+    BeforePrefixCommand();
+    beforeChatFilter();
 
-// ChatSendAfter Events
-AfterPrefixCommand();
-TpRequestListener();
-afterAntiSpam();
-afterChatFilter();
+    // ChatSendAfter Events
+    AfterPrefixCommand();
+    TpRequestListener();
+    afterAntiSpam();
+    afterChatFilter();
 
-// Tick Events
-ClearLag();
-BadPackets2();
-VerifyPermission;
-OPS();
-Hotbar();
-NoPerms;
-Vanish;
-IllegalItemsC();
-Survival();
-Adventure();
-Creative();
-WorldBorder();
-ServerBan;
-NamespoofA();
-NamespoofB();
-BedrockValidate();
-JesusA();
-SpeedA();
-IllegalItemsA();
-InvalidSprintA();
-FlyA();
-AntiKnockbackA();
-AntiFallA();
-AutoBan();
-AFK();
-AntiPhaseA();
-SpawnProtection();
-if (config.customcommands.freeze || config.modules.antiKillAura || config.modules.antinukerA) {
-    freeze;
-    freezeLeave();
-    freezeJoin();
+    // Tick Events
+    ClearLag();
+    BadPackets2();
+    VerifyPermission;
+    OPS();
+    Hotbar();
+    NoPerms;
+    Vanish;
+    IllegalItemsC();
+    Survival();
+    Adventure();
+    Creative();
+    WorldBorder();
+    ServerBan;
+    NamespoofA();
+    NamespoofB();
+    BedrockValidate();
+    JesusA();
+    SpeedA();
+    IllegalItemsA();
+    InvalidSprintA();
+    FlyA();
+    AntiKnockbackA();
+    AntiFallA();
+    AutoBan();
+    AFK();
+    AntiPhaseA();
+    SpawnProtection();
+    if (config.customcommands.freeze || config.modules.antiKillAura || config.modules.antinukerA) {
+        freeze;
+        freezeLeave();
+        freezeJoin();
+    }
+
+    // PlayerBlockBreakAfter Events
+    XrayA();
+
+    // PlayerBlockBreakBefore Events
+    BeforeNukerA();
+
+    // playerSpawnAfter Events
+    onJoin();
+    GlobalBanList();
+    hashCode();
+    onJoinrules(); // GUI
+
+    // PlayerBlockPlaceAfter Events
+    ScaffoldA();
+    IllegalItemsB();
+
+    // PlayerBlockPlaceBefore Events
+    BeforeReachA();
+
+    // EntityHitEntityAfter Events
+    ReachB();
+    KillAura();
+    if (config.customcommands.pvp === true) {
+        PVP();
+    }
+
+    // EntityDieAfter Events
+    DeathCoordinates();
+
+    // SystemBefore Events
+    WatchDog();
+
+    // playerLeaveAfter Events
+    if (config.customcommands.channel === true) {
+        onChannelLeave();
+    }
 }
 
-// PlayerBlockBreakAfter Events
-XrayA();
-
-// PlayerBlockBreakBefore Events
-BeforeNukerA();
-
-// playerSpawnAfter Events
-onJoin();
-GlobalBanList();
-hashCode();
-onJoinrules(); // GUI
-
-// PlayerBlockPlaceAfter Events
-ScaffoldA();
-IllegalItemsB();
-
-// PlayerBlockPlaceBefore Events
-BeforeReachA();
-
-// EntityHitEntityAfter Events
-ReachB();
-KillAura();
-if (config.customcommands.pvp === true) {
-    PVP();
-}
-
-// EntityDieAfter Events
-DeathCoordinates();
-
-// SystemBefore Events
-WatchDog();
-
-// playerLeaveAfter Events
-if (config.customcommands.channel === true) {
-    onChannelLeave();
-}
+main();
