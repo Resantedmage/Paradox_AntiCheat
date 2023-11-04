@@ -2,6 +2,7 @@ import { Player, world, system } from "@minecraft/server";
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index";
 import { sendMsgToPlayer, setTimer } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config";
 
 // Make sure they don't tp inside a solid block
 function safetyProtocol(player: Player, x: number, y: number, z: number) {
@@ -34,12 +35,13 @@ function safetyProtocol(player: Player, x: number, y: number, z: number) {
 
 function worldborder(id: number) {
     // Dynamic Properties for boolean
-    const worldBorderBoolean = dynamicPropertyRegistry.get("worldborder_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const worldBorderBoolean = configuration.modules.worldBorder.enabled;
 
     // Dynamic Properties for number
-    const worldBorderOverworldNumber = dynamicPropertyRegistry.get("worldborder_n");
-    const worldBorderNetherNumber = dynamicPropertyRegistry.get("worldborder_nether_n");
-    const worldBorderEndNumber = dynamicPropertyRegistry.get("worldborder_end_n");
+    const worldBorderOverworldNumber = configuration.modules.worldBorder.overworld;
+    const worldBorderNetherNumber = configuration.modules.worldBorder.nether;
+    const worldBorderEndNumber = configuration.modules.worldBorder.end;
 
     // Unsubscribe if disabled in-game
     if (worldBorderBoolean === false) {
@@ -49,7 +51,7 @@ function worldborder(id: number) {
     const players = world.getPlayers();
     for (const player of players) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         // Skip if they have permission
         if (uniqueId === player.name) {

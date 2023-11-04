@@ -38,7 +38,7 @@ function noperms() {
         if (encode && encode === hash) {
             entity.setDynamicProperty("hash");
             entity.setDynamicProperty("salt");
-            dynamicPropertyRegistry.delete(entity.id);
+            dynamicPropertyRegistry.deleteProperty(entity, entity.id);
         }
 
         sendMsg("@a[tag=notify]", `§f§4[§6Paradox§4]§f §7${entity.nameTag}§f had unauthorized permissions. Permissions removed!`);

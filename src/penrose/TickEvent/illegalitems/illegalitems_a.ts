@@ -5,6 +5,7 @@ import { kickablePlayers } from "../../../kickcheck.js";
 import { sendMsg, sendMsgToPlayer } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { WorldExtended } from "../../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 // Create a map of player objects and their enchantment presence
 const enchantmentPresenceMap = new Map<string, Map<Enchantment, boolean>>();
@@ -53,12 +54,13 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 function illegalitemsa(id: number) {
     // Get Dynamic Property
-    const illegalItemsABoolean = dynamicPropertyRegistry.get("illegalitemsa_b");
-    const illegalEnchantmentBoolean = dynamicPropertyRegistry.get("illegalenchantment_b");
-    const stackBanBoolean = dynamicPropertyRegistry.get("stackban_b");
-    const antiShulkerBoolean = dynamicPropertyRegistry.get("antishulker_b");
-    const illegalLoresBoolean = dynamicPropertyRegistry.get("illegallores_b");
-    const salvageBoolean = dynamicPropertyRegistry.get("salvage_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const illegalItemsABoolean = configuration.modules.illegalitemsA.enabled;
+    const illegalEnchantmentBoolean = configuration.modules.illegalEnchantment.enabled;
+    const stackBanBoolean = configuration.modules.stackBan.enabled;
+    const antiShulkerBoolean = configuration.modules.antishulker.enabled;
+    const illegalLoresBoolean = configuration.modules.illegalLores.enabled;
+    const salvageBoolean = configuration.modules.salvage.enabled;
 
     // Unsubscribe if disabled in-game
     if (illegalItemsABoolean === false) {
@@ -78,7 +80,7 @@ function illegalitemsa(id: number) {
     // Iterate through each player
     for (const player of allPlayers) {
         // Get the player's unique ID from the "dynamicPropertyRegistry" object
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         // If the player has permission (i.e., their unique ID matches their name), skip to the next player
         if (uniqueId === player.name) {

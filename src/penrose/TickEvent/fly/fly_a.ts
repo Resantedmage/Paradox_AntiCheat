@@ -2,6 +2,7 @@ import { world, EntityQueryOptions, GameMode, system, Vector3, PlayerLeaveAfterE
 import { flag } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 interface PlayerData {
     fallingData: boolean[]; // Array to record falling behavior
@@ -144,7 +145,8 @@ function handlePotentialFlying(player: Player): void {
 
 function flya(id: number) {
     // Get Dynamic Property
-    const flyABoolean = dynamicPropertyRegistry.get("flya_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const flyABoolean = configuration.modules.flyA.enabled;
     // Unsubscribe if disabled in-game
     if (flyABoolean === false) {
         world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
@@ -159,7 +161,7 @@ function flya(id: number) {
     // run as each player who are in survival
     for (const player of filteredPlayers) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
         // Skip if they have permission
         if (uniqueId === player.name) {
             continue;

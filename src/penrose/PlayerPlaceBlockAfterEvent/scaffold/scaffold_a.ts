@@ -2,8 +2,15 @@ import { world, Vector3, PlayerPlaceBlockAfterEvent, system, EntityQueryOptions 
 import { flag } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
+import ConfigInterface from "../../../interfaces/Config.js";
+
+function getRegistry() {
+    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+}
+
 function freeze(id: number) {
-    const antiScaffoldABoolean = dynamicPropertyRegistry.get("antiscaffolda_b");
+    const configuration = getRegistry();
+    const antiScaffoldABoolean = configuration.modules.antiscaffoldA.enabled;
     if (antiScaffoldABoolean === false) {
         system.clearRun(id);
         return;
@@ -44,7 +51,8 @@ function isBlockInFrontAndBelowPlayer(blockLocation: Vector3, playerLocation: Ve
 
 async function scaffolda(object: PlayerPlaceBlockAfterEvent) {
     // Get Dynamic Property
-    const antiScaffoldABoolean = dynamicPropertyRegistry.get("antiscaffolda_b");
+    const configuration = getRegistry();
+    const antiScaffoldABoolean = configuration.modules.antiscaffoldA.enabled;
     // Unsubscribe if disabled in-game
     if (antiScaffoldABoolean === false) {
         world.afterEvents.playerPlaceBlock.unsubscribe(scaffolda);
@@ -55,7 +63,7 @@ async function scaffolda(object: PlayerPlaceBlockAfterEvent) {
     const { block, player, dimension } = object;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Skip if they have permission
     if (uniqueId === player.name) {

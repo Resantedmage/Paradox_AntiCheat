@@ -22,7 +22,7 @@ function verification(object: PlayerSpawnAfterEvent) {
     const encode = (world as WorldExtended).hashWithSalt(salt as string, key);
     if (encode && encode === hash) {
         // Store as an element using player scoreboard id to uniquely identify them
-        dynamicPropertyRegistry.set(player.id, player.name);
+        dynamicPropertyRegistry.setProperty(player, player.id, player.name);
         return;
     } else {
         player.setDynamicProperty("hash");

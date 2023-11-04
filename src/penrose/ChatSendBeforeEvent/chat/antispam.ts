@@ -1,8 +1,7 @@
 import { ChatSendBeforeEvent, PlayerLeaveAfterEvent, world } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { sendMsgToPlayer } from "../../../util.js";
-
-let antiSpamBoolean: boolean = dynamicPropertyRegistry.get("antispam_b") as boolean; // Initialize
+import ConfigInterface from "../../../interfaces/Config.js";
 
 const spamTime = 2 * 1000; // The time frame during which the player's messages will be counted.
 const offenseCount = 5; // Total strikes until you are kicked out.
@@ -31,12 +30,18 @@ interface ChatRecord {
 
 const chatRecords = new Map<string, ChatRecord>();
 
+function getRegistry() {
+    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+}
+
 function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
     // Remove the player's data from the map when they log off
     const playerName = event.playerId;
     chatRecords.delete(playerName);
 
-    if (!antiSpamBoolean) {
+    const configuration = getRegistry();
+
+    if (!configuration.modules.antispam.enabled) {
         // Unsubscribe from the playerLeave event
         world.afterEvents.playerLeave.unsubscribe(onPlayerLogout);
     }
@@ -49,7 +54,8 @@ function getRandomWarningMessage() {
 
 function beforeantispam(msg: ChatSendBeforeEvent) {
     // Get Dynamic Property
-    antiSpamBoolean = dynamicPropertyRegistry.get("antispam_b") as boolean;
+    const configuration = getRegistry();
+    const antiSpamBoolean = configuration.modules.antispam.enabled;
 
     // Unsubscribe if disabled in-game
     if (antiSpamBoolean === false) {
@@ -62,7 +68,7 @@ function beforeantispam(msg: ChatSendBeforeEvent) {
     const player = msg.sender;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Ignore those with permissions
     if (uniqueId !== player.name) {

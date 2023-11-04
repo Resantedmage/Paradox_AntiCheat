@@ -2,12 +2,14 @@ import { world, EntityQueryOptions, GameMode, system } from "@minecraft/server";
 import { sendMsg } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { ScoreManager } from "../../../classes/ScoreManager.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 async function creative(id: number) {
     // Get Dynamic Property
-    const adventureGMBoolean = dynamicPropertyRegistry.get("adventuregm_b");
-    const creativeGMBoolean = dynamicPropertyRegistry.get("creativegm_b");
-    const survivalGMBoolean = dynamicPropertyRegistry.get("survivalgm_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const adventureGMBoolean = configuration.modules.adventureGM.enabled;
+    const creativeGMBoolean = configuration.modules.creativeGM.enabled;
+    const survivalGMBoolean = configuration.modules.survivalGM.enabled;
 
     // Unsubscribe if disabled in-game
     if (creativeGMBoolean === false) {
@@ -21,7 +23,7 @@ async function creative(id: number) {
     // Run as each player
     for (const player of filteredPlayers) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         // Skip if they have permission
         if (uniqueId === player.name) {
@@ -30,8 +32,8 @@ async function creative(id: number) {
         // Make sure they didn't enable all of them in config.js as this will have a negative impact
         if (survivalGMBoolean === true && adventureGMBoolean === true) {
             // Default to adventure for safety
-            dynamicPropertyRegistry.set("adventuregm_b", false);
-            world.setDynamicProperty("adventuregm_b", false);
+            configuration.modules.adventureGM.enabled = false;
+            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
         }
         // Are they in creative? Fix it.
         if (survivalGMBoolean === true && adventureGMBoolean === false) {

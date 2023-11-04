@@ -2,9 +2,11 @@ import { EntityInventoryComponent, world, system } from "@minecraft/server";
 import { flag } from "../../../util.js";
 import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 async function antiknockbacka(id: number) {
-    const antikbBoolean = dynamicPropertyRegistry.get("antikb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const antikbBoolean = configuration.modules.antikbA.enabled;
 
     if (antikbBoolean === false) {
         system.clearRun(id);
@@ -13,7 +15,7 @@ async function antiknockbacka(id: number) {
 
     const players = world.getPlayers();
     for (const player of players) {
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         if (uniqueId === player.name) {
             continue;

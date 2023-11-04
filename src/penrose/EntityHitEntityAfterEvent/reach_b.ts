@@ -2,6 +2,7 @@ import { world, Player, EntityHitEntityAfterEvent, system, PlayerLeaveAfterEvent
 import config from "../../data/config.js";
 import { flag } from "../../util.js";
 import { dynamicPropertyRegistry } from "../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../interfaces/Config.js";
 
 // Store the previous locations and velocities of hitEntity and damagingEntity
 const previousData: Map<
@@ -33,7 +34,8 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent | string): void {
 
 function reachb(object: EntityHitEntityAfterEvent) {
     // Get Dynamic Property
-    const reachBBoolean = dynamicPropertyRegistry.get("reachb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const reachBBoolean = configuration.modules.reachB.enabled;
 
     // Unsubscribe if disabled in-game and stop the interval
     if (reachBBoolean === false) {
@@ -53,7 +55,7 @@ function reachb(object: EntityHitEntityAfterEvent) {
     }
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(damagingEntity?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(damagingEntity, damagingEntity?.id);
 
     // Skip if they have permission
     if (uniqueId === damagingEntity.name) {

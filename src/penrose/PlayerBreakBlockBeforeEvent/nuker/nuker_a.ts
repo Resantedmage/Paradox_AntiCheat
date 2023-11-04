@@ -1,6 +1,7 @@
 import { PlayerBreakBlockAfterEvent, PlayerBreakBlockBeforeEvent, PlayerLeaveAfterEvent, world } from "@minecraft/server";
 import { AfterNukerA } from "../../PlayerBreakBlockAfterEvent/nuker/nuker_a";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry";
+import ConfigInterface from "../../../interfaces/Config";
 
 const breakData = new Map<string, { breakCount: number; lastBreakTimeBefore: number }>();
 
@@ -11,7 +12,8 @@ function onPlayerLogout(object: PlayerLeaveAfterEvent): void {
 }
 
 async function beforenukera(object: PlayerBreakBlockBeforeEvent): Promise<void> {
-    const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b") as boolean;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const antiNukerABoolean = configuration.modules.antinukerA.enabled;
     if (antiNukerABoolean === false) {
         breakData.clear();
         return;
@@ -20,7 +22,7 @@ async function beforenukera(object: PlayerBreakBlockBeforeEvent): Promise<void> 
     const { player } = object;
     const playerID = player?.id;
 
-    const uniqueId = dynamicPropertyRegistry.get(playerID);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, playerID);
     if (uniqueId === player.name) {
         return;
     }

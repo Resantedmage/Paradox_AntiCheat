@@ -2,8 +2,13 @@ import { world, PlayerBreakBlockAfterEvent, system, EntityQueryOptions, PlayerLe
 import { flag } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { MinecraftBlockTypes, MinecraftEffectTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 const lastBreakTime = new Map<string, number>();
+
+function getRegistry() {
+    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+}
 
 function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
     // Remove the player's data from the map when they log off
@@ -18,7 +23,8 @@ async function afternukera(
     afterPlayerBreakBlockCallback: (object: PlayerBreakBlockAfterEvent) => void,
     afterPlayerLeaveCallback: (object: PlayerLeaveAfterEvent) => void
 ): Promise<void> {
-    const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b");
+    const configuration = getRegistry();
+    const antiNukerABoolean = configuration.modules.antinukerA.enabled;
     if (antiNukerABoolean === false) {
         breakData.clear();
         lastBreakTime.clear();
@@ -31,7 +37,7 @@ async function afternukera(
 
     const { block, player, dimension, brokenBlockPermutation } = object;
     const { x, y, z } = block.location;
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
     if (uniqueId === player.name) {
         return;
     }
@@ -247,7 +253,8 @@ async function afternukera(
 }
 
 function freeze(id: number) {
-    const antiNukerABoolean = dynamicPropertyRegistry.get("antinukera_b");
+    const configuration = getRegistry();
+    const antiNukerABoolean = configuration.modules.antinukerA.enabled;
     if (antiNukerABoolean === false) {
         system.clearRun(id);
         return;

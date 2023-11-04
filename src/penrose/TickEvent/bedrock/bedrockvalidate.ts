@@ -1,6 +1,7 @@
 import { world, system, Dimension } from "@minecraft/server";
 import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 interface DimensionConfig {
     dimension: Dimension;
@@ -16,7 +17,8 @@ interface Dimensions {
 }
 
 async function bedrockvalidate(id: number) {
-    const bedrockValidateBoolean = dynamicPropertyRegistry.get("bedrockvalidate_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const bedrockValidateBoolean = configuration.modules.bedrockValidate.enabled;
 
     if (bedrockValidateBoolean === false) {
         system.clearRun(id);
@@ -42,7 +44,7 @@ async function bedrockvalidate(id: number) {
 
     const players = world.getPlayers();
     for (const player of players) {
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         if (uniqueId === player.name) {
             continue;

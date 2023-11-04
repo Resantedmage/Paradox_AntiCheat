@@ -2,6 +2,7 @@ import { PlayerBreakBlockAfterEvent, PlayerLeaveAfterEvent, world } from "@minec
 import { xrayblocks } from "../../../data/xray.js";
 import { sendMsg } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 // Define different thresholds for different ore categories
 const XRAY_THRESHOLD_COMMON = 5;
@@ -58,7 +59,8 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 function xraya(object: PlayerBreakBlockAfterEvent) {
     // Get Dynamic Property
-    const xrayBoolean = dynamicPropertyRegistry.get("xraya_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const xrayBoolean = configuration.modules.xrayA.enabled;
 
     // Unsubscribe if disabled in-game
     if (xrayBoolean === false) {
@@ -73,7 +75,7 @@ function xraya(object: PlayerBreakBlockAfterEvent) {
     const { player, brokenBlockPermutation } = object;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Skip if they have permission
     if (uniqueId === player.name) {

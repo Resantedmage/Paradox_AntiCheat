@@ -4,6 +4,7 @@ import { sendMsg } from "../../../util.js";
 import { clearItems } from "../../../data/clearlag.js";
 import { kickablePlayers } from "../../../kickcheck.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 const cooldownTimer = new WeakMap();
 // Just a dummy object to use with set/get
@@ -46,7 +47,8 @@ function clearEntities() {
 
 function clearLag(id: number) {
     // Get Dynamic Property
-    const clearLagBoolean = dynamicPropertyRegistry.get("clearlag_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const clearLagBoolean = configuration.modules.clearLag.enabled;
 
     // Unsubscribe if disabled in-game
     if (clearLagBoolean === false) {

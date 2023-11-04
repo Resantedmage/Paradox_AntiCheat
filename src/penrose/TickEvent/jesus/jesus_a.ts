@@ -1,5 +1,6 @@
 import { world, Block, Player, Dimension, system, PlayerLeaveAfterEvent } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 let blockAtPlayer0: Block;
 let blockAtPlayer1: Block;
@@ -20,7 +21,8 @@ function timer(player: Player, dimension: Dimension, x: number, y: number, z: nu
 
 function jesusa(id: number) {
     // Get Dynamic Property
-    const jesusaBoolean = dynamicPropertyRegistry.get("jesusa_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const jesusaBoolean = configuration.modules.jesusA.enabled;
 
     // Unsubscribe if disabled in-game
     if (jesusaBoolean === false) {
@@ -33,7 +35,7 @@ function jesusa(id: number) {
     const players = world.getPlayers();
     for (const player of players) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         // Skip if they have permission
         if (uniqueId === player.name) {

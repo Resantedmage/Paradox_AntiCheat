@@ -3,6 +3,7 @@ import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { flag } from "../../../util.js";
 import { MinecraftBlockTypes } from "../../../node_modules/@minecraft/vanilla-data/lib/index.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 function afterreacha(
     object: PlayerPlaceBlockAfterEvent,
@@ -12,7 +13,8 @@ function afterreacha(
     afterPlayerLeaveCallback: (arg: PlayerLeaveAfterEvent) => void
 ) {
     // Get Dynamic Property
-    const reachABoolean = dynamicPropertyRegistry.get("reacha_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const reachABoolean = configuration.modules.reachA.enabled;
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
@@ -27,7 +29,7 @@ function afterreacha(
     const { block, player, dimension } = object;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Skip if they have permission
     if (uniqueId === player.name) {

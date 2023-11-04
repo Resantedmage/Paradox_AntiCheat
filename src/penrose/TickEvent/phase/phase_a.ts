@@ -1,6 +1,7 @@
 import { world, EntityQueryOptions, GameMode, system, Vector3, PlayerLeaveAfterEvent } from "@minecraft/server";
 import { flag } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 // Store last safe location
 const lastSafeLocation = new Map<string, Vector3>();
@@ -16,7 +17,8 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 function antiphasea(id: number) {
     // Get Dynamic Property
-    const antiphaseABoolean = dynamicPropertyRegistry.get("antiphasea_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const antiphaseABoolean = configuration.modules.antiphaseA.enabled;
 
     // Unsubscribe if disabled in-game
     if (!antiphaseABoolean) {
@@ -35,7 +37,7 @@ function antiphasea(id: number) {
 
     for (const player of filteredPlayers) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         // Skip if they have permission
         if (uniqueId === player.name) {

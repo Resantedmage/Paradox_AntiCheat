@@ -3,6 +3,7 @@ import { sendMsg } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { ChatChannelManager } from "../../../classes/ChatChannelManager.js";
 import { WorldExtended } from "../../../classes/WorldExtended/World.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 const afterChatFilter = () => {
     // Subscribe to the 'afterChat' event
@@ -11,7 +12,8 @@ const afterChatFilter = () => {
         const { message, sender: player } = msg;
 
         // Retrieve the 'chatranks_b' dynamic property
-        const chatRanksBoolean = dynamicPropertyRegistry.get("chatranks_b");
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+        const chatRanksBoolean = configuration.modules.chatranks.enabled;
 
         // Get the channel name associated with the player
         const channelName = ChatChannelManager.getPlayerChannel(player.id);

@@ -1,23 +1,18 @@
-import { world, Vector3, Player } from "@minecraft/server";
+import { world, Vector3, Player, Entity } from "@minecraft/server";
 
 type PropertyValue = string | number | boolean | Vector3 | object;
 
 export class DynamicPropertyManager {
-    private static instance: DynamicPropertyManager | null = null; // Singleton instance
+    private static instance: DynamicPropertyManager | null = null;
+    private propertyCache: Map<string, PropertyValue> = new Map<string, PropertyValue>();
 
     private constructor() {
-        // Initialize the Singleton instance
         if (DynamicPropertyManager.instance) {
             return DynamicPropertyManager.instance;
         }
         DynamicPropertyManager.instance = this;
     }
 
-    /**
-     * Get the Singleton instance of the DynamicPropertyManager class.
-     * If an instance doesn't exist, it will be created.
-     * @returns The Singleton instance of DynamicPropertyManager.
-     */
     public static getInstance(): DynamicPropertyManager {
         if (!DynamicPropertyManager.instance) {
             DynamicPropertyManager.instance = new DynamicPropertyManager();
@@ -25,13 +20,10 @@ export class DynamicPropertyManager {
         return DynamicPropertyManager.instance;
     }
 
-    /**
-     * Set a dynamic property with a name and value for a specific player or globally.
-     * @param player The player object (use undefined for global properties).
-     * @param name The name of the property.
-     * @param value The value of the property.
-     */
     setProperty(player: Player | undefined, name: string, value: PropertyValue): void {
+        // Update the cache with the new value
+        this.propertyCache.set(name, value);
+
         const serializedValue = typeof value === "string" ? value : JSON.stringify(value);
         let currentIndex = 0;
         let remainingValue = serializedValue;
@@ -40,7 +32,6 @@ export class DynamicPropertyManager {
             const chunk = remainingValue.slice(0, 32766);
             const propertyName = currentIndex === 0 ? name : `${name}_${currentIndex}`;
 
-            // Conditionally select the appropriate method
             if (player) {
                 player.setDynamicProperty(propertyName, chunk);
             } else {
@@ -52,16 +43,14 @@ export class DynamicPropertyManager {
         }
     }
 
-    /**
-     * Get the value of a dynamic property by its name for a specific player or globally.
-     * @param player The player object (use undefined for global properties).
-     * @param name The name of the property.
-     * @returns The value of the property or undefined if it doesn't exist.
-     */
     getProperty(player: Player | undefined, name: string): PropertyValue | undefined {
+        // Check the cache first
+        if (this.propertyCache.has(name)) {
+            return this.propertyCache.get(name);
+        }
+
         let serializedValue: string | undefined = player ? (player.getDynamicProperty(name) as string) : (world.getDynamicProperty(name) as string);
 
-        // Check for properties with prefixes
         let index = 0;
         while (true) {
             const propertyName = `${name}_${index}`;
@@ -69,33 +58,32 @@ export class DynamicPropertyManager {
             if (partValue === undefined) {
                 break;
             }
-            // Join the split parts
             serializedValue = serializedValue ? serializedValue + (partValue as string) : (partValue as string);
             index++;
         }
 
         if (serializedValue) {
-            return JSON.parse(serializedValue);
+            const deserializedValue = JSON.parse(serializedValue);
+            // Cache the value for future access
+            this.propertyCache.set(name, deserializedValue);
+            return deserializedValue;
         }
 
         return undefined;
     }
 
-    /**
-     * Delete a dynamic property and its affiliated properties for a specific player or globally by name.
-     * @param player The player object (use undefined for global properties).
-     * @param name The name of the property to delete.
-     */
-    deleteProperty(player: Player | undefined, name: string): void {
+    deleteProperty(player: Player | Entity | undefined, name: string): void {
+        // Clear the cache for the deleted property
+        this.propertyCache.delete(name);
+
         let index = 0;
         while (true) {
             const dynamicPropertyName = `${name}_${index}`;
             const existingValue = player ? player.getDynamicProperty(dynamicPropertyName) : world.getDynamicProperty(dynamicPropertyName);
             if (existingValue === undefined) {
-                break; // Stop the loop when there are no more properties to delete
+                break;
             }
 
-            // Conditionally select the appropriate method
             if (player) {
                 player.setDynamicProperty(dynamicPropertyName, undefined);
             } else {
@@ -104,5 +92,16 @@ export class DynamicPropertyManager {
 
             index++;
         }
+    }
+
+    /**
+     * Check if a dynamic property exists for a specific player by its name.
+     * @param player The player object.
+     * @param name The name of the property.
+     * @returns True if the property exists, false otherwise.
+     */
+    hasProperty(player: Player, name: string): boolean {
+        // Check for the existence of the property in the dynamic property registry
+        return player.getDynamicProperty(name) !== undefined;
     }
 }

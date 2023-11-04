@@ -12,7 +12,7 @@ function registry() {
     extendWorldPrototype();
 
     // Store the config object as a JSON string in DynamicPropertyManager
-    dynamicPropertyRegistry.setProperty("config", config);
+    dynamicPropertyRegistry.setProperty(undefined, "config", config);
 }
 
 const Registry = () => {

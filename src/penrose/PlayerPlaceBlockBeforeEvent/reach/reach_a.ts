@@ -1,6 +1,7 @@
 import { world, PlayerPlaceBlockBeforeEvent, Vector3, PlayerPlaceBlockAfterEvent, PlayerLeaveAfterEvent } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import { AfterReachA } from "../../PlayerPlaceBlockAfterEvent/reach/reach_a.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 const blockPlaceReachData = new Map<string, { blockLocation: Vector3; playerLocation: Vector3 }>();
 
@@ -12,7 +13,8 @@ function onPlayerLogout(object: PlayerLeaveAfterEvent): void {
 
 function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
     // Get Dynamic Property
-    const reachABoolean = dynamicPropertyRegistry.get("reacha_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const reachABoolean = configuration.modules.reachA.enabled;
 
     // Unsubscribe if disabled in-game
     if (reachABoolean === false) {
@@ -24,7 +26,7 @@ function beforereacha(object: PlayerPlaceBlockBeforeEvent) {
     const { block, player } = object;
 
     // Get unique ID
-    const uniqueId = dynamicPropertyRegistry.get(player?.id);
+    const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Skip if they have permission
     if (uniqueId === player.name) {

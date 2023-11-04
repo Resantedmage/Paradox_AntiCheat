@@ -1,10 +1,12 @@
 import { world, EntityQueryOptions, system } from "@minecraft/server";
 import config from "../../../data/config.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 async function hotbar(id: number) {
     // Get Dynamic Property
-    const hotbarBoolean = dynamicPropertyRegistry.get("hotbar_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const hotbarBoolean = configuration.modules.hotbar.enabled;
 
     // Unsubscribe if disabled in-game
     if (hotbarBoolean === false) {

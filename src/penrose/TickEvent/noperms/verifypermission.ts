@@ -22,14 +22,14 @@ function verifypermission() {
         const encode = (world as WorldExtended).hashWithSalt(salt as string, key);
         if (encode && encode === hash) {
             // Make sure their unique ID exists in case of a reload
-            if (dynamicPropertyRegistry.has(player.id) === false) {
-                dynamicPropertyRegistry.set(player.id, player.name);
+            if (dynamicPropertyRegistry.hasProperty(player, player.id) === false) {
+                dynamicPropertyRegistry.setProperty(player, player.id, player.name);
             }
             continue;
         } else {
             player.setDynamicProperty("hash");
             player.setDynamicProperty("salt");
-            dynamicPropertyRegistry.delete(player.id);
+            dynamicPropertyRegistry.deleteProperty(player, player.id);
             player.removeTag("paradoxOpped");
         }
 

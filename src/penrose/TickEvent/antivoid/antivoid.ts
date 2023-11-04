@@ -13,7 +13,7 @@ function antiVoid(_id: number) {
 
     for (const player of filteredPlayers) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
         // Skip if they have permission
         if (uniqueId === player.name) {
             continue;

@@ -3,6 +3,7 @@ import { flag } from "../../../util.js";
 import config from "../../../data/config.js";
 import { kickablePlayers } from "../../../kickcheck.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
+import ConfigInterface from "../../../interfaces/Config.js";
 
 function rip(player: Player) {
     // Tag with reason and by who
@@ -19,7 +20,8 @@ function rip(player: Player) {
 
 function namespoofb(id: number) {
     // Get Dynamic Property
-    const nameSpoofBoolean = dynamicPropertyRegistry.get("namespoofb_b");
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const nameSpoofBoolean = configuration.modules.namespoofB.enabled;
 
     // Unsubscribe if disabled in-game
     if (nameSpoofBoolean === false) {
@@ -30,7 +32,7 @@ function namespoofb(id: number) {
     const players = world.getPlayers();
     for (const player of players) {
         // Get unique ID
-        const uniqueId = dynamicPropertyRegistry.get(player?.id);
+        const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
         // Skip if they have permission
         if (uniqueId === player.name) {
