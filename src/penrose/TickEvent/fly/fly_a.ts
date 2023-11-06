@@ -85,6 +85,14 @@ function analyzePlayerData(player: Player) {
         }
     }
 
+    if (fallingCount === 0) {
+        const block = player.dimension.getBlock(player.location);
+        const isAir = block?.below().isAir ?? null;
+        if (!isAir) {
+            airCount = 0;
+        }
+    }
+
     // Analyze the majority of the data
     if (fallingCount > airCount) {
         // Majority indicates falling
@@ -94,6 +102,10 @@ function analyzePlayerData(player: Player) {
         isPotentialFlying = true;
     }
 
+    // Remove the oldest entry from the beginning of the arrays
+    fallingData.shift();
+    surroundedByAirData.shift();
+
     if (isPotentialFlying) {
         // console.log("Player is potentially flying. Taking appropriate action.");
         // Player is potentially flying, take appropriate action
@@ -101,9 +113,6 @@ function analyzePlayerData(player: Player) {
     } else {
         // console.log("Player is not potentially flying.");
     }
-
-    // Clear the data for the player after analysis
-    playerDataMap.delete(player.id);
 }
 
 function checkSurroundedByAir(player: Player): boolean {
