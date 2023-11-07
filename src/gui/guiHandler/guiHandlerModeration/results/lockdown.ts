@@ -8,7 +8,7 @@ export function lockdownHandler(player: Player) {
     //Lockdown ui
     const lockdownui = new ModalFormData();
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const lockdownBoolean = configuration.modules.lockdown.enabled;
     lockdownui.title("§4Paradox - Lockdown§4");
     lockdownui.textField("Reason:", "Possible hacker in the world.");

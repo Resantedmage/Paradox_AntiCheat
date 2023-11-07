@@ -63,7 +63,7 @@ export function rank(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);

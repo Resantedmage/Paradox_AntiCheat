@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 export function illegalItemsHandler(player: Player) {
     //Illegal items this will cover a few modules so will group these into one UI.
     const modulesillegalitemsui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const illegalItemsABoolean = configuration.modules.illegalitemsA.enabled;
     const illegalItemsBBoolean = configuration.modules.illegalitemsB.enabled;
     const illegalItemsCBoolean = configuration.modules.illegalitemsC.enabled;

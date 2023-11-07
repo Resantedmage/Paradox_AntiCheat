@@ -52,7 +52,7 @@ export function illegalitemsB(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -66,13 +66,13 @@ export function illegalitemsB(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.illegalitemsB.enabled === false) {
         // Allow
         configuration.modules.illegalitemsB.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsB§f!`);
         IllegalItemsB();
     } else if (configuration.modules.illegalitemsB.enabled === true) {
         // Deny
         configuration.modules.illegalitemsB.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsB§f!`);
     }
 }

@@ -52,7 +52,7 @@ export function allowgma(message: ChatSendAfterEvent, args: string) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -66,12 +66,12 @@ export function allowgma(message: ChatSendAfterEvent, args: string) {
     if (configuration.modules.adventureGM.enabled === false) {
         // Allow
         configuration.modules.adventureGM.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         // Make sure at least one is allowed since this could cause serious issues if all were locked down
         // We will allow Adventure Mode in this case
         if (configuration.modules.survivalGM.enabled === true && configuration.modules.creativeGM.enabled === true) {
             configuration.modules.adventureGM.enabled = false;
-            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f Since all gamemodes were disallowed, Adventure mode has been enabled.`);
             Adventure();
             return;
@@ -81,7 +81,7 @@ export function allowgma(message: ChatSendAfterEvent, args: string) {
     } else if (configuration.modules.adventureGM.enabled === true) {
         // Deny
         configuration.modules.adventureGM.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 2 (Adventure)§f to be used!`);
     }
 }

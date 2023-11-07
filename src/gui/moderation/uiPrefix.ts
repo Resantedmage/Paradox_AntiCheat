@@ -37,7 +37,7 @@ export function uiPREFIX(prefixResult: ModalFormResponse, onlineList: string[], 
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if ((textField as string).length && !toggle) {
         /**

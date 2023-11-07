@@ -20,19 +20,19 @@ export function uiINVALIDSPRINT(invalidsprintResult: ModalFormResponse, player: 
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Invalid Sprint`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (InvalidSprintToggle === true) {
         // Allow
         configuration.modules.invalidsprintA.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6InvalidSprintA§f!`);
         InvalidSprintA();
     }
 
     if (InvalidSprintToggle === false) {
         configuration.modules.invalidsprintA.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4InvalidSprintA§f!`);
     }
 

@@ -59,7 +59,7 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 function xraya(object: PlayerBreakBlockAfterEvent) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const xrayBoolean = configuration.modules.xrayA.enabled;
 
     // Unsubscribe if disabled in-game

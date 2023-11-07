@@ -6,24 +6,64 @@ import { world } from "@minecraft/server";
 
 const dynamicPropertyRegistry = DynamicPropertyManager.getInstance();
 
-function registry() {
+async function diffObjects(obj1: Record<string, any>, obj2: Record<string, any>): Promise<Record<string, any>> {
+    const diff: Record<string, any> = {};
+
+    for (const key in obj1) {
+        if (typeof obj1[key] === "object") {
+            const nestedDiff = diffObjects(obj1[key], obj2[key]);
+            if (Object.keys(nestedDiff).length > 0) {
+                diff[key] = nestedDiff;
+            }
+        } else if (obj1[key] !== obj2[key]) {
+            diff[key] = obj1[key];
+        }
+    }
+
+    return diff;
+}
+
+async function registry() {
     // Extend Prototypes here
     extendPlayerPrototype();
     extendWorldPrototype();
 
     // Check if the "config" property already exists
-    const existingConfig = dynamicPropertyRegistry.getProperty(undefined, "config");
+    const existingConfig = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig");
+    // Check if the "backupConfig" property already exists
+    const backupConfig = dynamicPropertyRegistry.getProperty(undefined, "paradoxBackupConfig");
 
-    if (!existingConfig || JSON.stringify(existingConfig) !== JSON.stringify(config)) {
-        // "config" property doesn't exist or there are changes
-        dynamicPropertyRegistry.setProperty(undefined, "config", config);
+    if (!existingConfig) {
+        // Create the "config" property with the new value
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", config);
+        // Create the backup with the current "config"
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxBackupConfig", config);
+        return;
+    }
+
+    if (!backupConfig) {
+        // Create the backup with the current "config"
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxBackupConfig", config);
+    } else {
+        // Determine what has changed in the "config" compared to the backup
+        const changes = await diffObjects(config, backupConfig as object);
+
+        if (Object.keys(changes).length > 0) {
+            // Update the backup with the current "config"
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxBackupConfig", config);
+
+            // Merge the changes into the "config" property
+            const mergedConfig = { ...(existingConfig as object), ...changes };
+
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", mergedConfig);
+        }
     }
 }
 
 const Registry = () => {
     return new Promise<void>((resolve) => {
-        world.afterEvents.worldInitialize.subscribe(() => {
-            registry();
+        world.afterEvents.worldInitialize.subscribe(async () => {
+            await registry();
             resolve(); // Resolve the promise when the registry function is done.
         });
     });

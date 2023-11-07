@@ -35,7 +35,7 @@ function safetyProtocol(player: Player, x: number, y: number, z: number) {
 
 function worldborder(id: number) {
     // Dynamic Properties for boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const worldBorderBoolean = configuration.modules.worldBorder.enabled;
 
     // Dynamic Properties for number

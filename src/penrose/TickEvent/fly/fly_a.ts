@@ -154,7 +154,7 @@ function handlePotentialFlying(player: Player): void {
 
 function flya(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const flyABoolean = configuration.modules.flyA.enabled;
     // Unsubscribe if disabled in-game
     if (flyABoolean === false) {

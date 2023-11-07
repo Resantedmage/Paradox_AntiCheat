@@ -66,7 +66,7 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -80,12 +80,12 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.antiKillAura.enabled === true) {
         // Deny
         configuration.modules.antiKillAura.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiKillAura§f!`);
     } else if (configuration.modules.antiKillAura.enabled === false) {
         // Allow
         configuration.modules.antiKillAura.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiKillAura§f!`);
         KillAura();
     }

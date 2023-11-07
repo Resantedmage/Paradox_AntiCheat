@@ -22,7 +22,7 @@ export function uiSPAMMER(spamResult: ModalFormResponse, player: Player) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Spammer`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Get Dynamic Property Boolean
     const spammerABoolean = configuration.modules.spammerA.enabled;
@@ -63,7 +63,7 @@ export function uiSPAMMER(spamResult: ModalFormResponse, player: Player) {
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SpammerC§f!`);
     }
 
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
 
     //show the main ui to the player once complete.
     return paradoxui(player);

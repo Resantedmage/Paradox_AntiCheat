@@ -68,7 +68,7 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -83,7 +83,7 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.lockdown.enabled) {
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f Server is no longer in lockdown!`);
         configuration.modules.lockdown.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         return;
     }
 
@@ -115,6 +115,6 @@ async function handleLockdown(message: ChatSendAfterEvent, args: string[]) {
     // Shutting it down
     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f Server is in lockdown!`);
     configuration.modules.lockdown.enabled = true;
-    dynamicPropertyRegistry.setProperty(undefined, "config", true);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", true);
     return;
 }

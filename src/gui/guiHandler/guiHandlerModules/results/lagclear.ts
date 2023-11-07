@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 export function lagClearHandler(player: Player) {
     //Lagclear
     const moduleslaglearui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const clearLagBoolean = configuration.modules.clearLag.enabled;
     moduleslaglearui.title("§4Paradox Modules - Clear Lag§4");
     moduleslaglearui.toggle("Clear Lag - Clears items and entities with timer:", clearLagBoolean);

@@ -22,7 +22,7 @@ export function uiGAMEMODES(gamemodeResult: ModalFormResponse, player: Player) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure gamemodes`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (AdventureGM === true && CreativeGM === true && SurvivalGM === true) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You can't disable all gamemodes!`);
@@ -84,7 +84,7 @@ export function uiGAMEMODES(gamemodeResult: ModalFormResponse, player: Player) {
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 0 (Survival)§f to be used!`);
     }
 
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
 
     //show the main ui to the player one complete.
     return paradoxui(player);

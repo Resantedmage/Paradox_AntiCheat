@@ -5,7 +5,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 function namespoofa(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const nameSpoofBoolean = configuration.modules.namespoofA.enabled;
 
     // Unsubscribe if disabled in-game

@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function antiJesusAHandler(player: Player) {
     //Jesus UI
     const modulesantijesusui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const jesusaBoolean = configuration.modules.jesusA.enabled;
     modulesantijesusui.title("§4Paradox Modules - Anti Jesus§4");
     modulesantijesusui.toggle("Anti Jesus - Toggles checks for walking/sprinting on water or lava:", jesusaBoolean);

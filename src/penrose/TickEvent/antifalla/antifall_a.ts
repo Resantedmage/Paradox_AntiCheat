@@ -5,7 +5,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 function antifalla(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antifallABoolean = configuration.modules.antifallA.enabled;
 
     // Unsubscribe if disabled in-game

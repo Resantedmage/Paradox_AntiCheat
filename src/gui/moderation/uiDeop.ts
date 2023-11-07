@@ -26,7 +26,7 @@ export function uiDEOP(opResult: ModalFormResponse, onlineList: string[], player
     const memberHash = member.getDynamicProperty("hash");
     const memberSalt = member.getDynamicProperty("salt");
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Use either the operator's ID or the encryption password as the key
     const key = configuration.encryption.password ? configuration.encryption.password : member.id;

@@ -20,7 +20,7 @@ export function uiRULES(banResult: ModalFormResponse, player: Player) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure the rules.`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     const showrulesBoolean = configuration.modules.showrules.enabled;
     const KickOnDeclineBoolean = configuration.modules.showrules.kick;
@@ -43,7 +43,7 @@ export function uiRULES(banResult: ModalFormResponse, player: Player) {
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4KickOnDecline§f!`);
     }
 
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
 
     //show the main ui to the player one complete.
     return paradoxui(player);

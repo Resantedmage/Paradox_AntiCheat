@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiShulkerHandler(player: Player) {
     const modulesantishulkerui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiShulkerBoolean = configuration.modules.antishulker.enabled;
     modulesantishulkerui.title("§4Paradox Modules - Anti Shulker§4");
     modulesantishulkerui.toggle("Anti Shulker - Allows or denies shulker boxes in the world:", antiShulkerBoolean);

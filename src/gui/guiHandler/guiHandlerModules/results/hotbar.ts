@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function hotbarHandler(player: Player) {
     const moduleshotbarui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const hotbarBoolean = configuration.modules.hotbar.enabled;
     const CurrentHotbarConfig = configuration.modules.hotbar.message;
     moduleshotbarui.title("§4Paradox Modules - Hotbar§4");

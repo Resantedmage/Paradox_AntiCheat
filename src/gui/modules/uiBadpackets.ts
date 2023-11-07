@@ -21,7 +21,7 @@ export function uiBADPACKETS(badpacketsResult: ModalFormResponse, player: Player
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Badpackets`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (BadPackets1Toggle === true && configuration.modules.badpackets1.enabled === false) {
         // Allow
@@ -46,7 +46,7 @@ export function uiBADPACKETS(badpacketsResult: ModalFormResponse, player: Player
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
     }
 
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
 
     //show the main ui to the player once complete.
     return paradoxui(player);

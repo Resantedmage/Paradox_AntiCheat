@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 export function gamemodesHandler(player: Player) {
     //GameModes UI
     const gamemodesui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const adventureGMBoolean = configuration.modules.adventureGM.enabled;
     const creativeGMBoolean = configuration.modules.creativeGM.enabled;
     const survivalGMBoolean = configuration.modules.survivalGM.enabled;

@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function antiKnockBackHandler(player: Player) {
     //Anti Knockback UI
     const modulesantiknockbackui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antikbBoolean = configuration.modules.antikbA.enabled;
     modulesantiknockbackui.title("§4Paradox Modules - Anti KnockBack§4");
     modulesantiknockbackui.toggle("Anti Knockback - Anti Knockback for all players:", antikbBoolean);

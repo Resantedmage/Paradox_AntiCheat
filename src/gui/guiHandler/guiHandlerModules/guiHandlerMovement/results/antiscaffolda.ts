@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function antiScaffoldAHandler(player: Player) {
     //AntiScaffold
     const modulesantiscaffoldui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiScaffoldABoolean = configuration.modules.antiscaffoldA.enabled;
     modulesantiscaffoldui.title("§4Paradox Modules - Anti Scaffold§4");
     modulesantiscaffoldui.toggle("Anti Scaffold - Checks player's for illegal scaffolding:", antiScaffoldABoolean);

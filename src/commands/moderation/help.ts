@@ -28,12 +28,12 @@ export function help(message: ChatSendAfterEvent) {
         return nonstaffhelp(message);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Make sure the help command wasn't disabled
     if (configuration.customcommands.help === false) {
         configuration.customcommands.help = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
     }
 
     const textDisabled = "Command §4DISABLED§f.";

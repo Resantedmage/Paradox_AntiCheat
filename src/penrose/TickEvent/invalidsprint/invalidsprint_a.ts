@@ -69,7 +69,7 @@ function calculateMovementBPS(currentPosition: number[], lastPosition: number[],
 
 function invalidsprinta(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const invalidSprintABoolean = configuration.modules.invalidsprintA.enabled;
 
     // Unsubscribe if disabled in-game

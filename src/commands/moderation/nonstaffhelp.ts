@@ -23,7 +23,7 @@ export function nonstaffhelp(message: ChatSendAfterEvent) {
 
     // Make sure the user has permissions to run the command
     if (uniqueId === undefined) {
-        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
         return sendMsgToPlayer(player, [
             `§l§o§6[§4Non-Staff Commands§6]§r§o`,
             configuration.customcommands.report ? `§6${prefix}report <username>§f - Report suspicious players to staff.` : `§6${prefix}report <username>§f - Command §4DISABLED§f.`,

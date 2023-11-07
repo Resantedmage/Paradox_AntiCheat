@@ -15,7 +15,7 @@ function onPlayerLeave(event: PlayerLeaveAfterEvent) {
 }
 
 async function showrules(id: number) {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (configuration.modules.showrules.enabled === false) {
         playersAwaitingResponse.clear();

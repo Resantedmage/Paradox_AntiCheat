@@ -21,7 +21,7 @@ export function uiNAMESPOOFING(namespoofingResult: ModalFormResponse, player: Pl
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Name Spoofing`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Get Dynamic Property Boolean
     const nameSpoofABoolean = configuration.modules.namespoofA.enabled;
@@ -50,7 +50,7 @@ export function uiNAMESPOOFING(namespoofingResult: ModalFormResponse, player: Pl
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4NamespoofB§f!`);
     }
 
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
 
     //show the main ui to the player once complete.
     return paradoxui(player);

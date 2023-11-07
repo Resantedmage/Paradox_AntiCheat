@@ -12,7 +12,7 @@ const afterChatFilter = () => {
         const { message, sender: player } = msg;
 
         // Retrieve the 'chatranks_b' dynamic property
-        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
         const chatRanksBoolean = configuration.modules.chatranks.enabled;
 
         // Get the channel name associated with the player

@@ -22,7 +22,7 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
  */
 async function spawnProtection(id: number) {
     // Get Dynamic Property for spawn protection
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const spawnProtectionBoolean = configuration.modules.spawnprotection.enabled;
 
     // Unsubscribe if spawn protection is disabled in-game

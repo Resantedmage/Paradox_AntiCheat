@@ -19,7 +19,7 @@ function rip(player: Player) {
 
 function namespoofb(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const nameSpoofBoolean = configuration.modules.namespoofB.enabled;
 
     // Unsubscribe if disabled in-game

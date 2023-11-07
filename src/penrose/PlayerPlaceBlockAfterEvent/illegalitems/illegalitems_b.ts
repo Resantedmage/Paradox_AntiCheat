@@ -50,7 +50,7 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 async function illegalitemsb(object: PlayerPlaceBlockAfterEvent) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const illegalItemsBBoolean = configuration.modules.illegalitemsB.enabled;
     const salvageBoolean = configuration.modules.salvage.enabled;
     const illegalLoresBoolean = configuration.modules.illegalLores.enabled;

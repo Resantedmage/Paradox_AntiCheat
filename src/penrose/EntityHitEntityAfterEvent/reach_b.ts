@@ -33,7 +33,7 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent | string): void {
 
 function reachb(object: EntityHitEntityAfterEvent) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const reachBBoolean = configuration.modules.reachB.enabled;
 
     // Unsubscribe if disabled in-game and stop the interval

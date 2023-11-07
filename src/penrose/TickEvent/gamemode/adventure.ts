@@ -6,7 +6,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 async function adventure(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const adventureGMBoolean = configuration.modules.adventureGM.enabled;
     const creativeGMBoolean = configuration.modules.creativeGM.enabled;
     const survivalGMBoolean = configuration.modules.survivalGM.enabled;
@@ -32,7 +32,7 @@ async function adventure(id: number) {
         if (survivalGMBoolean === true && creativeGMBoolean === true) {
             // Default to adventure for safety
             configuration.modules.adventureGM.enabled = false;
-            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         }
         // Are they in adventure? Fix it.
         if (survivalGMBoolean === true && creativeGMBoolean === false) {

@@ -42,7 +42,7 @@ function setWorldBorder(player: Player, overworldSize: number, netherSize: numbe
     configuration.modules.worldBorder.nether = Math.abs(netherSize);
     configuration.modules.worldBorder.nether = Math.abs(endSize);
     configuration.modules.worldBorder.enabled = true;
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
     WorldBorder();
 }
 
@@ -65,7 +65,7 @@ export function worldborders(message: ChatSendAfterEvent, args: string[]) {
 
     const prefix = getPrefix(player);
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Cache
     const length = args.length;

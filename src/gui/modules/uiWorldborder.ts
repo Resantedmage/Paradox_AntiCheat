@@ -20,14 +20,14 @@ export function uiWORLDBORDER(worldborderResult: ModalFormResponse, player: Play
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure World Borders`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (WorldBorderToggle === true) {
         configuration.modules.worldBorder.enabled = true;
         configuration.modules.worldBorder.overworld = Math.abs(Number(OverworldValueTextfield));
         configuration.modules.worldBorder.nether = Math.abs(Number(NetherValueTextfield));
         configuration.modules.worldBorder.end = Math.abs(Number(EndValueTextfield));
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         WorldBorder();
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set the §6World Border§f! Overworld: §7${OverworldValueTextfield}§f Nether: §7${NetherValueTextfield}§f End: §7${EndValueTextfield}§f`);
     }
@@ -36,7 +36,7 @@ export function uiWORLDBORDER(worldborderResult: ModalFormResponse, player: Play
         configuration.modules.worldBorder.overworld = 0;
         configuration.modules.worldBorder.nether = 0;
         configuration.modules.worldBorder.end = 0;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled the §6World Border§f!`);
     }
 

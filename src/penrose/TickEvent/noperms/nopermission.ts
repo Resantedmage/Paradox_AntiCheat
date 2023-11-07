@@ -29,7 +29,7 @@ function noperms() {
         const hash = entity.getDynamicProperty("hash");
         const salt = entity.getDynamicProperty("salt");
 
-        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
         // Use either the operator's ID or the encryption password as the key
         const key = configuration.encryption.password ? configuration.encryption.password : entity.id;

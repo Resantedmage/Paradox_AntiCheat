@@ -25,7 +25,7 @@ export function onJoinRules(object: PlayerSpawnAfterEvent) {
 
 async function handledleOnJoinRules(object: PlayerSpawnAfterEvent) {
     //Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     // Unsubscribe if disabled in-game
     if (configuration.modules.showrules.enabled === false) {
         world.afterEvents.playerSpawn.unsubscribe(onJoinRules);

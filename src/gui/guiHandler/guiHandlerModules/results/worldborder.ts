@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function worldBorderHandler(player: Player) {
     const modulesworldborderui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const overWorldBorderBoolean = configuration.modules.worldBorder.enabled;
     const overworldBorderNumber = configuration.modules.worldBorder.overworld;
     const netherworldBorderNumber = configuration.modules.worldBorder.nether;

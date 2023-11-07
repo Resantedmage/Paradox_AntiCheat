@@ -5,7 +5,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 function spammerc(msg: ChatSendAfterEvent) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const spammerCBoolean = configuration.modules.spammerC.enabled;
 
     // Unsubscribe if disabled in-game

@@ -5,7 +5,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 function badpackets1(msg: ChatSendAfterEvent) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const badPackets1Boolean = configuration.modules.badpackets1.enabled;
 
     // Unsubscribe if disabled in-game

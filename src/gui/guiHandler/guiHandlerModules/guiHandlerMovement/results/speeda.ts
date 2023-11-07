@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function speedAHandler(player: Player) {
     //SpeedA
     const modulesspeedui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const speedABoolean = configuration.modules.speedA.enabled;
     modulesspeedui.title("§4Paradox Modules - Speed§4");
     modulesspeedui.toggle("Speed - Checks for player's speed hacking:", speedABoolean);

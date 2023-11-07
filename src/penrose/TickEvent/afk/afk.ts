@@ -7,7 +7,7 @@ const inactiveThreshold = config.modules.afk.minutes * 60 * 1000; // minutes in 
 const playerActivityMap: Map<string, number> = new Map(); // Map to store player activity timestamps
 
 function getRegistry() {
-    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    return dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 }
 
 // Function to check for AFK players and remove them

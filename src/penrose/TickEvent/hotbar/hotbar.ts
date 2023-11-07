@@ -4,7 +4,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 async function hotbar(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const hotbarBoolean = configuration.modules.hotbar.enabled;
 
     // Unsubscribe if disabled in-game

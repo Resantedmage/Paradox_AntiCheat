@@ -5,7 +5,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 
 function badpackets2(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const badPackets2Boolean = configuration.modules.badpackets2.enabled;
 
     // Unsubscribe if disabled in-game

@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function invalidSprintHandler(player: Player) {
     //Invalid Sprint
     const modulesinvalidsprintui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const invalidSprintABoolean = configuration.modules.invalidsprintA.enabled;
     modulesinvalidsprintui.title("§4Paradox Modules - Invalid Sprint§4");
     modulesinvalidsprintui.toggle("Invalid Sprint - Checks for illegal sprinting with blindness effect:", invalidSprintABoolean);

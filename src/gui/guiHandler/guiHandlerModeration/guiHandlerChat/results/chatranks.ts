@@ -8,7 +8,7 @@ export function chatRanksHandler(player: Player) {
     //Chat Ranks ui
     const chatranksui = new ModalFormData();
     let onlineList: string[] = [];
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const chatRanksBoolean = configuration.modules.chatranks.enabled;
     chatranksui.title("§4Change A Player's Chat Rank§4");
     onlineList = Array.from(world.getPlayers(), (player) => player.name);

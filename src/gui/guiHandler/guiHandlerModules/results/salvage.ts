@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 export function salvageHandler(player: Player) {
     //New Slavage System
     const modulesexpsavlagesystem = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const salvageBoolean = configuration.modules.salvage.enabled;
     modulesexpsavlagesystem.title("§4Paradox Modules - Salvage System§4");
     modulesexpsavlagesystem.toggle("Salvage System - Salvage all item's:", salvageBoolean);

@@ -52,7 +52,7 @@ export function reachB(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -66,13 +66,13 @@ export function reachB(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.reachB.enabled === false) {
         // Allow
         configuration.modules.reachB.enabled = true;
-        dynamicPropertyRegistry.setProperty(player, "config", configuration);
+        dynamicPropertyRegistry.setProperty(player, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ReachB§f!`);
         ReachB();
     } else if (configuration.modules.reachB.enabled === true) {
         // Deny
         configuration.modules.reachB.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ReachB§f!`);
     }
 }

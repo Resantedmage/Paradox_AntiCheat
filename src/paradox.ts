@@ -73,7 +73,7 @@ async function main() {
     // WorldInitializeAfter Events
     await Registry();
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // ChatSendBefore Events
     BadPackets1();

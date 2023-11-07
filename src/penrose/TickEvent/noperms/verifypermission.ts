@@ -15,7 +15,7 @@ function verifypermission() {
         const hash = player.getDynamicProperty("hash");
         const salt = player.getDynamicProperty("salt");
 
-        const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+        const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
         // Use either the operator's ID or the encryption password as the key
         const key = configuration.encryption.password ? configuration.encryption.password : player.id;

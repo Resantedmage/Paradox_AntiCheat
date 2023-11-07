@@ -5,7 +5,7 @@ import { MinecraftEffectTypes } from "../../node_modules/@minecraft/vanilla-data
 import ConfigInterface from "../../interfaces/Config";
 
 function getRegistry() {
-    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    return dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 }
 
 function isAttackingFromOutsideView(player1: Player, player2: Player) {

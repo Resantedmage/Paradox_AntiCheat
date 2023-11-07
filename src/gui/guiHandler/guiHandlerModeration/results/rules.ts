@@ -8,7 +8,7 @@ export function rulesHandler(player: Player) {
     //show rules ui
     const rulesui = new ModalFormData();
     rulesui.title("§4Paradox - Configure Rules§4");
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const showrulesBoolean = configuration.modules.showrules.enabled;
     const KickOnDeclineBoolean = configuration.modules.showrules.kick;
     rulesui.toggle("Enable Rules:", showrulesBoolean);

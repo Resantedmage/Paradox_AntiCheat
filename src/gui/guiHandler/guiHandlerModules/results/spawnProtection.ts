@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function spawnProtectionHandler(player: Player) {
     const modulesspui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const spawnProtectionBoolean = configuration.modules.spawnprotection.enabled;
     const spawnProtectionVector3 = configuration.modules.spawnprotection.vector3;
     const spawnProtectionRadius = configuration.modules.spawnprotection.radius;

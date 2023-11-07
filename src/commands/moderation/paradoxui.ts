@@ -39,7 +39,7 @@ export function paradoxUI(message: ChatSendAfterEvent, args: string[]) {
 
     const player = message.sender;
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     //check to see if the player has the rules tag incase they have been able to call the UI command before the
     // rules have been displayed.

@@ -20,7 +20,7 @@ function rip(player: Player, reason: string) {
 }
 
 function autoban(id: number) {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const autoBanBoolean = configuration.modules.autoBan.enabled;
 
     // Unsubscribe if disabled in-game

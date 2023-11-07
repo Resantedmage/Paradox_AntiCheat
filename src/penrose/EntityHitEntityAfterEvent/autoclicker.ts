@@ -14,7 +14,7 @@ interface PlayerWithClicks extends Player {
 }
 
 function getRegistry() {
-    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    return dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 }
 
 /**

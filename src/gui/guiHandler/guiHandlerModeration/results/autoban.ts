@@ -5,7 +5,7 @@ import { uiAUTOBAN } from "../../../moderation/uiAutoBan";
 import ConfigInterface from "../../../../interfaces/Config";
 
 export function autobanHandler(player: Player) {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const autoBanBoolean = configuration.modules.autoBan.enabled;
     const autobanui = new ModalFormData();
     autobanui.title("§4Paradox - Auto Ban§4");

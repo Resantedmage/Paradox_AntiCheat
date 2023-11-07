@@ -28,7 +28,7 @@ export function uiCHATRANKS(notifyResult: ModalFormResponse, onlineList: string[
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to enable Notifications.`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     const chatRanksBoolean = configuration.modules.chatranks.enabled;
 
@@ -73,13 +73,13 @@ export function uiCHATRANKS(notifyResult: ModalFormResponse, onlineList: string[
         if (ChatRanksToggle === true && chatRanksBoolean === false) {
             // Allow
             configuration.modules.chatranks.enabled = true;
-            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ChatRanks§f!`);
         }
         if (ChatRanksToggle === false && chatRanksBoolean === true) {
             // Deny
             configuration.modules.chatranks.enabled = false;
-            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ChatRanks§f!`);
         }
         return paradoxui(player);

@@ -31,7 +31,7 @@ interface ChatRecord {
 const chatRecords = new Map<string, ChatRecord>();
 
 function getRegistry() {
-    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    return dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 }
 
 function onPlayerLogout(event: PlayerLeaveAfterEvent): void {

@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiSpamHandler(player: Player) {
     const modulesantispamui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiSpamBoolean = configuration.modules.antispam.enabled;
     modulesantispamui.title("§4Paradox Modules - Anti Spam§4");
     modulesantispamui.toggle("Anti Spam - Checks for spamming in chat with 2 second cooldown:", antiSpamBoolean);

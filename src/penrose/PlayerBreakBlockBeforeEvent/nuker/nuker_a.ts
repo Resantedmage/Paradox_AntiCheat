@@ -12,7 +12,7 @@ function onPlayerLogout(object: PlayerLeaveAfterEvent): void {
 }
 
 async function beforenukera(object: PlayerBreakBlockBeforeEvent): Promise<void> {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiNukerABoolean = configuration.modules.antinukerA.enabled;
     if (antiNukerABoolean === false) {
         breakData.clear();

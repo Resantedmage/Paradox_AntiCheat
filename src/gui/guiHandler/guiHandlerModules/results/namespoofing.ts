@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 export function nameSpoofHandler(player: Player) {
     //Namespoofing
     const modulesnamespoofingui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const nameSpoofABoolean = configuration.modules.namespoofA.enabled;
     const nameSpoofBBoolean = configuration.modules.namespoofB.enabled;
     modulesnamespoofingui.title("§4Paradox Modules - Name spoofing§4");

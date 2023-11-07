@@ -17,7 +17,7 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 function antiphasea(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiphaseABoolean = configuration.modules.antiphaseA.enabled;
 
     // Unsubscribe if disabled in-game

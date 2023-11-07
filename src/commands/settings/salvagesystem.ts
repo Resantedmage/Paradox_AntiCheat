@@ -51,7 +51,7 @@ export function salvage(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -65,12 +65,12 @@ export function salvage(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.salvage.enabled === false) {
         // Allow
         configuration.modules.salvage.enabled = true;
-        dynamicPropertyRegistry.setProperty(player, "config", configuration);
+        dynamicPropertyRegistry.setProperty(player, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6Salvage§f!`);
     } else if (configuration.modules.salvage.enabled === true) {
         // Deny
         configuration.modules.salvage.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4Salvage§f!`);
     }
 }

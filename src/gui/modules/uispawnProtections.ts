@@ -20,7 +20,7 @@ export function uiSpawnProtection(spawnProtectionResult: ModalFormResponse, play
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Spawn Protection`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (spawnProtectionToggle === true) {
         // Allow
@@ -29,14 +29,14 @@ export function uiSpawnProtection(spawnProtectionResult: ModalFormResponse, play
         configuration.modules.spawnprotection.enabled = true;
         configuration.modules.spawnprotection.vector3 = vector3;
         configuration.modules.spawnprotection.radius = Math.abs(Number(spawnProtection_Radius));
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Spawn Protection§f!`);
         SpawnProtection();
     }
     if (spawnProtectionToggle === false) {
         // Deny
         configuration.modules.spawnprotection.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Spawn Protection§f!`);
     }
 

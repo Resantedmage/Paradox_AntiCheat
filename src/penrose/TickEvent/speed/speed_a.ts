@@ -68,7 +68,7 @@ function calculateMovementBPS(currentPosition: number[], lastPosition: number[],
 
 function speeda(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const speedABoolean = configuration.modules.speedA.enabled;
 
     // Unsubscribe if disabled in-game

@@ -77,7 +77,7 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
 
     const commandArgs = args;
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (commandArgs[0] !== "members" && commandArgs[0] !== "leave" && (commandArgs[0] === "help" || commandArgs.length < 2)) {
         chatChannelHelp(player, prefix, configuration.customcommands.channel);

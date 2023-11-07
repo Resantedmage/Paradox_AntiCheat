@@ -53,7 +53,7 @@ function onPlayerLogout(event: PlayerLeaveAfterEvent): void {
 
 function illegalitemsa(id: number) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const illegalItemsABoolean = configuration.modules.illegalitemsA.enabled;
     const illegalEnchantmentBoolean = configuration.modules.illegalEnchantment.enabled;
     const stackBanBoolean = configuration.modules.stackBan.enabled;

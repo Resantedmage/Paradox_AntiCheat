@@ -186,7 +186,7 @@ const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, arg
  */
 
 export function commandHandler(player: Player, message: ChatSendBeforeEvent): Promise<void> | void {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (configuration.debug) {
         console.warn(`${new Date()} | did run command handler`);
@@ -214,7 +214,7 @@ export function commandHandler(player: Player, message: ChatSendBeforeEvent): Pr
 }
 
 export function handleCommandAfterSend(chatSendAfterEvent: ChatSendAfterEvent): void {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Logic for handling the command after the message is sent
     if (!chatSendAfterEvent.message.startsWith(configuration.customcommands.prefix)) return;

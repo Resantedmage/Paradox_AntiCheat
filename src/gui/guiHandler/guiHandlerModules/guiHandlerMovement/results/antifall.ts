@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function antiFallHandler(player: Player) {
     //Anti Fall
     const modulesantifallui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antifallABoolean = configuration.modules.antifallA.enabled;
     modulesantifallui.title("§4Paradox Modules - Anti Fall§4");
     modulesantifallui.toggle("Anti Fall - Checks for taking no fall damage in survival:", antifallABoolean);

@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function badPacketsHandler(player: Player) {
     const modulesbadpacketsui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const badPackets1Boolean = configuration.modules.badpackets1.enabled;
     const badPackets2Boolean = configuration.modules.badpackets2.enabled;
     modulesbadpacketsui.title("§4Paradox Modules - Badpackets§4");

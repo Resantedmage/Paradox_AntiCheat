@@ -4,7 +4,7 @@ import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registr
 import ConfigInterface from "../../../interfaces/Config.js";
 
 async function antiknockbacka(id: number) {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antikbBoolean = configuration.modules.antikbA.enabled;
 
     if (antikbBoolean === false) {

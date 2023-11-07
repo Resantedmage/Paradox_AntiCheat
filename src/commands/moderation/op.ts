@@ -49,7 +49,7 @@ export function op(message: ChatSendAfterEvent, args: string[]) {
     const operatorHash = operator.getDynamicProperty("hash");
     const operatorSalt = operator.getDynamicProperty("salt");
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (!operatorHash || !operatorSalt || (operatorHash !== (world as WorldExtended).hashWithSalt(operatorSalt as string, configuration.encryption.password || operator.id) && (world as WorldExtended).isValidUUID(operatorSalt as string))) {
         if (!configuration.encryption.password) {

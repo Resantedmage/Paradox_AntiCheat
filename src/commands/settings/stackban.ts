@@ -51,7 +51,7 @@ export function stackban(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -66,7 +66,7 @@ export function stackban(message: ChatSendAfterEvent, args: string[]) {
         if (configuration.modules.stackBan.enabled) {
             // In this stage they are likely turning it off so oblige their request
             configuration.modules.stackBan.enabled = false;
-            dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
             return;
         }
         // If illegal items are not enabled then let user know this feature is inaccessible
@@ -77,12 +77,12 @@ export function stackban(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.stackBan.enabled === false) {
         // Allow
         configuration.modules.stackBan.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6StackBans§f!`);
     } else if (configuration.modules.stackBan.enabled === true) {
         // Deny
         configuration.modules.stackBan.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
     }
 }

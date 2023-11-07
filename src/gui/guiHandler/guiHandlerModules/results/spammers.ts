@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function spammersHandler(player: Player) {
     const modulesspamui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const spammerABoolean = configuration.modules.spammerA.enabled;
     const spammerBBoolean = configuration.modules.spammerB.enabled;
     const spammerCBoolean = configuration.modules.spammerC.enabled;

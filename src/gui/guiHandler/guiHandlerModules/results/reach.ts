@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function reachHandler(player: Player) {
     const modulesreachui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const reachABoolean = configuration.modules.reachA.enabled;
     const reachBBoolean = configuration.modules.reachB.enabled;
     modulesreachui.title("§4Paradox Modules - Reach§4");

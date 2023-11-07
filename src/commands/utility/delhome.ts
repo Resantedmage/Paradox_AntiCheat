@@ -38,7 +38,7 @@ export function delhome(message: ChatSendAfterEvent, args: string[]) {
 
     const player = message.sender;
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);

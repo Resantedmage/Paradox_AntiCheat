@@ -7,7 +7,7 @@ import ConfigInterface from "../../../interfaces/Config.js";
 const lastBreakTime = new Map<string, number>();
 
 function getRegistry() {
-    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    return dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 }
 
 function onPlayerLogout(event: PlayerLeaveAfterEvent): void {

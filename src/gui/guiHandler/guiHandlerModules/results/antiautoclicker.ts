@@ -5,7 +5,7 @@ import { ModalFormData } from "@minecraft/server-ui";
 import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiAutoClickerHandler(player: Player) {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const autoClickerBoolean = configuration.modules.autoclicker.enabled;
     const modulesantiautoclickerui = new ModalFormData();
     modulesantiautoclickerui.title("§4Paradox Modules - Anti AutoClicker§4");

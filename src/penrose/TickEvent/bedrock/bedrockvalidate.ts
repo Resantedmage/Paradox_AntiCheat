@@ -16,7 +16,7 @@ interface Dimensions {
 }
 
 async function bedrockvalidate(id: number) {
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const bedrockValidateBoolean = configuration.modules.bedrockValidate.enabled;
 
     if (bedrockValidateBoolean === false) {

@@ -23,7 +23,7 @@ function extractTagInfo(message: string) {
 
 function afterantispam(msg: ChatSendAfterEvent) {
     // Get Dynamic Property
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     const antiSpamBoolean = configuration.modules.antispam.enabled;
 

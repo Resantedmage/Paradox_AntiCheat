@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiNukerAHandler(player: Player) {
     const modulesantinukerui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiNukerABoolean = configuration.modules.antinukerA.enabled;
     modulesantinukerui.title("§4Paradox Modules - Anti Nuker§4");
     modulesantinukerui.toggle("Anti Nuker - Checks player's for nuking blocks:", antiNukerABoolean);

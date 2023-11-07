@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function antiKillAuraHandler(player: Player) {
     const modulesantikillaura = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const antiKillAuraBoolean = configuration.modules.antiKillAura.enabled;
     modulesantikillaura.title("§4Paradox Modules - Anti KillAura§4");
     modulesantikillaura.toggle("Anti KillAura - Toggles checks for attacks outside a 90 degree angle:", antiKillAuraBoolean);

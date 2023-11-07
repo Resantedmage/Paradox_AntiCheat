@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function opsHandler(player: Player) {
     const modulesopsui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const opsBoolean = configuration.modules.ops.enabled;
     modulesopsui.title("§4Paradox Modules - OPS§4");
     modulesopsui.toggle("One Player Sleep - Allows 1 player to sleep through the night:", opsBoolean);

@@ -3,7 +3,7 @@ import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registr
 import ConfigInterface from "../../../interfaces/Config.js";
 
 function getRegistry() {
-    return dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    return dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 }
 
 function setTimeoutAsync(delay: number): Promise<void> {

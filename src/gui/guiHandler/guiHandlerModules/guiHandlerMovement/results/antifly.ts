@@ -7,7 +7,7 @@ import ConfigInterface from "../../../../../interfaces/Config";
 export function antiFlyHandler(player: Player) {
     //Anti Fly
     const modulesantiflyui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const flyABoolean = configuration.modules.flyA.enabled;
     modulesantiflyui.title("§4Paradox Modules - Anti Fly§4");
     modulesantiflyui.toggle("Anti Fly - Checks for illegal flying in survival:", flyABoolean);

@@ -52,7 +52,7 @@ export function illegalitemsA(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -66,7 +66,7 @@ export function illegalitemsA(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.illegalitemsA.enabled === false) {
         // Allow
         configuration.modules.illegalitemsA.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         const nohasTag = world.getPlayers({ excludeTags: ["illegalitemsA"] });
         for (const temp of nohasTag) {
             temp.addTag("illegalitemsA");
@@ -76,7 +76,7 @@ export function illegalitemsA(message: ChatSendAfterEvent, args: string[]) {
     } else if (configuration.modules.illegalitemsA.enabled === true) {
         // Deny
         configuration.modules.illegalitemsA.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         const hasTag = world.getPlayers({ tags: ["illegalitemsA"] });
         for (const temp of hasTag) {
             temp.removeTag("illegalitemsA");

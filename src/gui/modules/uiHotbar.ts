@@ -24,7 +24,7 @@ export function uiHOTBAR(hotbarResult: ModalFormResponse, player: Player) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure the hotbar`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (configMessageBackup.has(dummy) === false) {
         configMessageBackup.set(dummy, configuration.modules.hotbar.message);
@@ -33,14 +33,14 @@ export function uiHOTBAR(hotbarResult: ModalFormResponse, player: Player) {
         // Allow
         configuration.modules.hotbar.enabled = true;
         configuration.modules.hotbar.message = HotbarMessage as string;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§7${player.name}§f has enabled §6Hotbar`);
         Hotbar();
     }
     if (HotbarToggle === false) {
         // Deny
         configuration.modules.hotbar.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§7${player.name}§f has disabled §6Hotbar`);
     }
     if (HotbarToggle === false && HotbarRestDefaultMessageToggle === true) {
@@ -49,7 +49,7 @@ export function uiHOTBAR(hotbarResult: ModalFormResponse, player: Player) {
     }
     if (HotbarToggle === true && HotbarRestDefaultMessageToggle === true) {
         configuration.modules.hotbar.message = configMessageBackup.get(dummy);
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         Hotbar();
     }
 

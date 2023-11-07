@@ -147,7 +147,7 @@ export function TeleportRequestHandler({ sender, message }: ChatSendAfterEvent, 
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Are there arguements
     if (!args.length) {
@@ -184,7 +184,7 @@ export function TeleportRequestHandler({ sender, message }: ChatSendAfterEvent, 
 // Subscribe to teleportRequestApprovalHandler
 const TpRequestListener = () => {
     // If TPR is not disabled
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const validate = configuration.customcommands.tpr;
     if (validate) {
         world.afterEvents.chatSend.subscribe(teleportRequestApprovalHandler);

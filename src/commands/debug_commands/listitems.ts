@@ -37,7 +37,7 @@ export function listitems(message: ChatSendAfterEvent, args: string[]) {
 
     const player = message.sender;
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for hash/salt and validate password
     const hash = player.getDynamicProperty("hash");

@@ -55,7 +55,7 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
     const prefix = getPrefix(player);
@@ -92,7 +92,7 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
         configuration.modules.spawnprotection.enabled = true;
         configuration.modules.spawnprotection.vector3 = vector3;
         configuration.modules.spawnprotection.radius = Math.abs(radius as number);
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         const messageAction = configuration.modules.spawnprotection.enabled ? "has updated" : "has enabled";
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f ${messageAction} §6Spawn Protection§f!`);
         SpawnProtection();
@@ -102,7 +102,7 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
     if (argCheck && args[0].toLowerCase() === "disable") {
         // Deny
         configuration.modules.spawnprotection.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Spawn Protection§f!`);
     }
 }

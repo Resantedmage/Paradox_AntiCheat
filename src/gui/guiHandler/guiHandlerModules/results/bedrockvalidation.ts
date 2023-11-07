@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function bedrockValidationHandler(player: Player) {
     const modulesbedrockvalidateui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const bedrockValidateBoolean = configuration.modules.bedrockValidate.enabled;
     modulesbedrockvalidateui.title("§4Paradox Modules - Bedrock Validation§4");
     modulesbedrockvalidateui.toggle("Bedrock Validate - Checks for bedrock validations:", bedrockValidateBoolean);

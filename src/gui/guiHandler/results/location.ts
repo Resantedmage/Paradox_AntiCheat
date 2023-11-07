@@ -11,7 +11,7 @@ export function locationHandler(player: Player) {
     const savedlocationsui = new ModalFormData();
     // Hash the coordinates for security
     const salt = world.getDynamicProperty("crypt");
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const tags = player.getTags();
     const tagsLength = tags.length;
     let counter = 0;

@@ -8,7 +8,7 @@ export function opHandler(player: Player, uniqueId: string, salt: string, hash: 
     // New window for op
     let opgui: ModalFormData | ActionFormData;
     let onlineList: string[] = [];
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     if (uniqueId === player.name) {
         opgui = new ModalFormData();
         opgui.title("§4OP§4");

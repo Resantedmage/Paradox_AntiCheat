@@ -6,7 +6,7 @@ import ConfigInterface from "../../../../interfaces/Config";
 
 export function afkHandler(player: Player) {
     const modulesafkui = new ModalFormData();
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
     const currentAFKConifg = configuration.modules.afk.minutes;
     const afkBoolean = configuration.modules.afk.enabled;
     modulesafkui.title("§4Paradox Modules - AFK§4");

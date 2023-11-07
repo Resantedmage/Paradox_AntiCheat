@@ -22,7 +22,7 @@ export function uiILLEGALITEMS(illegalitemsResult: ModalFormResponse, player: Pl
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to configure Illegal Items`);
     }
 
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "config") as ConfigInterface;
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     const illegalItemsABoolean = configuration.modules.illegalitemsA.enabled;
     const illegalItemsBBoolean = configuration.modules.illegalitemsB.enabled;
@@ -85,7 +85,7 @@ export function uiILLEGALITEMS(illegalitemsResult: ModalFormResponse, player: Pl
     if (!IllegalItemsAToggle === true && !IllegalItemsBToggle === true && !IllegalItemsCToggle === true && IllegalStackBanToggle === true) {
         // Turn it off just incase!
         configuration.modules.stackBan.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to enable Illegal Items to use this feature.`);
         return paradoxui(player);
     }
@@ -101,7 +101,7 @@ export function uiILLEGALITEMS(illegalitemsResult: ModalFormResponse, player: Pl
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
     }
 
-    dynamicPropertyRegistry.setProperty(undefined, "config", configuration);
+    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
 
     //show the main ui to the player once complete.
     return paradoxui(player);
