@@ -1,4 +1,4 @@
-import { world, Vector3, Player, Entity } from "@minecraft/server";
+import { world, Player, Entity, Vector3 } from "@minecraft/server";
 
 type PropertyValue = string | number | boolean | Vector3 | object;
 
@@ -21,6 +21,30 @@ export class DynamicPropertyManager {
         return DynamicPropertyManager.instance;
     }
 
+    private serialize(value: PropertyValue): string {
+        return JSON.stringify(value, (_, val) => {
+            if (val instanceof RegExp) {
+                return { __regex__: val.toString() };
+            }
+            return val;
+        });
+    }
+
+    private deserialize(serializedValue: string): PropertyValue {
+        try {
+            return JSON.parse(serializedValue, (_, val) => {
+                if (val && val.__regex__) {
+                    const regexMatch = val.__regex__.match(/\/(.*)\/([a-z]*)/);
+                    return new RegExp(regexMatch[1], regexMatch[2]);
+                }
+                return val;
+            });
+        } catch (error) {
+            // Return a default value
+            return serializedValue;
+        }
+    }
+
     /**
      * Set a dynamic property for a player or the world.
      * @param player The player for whom to set the property. Pass undefined for the world.
@@ -31,7 +55,7 @@ export class DynamicPropertyManager {
         // Update the cache with the new value
         this.propertyCache.set(name, value);
 
-        const serializedValue = typeof value === "string" ? value : JSON.stringify(value);
+        const serializedValue = typeof value === "string" ? value : this.serialize(value);
         let currentIndex = 0;
         let remainingValue = serializedValue;
 
@@ -76,17 +100,11 @@ export class DynamicPropertyManager {
         }
 
         if (serializedValue) {
-            let deserializedValue;
-            if (typeof serializedValue === "object") {
-                deserializedValue = JSON.parse(serializedValue);
-            } else {
-                deserializedValue = serializedValue;
-            }
+            const deserializedValue = this.deserialize(serializedValue);
             // Cache the value for future access
             this.propertyCache.set(name, deserializedValue);
             return deserializedValue;
         }
-
         return undefined;
     }
 

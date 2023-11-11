@@ -66,7 +66,7 @@ export function reachB(message: ChatSendAfterEvent, args: string[]) {
     if (configuration.modules.reachB.enabled === false) {
         // Allow
         configuration.modules.reachB.enabled = true;
-        dynamicPropertyRegistry.setProperty(player, "paradoxConfig", configuration);
+        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ReachB§f!`);
         ReachB();
     } else if (configuration.modules.reachB.enabled === true) {

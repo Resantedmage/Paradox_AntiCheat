@@ -11,13 +11,13 @@
         "7zip-bin": "5.2.0",
         "adm-zip": "0.5.10",
         "chmodr": "1.2.0",
+        "docsify-cli": "4.4.4",
         "finalhandler": "1.2.0",
         "fs-extra": "11.1.1",
         "glob": "10.3.10",
         "prettier": "3.0.3",
         "serve-static": "1.15.0",
-        "typescript": "5.2.2",
-        "docsify-cli": "4.4.4"
+        "typescript": "5.2.2"
     },
     "dependencies": {
         "@minecraft/server": "1.7.0-beta.1.20.40-stable",
