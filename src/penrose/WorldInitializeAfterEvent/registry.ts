@@ -4,18 +4,21 @@ import { extendPlayerPrototype } from "../../classes/PlayerExtended/Player.js";
 import { extendWorldPrototype } from "../../classes/WorldExtended/World.js";
 import { world } from "@minecraft/server";
 
+// Get the singleton instance of DynamicPropertyManager
 const dynamicPropertyRegistry = DynamicPropertyManager.getInstance();
 
+// Define types for deep equality checks
 type Primitive = string | number | boolean | null | undefined;
-
 type DeepEqual<T> = T extends Primitive ? true : T extends Array<infer U> ? DeepEqualArray<U> : T extends Record<string, infer U> ? DeepEqualObject<U> : never;
-
 type DeepEqualArray<T> = T extends Array<infer U> ? Array<DeepEqual<U>> : never;
+type DeepEqualObject<T> = { [K in keyof T]: DeepEqual<T[K]> };
 
-type DeepEqualObject<T> = {
-    [K in keyof T]: DeepEqual<T[K]>;
-};
-
+/**
+ * Deeply compare two objects for equality.
+ * @param obj1 The first object.
+ * @param obj2 The second object.
+ * @returns True if the objects are deeply equal, false otherwise.
+ */
 function deepEqual<T>(obj1: T, obj2: T): boolean {
     if (obj1 === obj2) {
         return true;
@@ -41,10 +44,18 @@ function deepEqual<T>(obj1: T, obj2: T): boolean {
     return true;
 }
 
+// Define a structure for representing the differences between two objects
 interface Difference {
     [key: string]: Difference | any;
 }
 
+/**
+ * Find the differences between two objects.
+ * @param obj1 The first object.
+ * @param obj2 The second object.
+ * @param path An array representing the current path in the object hierarchy.
+ * @returns An object representing the differences.
+ */
 function diffObjects(obj1: Record<string, any>, obj2: Record<string, any>, path: string[] = []): Difference {
     const diff: Difference = {};
     for (const key in obj1) {
@@ -62,7 +73,11 @@ function diffObjects(obj1: Record<string, any>, obj2: Record<string, any>, path:
     return diff;
 }
 
-function registry() {
+/**
+ * Manage dynamic property registration and configuration changes.
+ * @returns A promise that resolves when the registry is updated.
+ */
+function registry(): Promise<void> {
     return new Promise<void>((resolve) => {
         // Extend Prototypes here
         extendPlayerPrototype();
@@ -106,7 +121,11 @@ function registry() {
     });
 }
 
-const Registry = () => {
+/**
+ * Initialize registry after the world has initialized.
+ * @returns A promise that resolves when the registry is initialized.
+ */
+const Registry = (): Promise<void> => {
     return new Promise<void>((resolve, reject) => {
         world.afterEvents.worldInitialize.subscribe(async () => {
             await registry()
