@@ -7,6 +7,9 @@ export class DynamicPropertyManager {
     private static instance: DynamicPropertyManager | null = null;
     private propertyCache: Map<string, PropertyValue> = new Map<string, PropertyValue>();
 
+    /**
+     * Private constructor for the singleton pattern.
+     */
     private constructor() {
         if (DynamicPropertyManager.instance) {
             return DynamicPropertyManager.instance;
@@ -14,6 +17,10 @@ export class DynamicPropertyManager {
         DynamicPropertyManager.instance = this;
     }
 
+    /**
+     * Get the singleton instance of DynamicPropertyManager.
+     * @returns The singleton instance of DynamicPropertyManager.
+     */
     public static getInstance(): DynamicPropertyManager {
         if (!DynamicPropertyManager.instance) {
             DynamicPropertyManager.instance = new DynamicPropertyManager();
@@ -21,6 +28,11 @@ export class DynamicPropertyManager {
         return DynamicPropertyManager.instance;
     }
 
+    /**
+     * Serialize a value to a JSON string.
+     * @param value The value to serialize.
+     * @returns The JSON string representation of the value.
+     */
     private serialize(value: PropertyValue): string {
         return JSON.stringify(value, (_, val) => {
             if (val instanceof RegExp) {
@@ -30,6 +42,11 @@ export class DynamicPropertyManager {
         });
     }
 
+    /**
+     * Deserialize a JSON string to a property value.
+     * @param serializedValue The JSON string to deserialize.
+     * @returns The deserialized property value.
+     */
     private deserialize(serializedValue: string): PropertyValue {
         try {
             return JSON.parse(serializedValue, (_, val) => {
