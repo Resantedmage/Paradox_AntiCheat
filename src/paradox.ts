@@ -71,7 +71,17 @@ import ConfigInterface from "./interfaces/Config.js";
 
 async function main() {
     // WorldInitializeAfter Events
-    await Registry();
+    await Registry().catch((error) => {
+        console.error("Paradox Unhandled Rejection: ", error);
+        // Extract stack trace information
+        if (error instanceof Error) {
+            const stackLines = error.stack.split("\n");
+            if (stackLines.length > 1) {
+                const sourceInfo = stackLines;
+                console.error("Error originated from:", sourceInfo[0]);
+            }
+        }
+    });
 
     const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
@@ -162,4 +172,15 @@ async function main() {
     }
 }
 
-main();
+// Initialize Paradox
+main().catch((error) => {
+    console.error("Paradox Unhandled Rejection: ", error);
+    // Extract stack trace information
+    if (error instanceof Error) {
+        const stackLines = error.stack.split("\n");
+        if (stackLines.length > 1) {
+            const sourceInfo = stackLines;
+            console.error("Error originated from:", sourceInfo[0]);
+        }
+    }
+});

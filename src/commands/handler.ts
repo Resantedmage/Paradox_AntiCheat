@@ -185,7 +185,7 @@ const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, arg
  * @param {ChatSendBeforeEvent} message - Message data
  */
 
-export function commandHandler(player: Player, message: ChatSendBeforeEvent): Promise<void> | void {
+export function commandHandler(player: Player, message: ChatSendBeforeEvent): void {
     const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     if (configuration.debug) {
@@ -206,7 +206,8 @@ export function commandHandler(player: Player, message: ChatSendBeforeEvent): Pr
         message.sendToTargets = true;
         message.setTargets([]);
         message.message = "";
-        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f The command §7${configuration.customcommands.prefix}${commandName}§f does not exist. Try again!`);
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f The command §7${configuration.customcommands.prefix}${commandName}§f does not exist. Try again!`);
+        return;
     }
 
     // Do not broadcast any message to any targets
