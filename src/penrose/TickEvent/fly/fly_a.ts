@@ -56,62 +56,38 @@ function analyzePlayerData(player: Player) {
     const playerData = playerDataMap.get(player.id);
     if (!playerData) return;
 
+    let isPotentialFlying = false;
+
     const fallingData = playerData.fallingData;
     const surroundedByAirData = playerData.surroundedByAirData;
 
-    // Check if enough data is available for analysis
     const minDataCount = 3;
     if (fallingData.length < minDataCount || surroundedByAirData.length < minDataCount) {
-        // console.log("Not enough data for analysis yet.");
-        return; // Not enough data for analysis yet
+        return;
     }
 
-    // Check if falling data indicates potential flying
-    let isPotentialFlying = false;
+    let fallingCount = fallingData.filter((isFalling) => isFalling).length;
+    let airCount = surroundedByAirData.filter((isSurroundedByAir) => isSurroundedByAir).length;
 
-    let fallingCount = 0;
-    let airCount = 0;
+    // Adjust threshold based on observation
+    const threshold = 2;
 
-    for (let i = 0; i < minDataCount; i++) {
-        const isFalling = fallingData[fallingData.length - 1 - i];
-        const isSurroundedByAir = surroundedByAirData[surroundedByAirData.length - 1 - i];
-
-        if (isFalling) {
-            fallingCount++;
-        }
-
-        if (isSurroundedByAir) {
-            airCount++;
-        }
-    }
-
-    if (fallingCount === 0) {
-        const block = player.dimension.getBlock(player.location);
-        const isAir = block?.below().isAir ?? null;
-        if (!isAir) {
-            airCount = 0;
-        }
-    }
-
-    // Analyze the majority of the data
-    if (fallingCount > airCount) {
+    if (fallingCount - airCount >= threshold) {
         // Majority indicates falling
+        // Set isPotentialFlying to false
         isPotentialFlying = false;
-    } else if (airCount > fallingCount) {
+    } else if (airCount - fallingCount >= threshold) {
         // Majority indicates surrounded by air (potential flying)
+        // Set isPotentialFlying to true
         isPotentialFlying = true;
     }
 
-    // Remove the oldest entry from the beginning of the arrays
     fallingData.shift();
     surroundedByAirData.shift();
 
     if (isPotentialFlying) {
-        // console.log("Player is potentially flying. Taking appropriate action.");
-        // Player is potentially flying, take appropriate action
+        // Take appropriate action
         handlePotentialFlying(player);
-    } else {
-        // console.log("Player is not potentially flying.");
     }
 }
 
