@@ -287,6 +287,6 @@ export default {
      * are not obligated.
      */
     encryption: {
-        password: "confirm",
+        password: "",
     },
 };
