@@ -4,29 +4,33 @@ import { BadPackets2 } from "../../penrose/TickEvent/badpackets2/badpackets2.js"
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function badpackets2Help(player: Player, prefix: string, badPackets2Boolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (badPackets2Boolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
-        `\n§o§4[§6Command§4]§f: badpackets2`,
+/**
+ * Provides help information for the BadPackets2 command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {boolean} badPackets2Boolean - The status of BadPackets2 module.
+ * @param {boolean} setting - The status of the BadPackets2 custom command setting.
+ */
+function badpackets2Help(player: Player, prefix: string, badPackets2Boolean: boolean, setting: boolean): void {
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = badPackets2Boolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
+    sendMsgToPlayer(player, [
+        `§o§4[§6Command§4]§f: badpackets2`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: badpackets2 [optional]`,
-        `§4[§6Optional§4]§f: help`,
+        `§4[§6Usage§4]§f: ${prefix}badpackets2 [options]`,
+        `§4[§6Options§4]§f:`,
+        `    -h, --help      Display this help message`,
+        `    -s, --status    Display the current status of BadPackets2`,
+        `    -e, --enable    Enable BadPackets2`,
+        `    -d, --disable   Disable BadPackets2`,
         `§4[§6Description§4]§f: Toggles checks for invalid selected slots by player.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}badpackets2`,
-        `    ${prefix}badpackets2 help`,
+        `    ${prefix}badpackets2 --help`,
+        `    ${prefix}badpackets2 --status`,
+        `    ${prefix}badpackets2 --enable`,
+        `    ${prefix}badpackets2 --disable`,
     ]);
 }
 
@@ -57,22 +61,49 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.badpackets2) {
-        return badpackets2Help(player, prefix, configuration.modules.badpackets2.enabled, configuration.customcommands.badpackets2);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg = args[0].toLowerCase();
 
-    if (configuration.modules.badpackets2.enabled === false) {
-        // Allow
-        configuration.modules.badpackets2.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Badpackets2§f!`);
-        BadPackets2();
-    } else if (configuration.modules.badpackets2.enabled === true) {
-        // Deny
-        configuration.modules.badpackets2.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-h":
+            case "--help":
+                return badpackets2Help(player, prefix, configuration.modules.badpackets2.enabled, configuration.customcommands.badpackets2);
+            case "-s":
+            case "--status":
+                // Handle status flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is currently ${configuration.modules.badpackets2.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
+                // Handle enable flag
+                if (configuration.modules.badpackets2.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already enabled.`);
+                } else {
+                    configuration.modules.badpackets2.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Badpackets2§f!`);
+                    BadPackets2();
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Handle disable flag
+                if (!configuration.modules.badpackets2.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already disabled.`);
+                } else {
+                    configuration.modules.badpackets2.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
+                }
+                break;
+            default:
+                // Handle unrecognized flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}badpackets2 --help for more information.`);
+                break;
+        }
+    } else {
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}badpackets2 --help for more information.`);
     }
 }

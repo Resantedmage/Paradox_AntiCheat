@@ -1,42 +1,49 @@
+import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
-import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { AutoClicker } from "../../penrose/EntityHitEntityAfterEvent/autoclicker.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function autoclickerHelp(player: Player, prefix: string, autoClickerBoolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (autoClickerBoolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
+/**
+ * Provides help information for the Autoclicker command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {boolean} autoClickerBoolean - The status of AutoClicker module.
+ * @param {boolean} setting - The status of the AutoClicker custom command setting.
+ */
+function autoclickerHelp(player: Player, prefix: string, autoClickerBoolean: boolean, setting: boolean): void {
+    // Determine the status of the command and module
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = autoClickerBoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
+    // Display help information to the player
+    sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: autoclicker`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: autoclicker [optional]`,
-        `§4[§6Optional§4]§f: help`,
+        `§4[§6Usage§4]§f: autoclicker [options]`,
+        `§4[§6Options§4]§f:`,
+        `    -h, --help      Display this help message`,
+        `    -s, --status    Display the current status of AutoClicker module`,
+        `    -e, --enable    Enable AutoClicker module`,
+        `    -d, --disable   Disable AutoClicker module`,
         `§4[§6Description§4]§f: Toggles checks for players using autoclickers while attacking.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}autoclicker`,
-        `    ${prefix}autoclicker help`,
+        `    ${prefix}autoclicker --help`,
+        `    ${prefix}autoclicker --status`,
+        `    ${prefix}autoclicker --enable`,
+        `    ${prefix}autoclicker --disable`,
     ]);
 }
 
 /**
+ * Handles the Autoclicker command.
  * @name autoclicker
  * @param {ChatSendAfterEvent} message - Message object
  * @param {string[]} args - Additional arguments provided (optional).
  */
-export function autoclick(message: ChatSendAfterEvent, args: string[]) {
-    handleAutoClick(message, args).catch((error) => {
+export function autoclicker(message: ChatSendAfterEvent, args: string[]) {
+    handleAutoclicker(message, args).catch((error) => {
         console.error("Paradox Unhandled Rejection: ", error);
         // Extract stack trace information
         if (error instanceof Error) {
@@ -49,10 +56,15 @@ export function autoclick(message: ChatSendAfterEvent, args: string[]) {
     });
 }
 
-async function handleAutoClick(message: ChatSendAfterEvent, args: string[]) {
+/**
+ * Handles the execution of the Autoclicker command.
+ * @param {ChatSendAfterEvent} message - The message object.
+ * @param {string[]} args - Additional arguments provided (optional).
+ */
+async function handleAutoclicker(message: ChatSendAfterEvent, args: string[]) {
     // validate that required params are defined
     if (!message) {
-        return console.warn(`${new Date()} | ` + "Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/autoclicker.js:33)");
+        return console.warn(`${new Date()} | ` + `Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/autoclicker.js:33)`);
     }
 
     const player = message.sender;
@@ -71,22 +83,50 @@ async function handleAutoClick(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.autoclicker) {
-        return autoclickerHelp(player, prefix, configuration.modules.autoclicker.enabled, configuration.customcommands.autoclicker);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg = args[0].toLowerCase();
 
-    if (configuration.modules.autoclicker.enabled === false) {
-        // Allow
-        configuration.modules.autoclicker.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AutoClicker§f!`);
-        AutoClicker();
-    } else if (configuration.modules.autoclicker.enabled === true) {
-        // Deny
-        configuration.modules.autoclicker.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AutoClicker§f!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-h":
+            case "--help":
+                return autoclickerHelp(player, prefix, configuration.modules.autoclicker.enabled, configuration.customcommands.autoclicker);
+            case "-s":
+            case "--status":
+                // Handle status flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoClicker module is currently ${configuration.modules.autoclicker.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
+                // Handle enable flag
+                if (configuration.modules.autoclicker.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoClicker module is already enabled.`);
+                } else {
+                    configuration.modules.autoclicker.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AutoClicker§f!`);
+                    AutoClicker();
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Handle disable flag
+                if (!configuration.modules.autoclicker.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoClicker module is already disabled.`);
+                } else {
+                    configuration.modules.autoclicker.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AutoClicker§f!`);
+                }
+                break;
+            default:
+                // Handle unrecognized flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}autoclicker --help for more information.`);
+                break;
+        }
+    } else {
+        // No additional arguments provided, display help
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}autoclicker --help for more information.`);
     }
 }

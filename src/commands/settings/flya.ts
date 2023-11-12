@@ -4,41 +4,68 @@ import { FlyA } from "../../penrose/TickEvent/fly/fly_a.js";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function flyaHelp(player: Player, prefix: string, flyABoolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (flyABoolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
+/**
+ * Provides help information for the FlyA command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {boolean} flyABoolean - The status of the FlyA module.
+ * @param {boolean} setting - The status of the FlyA custom command setting.
+ */
+function flyaHelp(player: Player, prefix: string, flyABoolean: boolean, setting: boolean): void {
+    // Determine the status of the command and module
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = flyABoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
+    // Display help information to the player
+    sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: flya`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: flya [optional]`,
+        `§4[§6Usage§4]§f: flya [options]`,
         `§4[§6Optional§4]§f: help`,
+        `§4[§6Options§4]§f:`,
+        `    -h, --help      Display this help message`,
+        `    -s, --status    Display the current status of FlyA module`,
+        `    -e, --enable    Enable FlyA module`,
+        `    -d, --disable   Disable FlyA module`,
         `§4[§6Description§4]§f: Toggles checks for illegal flying in survival.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}flya`,
-        `    ${prefix}flya help`,
+        `    ${prefix}flya --help`,
+        `    ${prefix}flya --status`,
+        `    ${prefix}flya --enable`,
+        `    ${prefix}flya --disable`,
     ]);
 }
 
 /**
+ * Handles the FlyA command.
  * @name flyA
  * @param {ChatSendAfterEvent} message - Message object
  * @param {string[]} args - Additional arguments provided (optional).
  */
 export function flyA(message: ChatSendAfterEvent, args: string[]) {
+    handleFlyA(message, args).catch((error) => {
+        console.error("Paradox Unhandled Rejection: ", error);
+        // Extract stack trace information
+        if (error instanceof Error) {
+            const stackLines = error.stack.split("\n");
+            if (stackLines.length > 1) {
+                const sourceInfo = stackLines;
+                console.error("Error originated from:", sourceInfo[0]);
+            }
+        }
+    });
+}
+
+/**
+ * Handles the execution of the FlyA command.
+ * @param {ChatSendAfterEvent} message - The message object.
+ * @param {string[]} args - Additional arguments provided (optional).
+ */
+async function handleFlyA(message: ChatSendAfterEvent, args: string[]) {
     // validate that required params are defined
     if (!message) {
-        return console.warn(`${new Date()} | ` + "Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/flya.js:36)");
+        return console.warn(`${new Date()} | ` + `Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/flya.js:36)`);
     }
 
     const player = message.sender;
@@ -57,22 +84,50 @@ export function flyA(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.flya) {
-        return flyaHelp(player, prefix, configuration.modules.flyA.enabled, configuration.customcommands.flya);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg = args[0].toLowerCase();
 
-    if (configuration.modules.flyA.enabled === false) {
-        // Allow
-        configuration.modules.flyA.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6FlyA§f!`);
-        FlyA();
-    } else if (configuration.modules.flyA.enabled === true) {
-        // Deny
-        configuration.modules.flyA.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4FlyA§f!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-h":
+            case "--help":
+                return flyaHelp(player, prefix, configuration.modules.flyA.enabled, configuration.customcommands.flya);
+            case "-s":
+            case "--status":
+                // Handle status flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f FlyA module is currently ${configuration.modules.flyA.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
+                // Handle enable flag
+                if (configuration.modules.flyA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f FlyA module is already enabled.`);
+                } else {
+                    configuration.modules.flyA.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6FlyA§f!`);
+                    FlyA();
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Handle disable flag
+                if (!configuration.modules.flyA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f FlyA module is already disabled.`);
+                } else {
+                    configuration.modules.flyA.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4FlyA§f!`);
+                }
+                break;
+            default:
+                // Handle unrecognized flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}flya --help for more information.`);
+                break;
+        }
+    } else {
+        // No additional arguments provided, display help
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}flya --help for more information.`);
     }
 }

@@ -4,29 +4,33 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { AntiPhaseA } from "../../penrose/TickEvent/phase/phase_a.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function antiphaseaHelp(player: Player, prefix: string, antiphaseABoolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (antiphaseABoolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
+/**
+ * Provides help information for the AntiPhaseA command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {boolean} antiPhaseABoolean - The status of AntiPhaseA module.
+ * @param {boolean} setting - The status of the AntiPhaseA custom command setting.
+ */
+function antiphaseaHelp(player: Player, prefix: string, antiPhaseABoolean: boolean, setting: boolean): void {
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = antiPhaseABoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
+    sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: antiphasea`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: antiphasea [optional]`,
-        `§4[§6Optional§4]§f: help`,
+        `§4[§6Usage§4]§f: antiphasea [options]`,
+        `§4[§6Options§4]§f:`,
+        `    -h, --help      Display this help message`,
+        `    -s, --status    Display the current status of AntiPhaseA module`,
+        `    -e, --enable    Enable AntiPhaseA module`,
+        `    -d, --disable   Disable AntiPhaseA module`,
         `§4[§6Description§4]§f: Toggles checks for players phasing through blocks.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}antiphasea`,
-        `    ${prefix}antiphasea help`,
+        `    ${prefix}antiphasea --help`,
+        `    ${prefix}antiphasea --status`,
+        `    ${prefix}antiphasea --enable`,
+        `    ${prefix}antiphasea --disable`,
     ]);
 }
 
@@ -35,10 +39,24 @@ function antiphaseaHelp(player: Player, prefix: string, antiphaseABoolean: boole
  * @param {ChatSendAfterEvent} message - Message object
  * @param {string[]} args - Additional arguments provided (optional).
  */
-export function antiphaseA(message: ChatSendAfterEvent, args: string[]) {
-    // validate that required params are defined
+export function antiphaseA(message: ChatSendAfterEvent, args: string[]): void {
+    handleAntiPhaseA(message, args).catch((error) => {
+        console.error("Paradox Unhandled Rejection: ", error);
+        // Extract stack trace information
+        if (error instanceof Error) {
+            const stackLines = error.stack.split("\n");
+            if (stackLines.length > 1) {
+                const sourceInfo = stackLines;
+                console.error("Error originated from:", sourceInfo[0]);
+            }
+        }
+    });
+}
+
+async function handleAntiPhaseA(message: ChatSendAfterEvent, args: string[]): Promise<void> {
+    // Validate that required params are defined
     if (!message) {
-        return console.warn(`${new Date()} | ` + "Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/antiphasea.js:34)");
+        return console.warn(`${new Date()} | Error: ${message} isn't defined. Did you forget to pass it? (./commands/settings/antiphasea.js:34)`);
     }
 
     const player = message.sender;
@@ -48,7 +66,8 @@ export function antiphaseA(message: ChatSendAfterEvent, args: string[]) {
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
-        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
+        return;
     }
 
     // Get Dynamic Property Boolean
@@ -57,22 +76,49 @@ export function antiphaseA(message: ChatSendAfterEvent, args: string[]) {
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.antiphasea) {
-        return antiphaseaHelp(player, prefix, configuration.modules.antiphaseA.enabled, configuration.customcommands.phase);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg = args[0].toLowerCase();
 
-    if (configuration.modules.antiphaseA.enabled === false) {
-        // Allow
-        configuration.modules.antiphaseA.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiPhaseA§f!`);
-        AntiPhaseA();
-    } else if (configuration.modules.antiphaseA.enabled === true) {
-        // Deny
-        configuration.modules.antiphaseA.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiPhaseA§f!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-h":
+            case "--help":
+                return antiphaseaHelp(player, prefix, configuration.modules.antiphaseA.enabled, configuration.customcommands.phase);
+            case "-s":
+            case "--status":
+                // Handle status flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is currently ${configuration.modules.antiphaseA.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
+                // Handle enable flag
+                if (configuration.modules.antiphaseA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already enabled.`);
+                } else {
+                    configuration.modules.antiphaseA.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiPhaseA§f!`);
+                    AntiPhaseA();
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Handle disable flag
+                if (!configuration.modules.antiphaseA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already disabled.`);
+                } else {
+                    configuration.modules.antiphaseA.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiPhaseA§f!`);
+                }
+                break;
+            default:
+                // Handle unrecognized flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antiphasea --help for more information.`);
+                break;
+        }
+    } else {
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}antiphasea --help for more information.`);
     }
 }
