@@ -21,7 +21,6 @@ function chatRanksHelp(player: Player, prefix: string, chatRanksBoolean: boolean
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
         `§4[§6Usage§4]§f: chatranks [options]`,
-        `§4[§6Optional§4]§f: help`,
         `§4[§6Options§4]§f:`,
         `    -h, --help      Display this help message`,
         `    -s, --status    Display the current status of ChatRanks module`,
