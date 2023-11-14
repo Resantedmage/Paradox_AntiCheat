@@ -16,13 +16,13 @@ import { allowgma } from "./settings/allowgma.js";
 import { allowgmc } from "./settings/allowgmc.js";
 import { allowgms } from "./settings/allowgms.js";
 import { bedrockvalidate } from "./settings/bedrockvalidate.js";
-import { overidecommandblocksenabled } from "./settings/overidecommandblocksenabled.js";
-import { removecommandblocks } from "./settings/removecommandblocks.js";
+import { overridecbe } from "./settings/overidecommandblocksenabled.js";
+import { removecb } from "./settings/removecommandblocks.js";
 import { worldborders } from "./settings/worldborder.js";
-import { autoclick } from "./settings/autoclicker.js";
+import { autoclicker } from "./settings/autoclicker.js";
 import { jesusA } from "./settings/jesusa.js";
 import { enchantedarmor } from "./settings/enchantedarmor.js";
-import { antiknockback } from "./settings/antikb.js";
+import { antikb } from "./settings/antikb.js";
 import { antishulker } from "./settings/antishulker.js";
 import { rank } from "./utility/rank.js";
 import { ecwipe } from "./utility/ecwipe.js";
@@ -54,7 +54,7 @@ import { xrayA } from "./settings/xraya.js";
 import { unban } from "./moderation/unban.js";
 import { prefix } from "./moderation/prefix.js";
 import { chatranks } from "./settings/chatranks.js";
-import { stackban } from "./settings/stackban.js";
+import { stackBan } from "./settings/stackban.js";
 import { lockdown } from "./moderation/lockdown.js";
 import { punish } from "./moderation/punish.js";
 import { sethome } from "./utility/sethome.js";
@@ -109,19 +109,19 @@ const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, arg
         allowgms: allowgms,
         bedrockvalidate: bedrockvalidate,
         modules: modules,
-        overridecbe: overidecommandblocksenabled,
-        removecb: removecommandblocks,
+        overridecbe: overridecbe,
+        removecb: removecb,
         worldborder: worldborders,
         help: help,
         credits: credits,
         op: op,
         deop: deop,
         clearchat: clearchat,
-        autoclicker: autoclick,
+        autoclicker: autoclicker,
         jesusa: jesusA,
         enchantedarmor: enchantedarmor,
         antikillaura: auracheck,
-        antikb: antiknockback,
+        antikb: antikb,
         report: report,
         badpackets1: badpackets1,
         spammera: spammerA,
@@ -144,7 +144,7 @@ const commandDefinitions: Record<string, (data: Player | ChatSendAfterEvent, arg
         prefix: prefix,
         chatranks: chatranks,
         antishulker: antishulker,
-        stackban: stackban,
+        stackban: stackBan,
         lockdown: lockdown,
         punish: punish,
         sethome: sethome,

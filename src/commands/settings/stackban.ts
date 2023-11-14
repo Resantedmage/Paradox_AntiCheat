@@ -3,86 +3,132 @@ import { ChatSendAfterEvent, Player } from "@minecraft/server";
 import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function stackBanHelp(player: Player, prefix: string, stackBanBoolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (stackBanBoolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
+/**
+ * Displays help information for the stackban command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {boolean} stackBanBoolean - The status of the stackBan module.
+ * @param {boolean} setting - The status of the stackBan custom command setting.
+ */
+function stackBanHelp(player: Player, prefix: string, stackBanBoolean: boolean, setting: boolean): void {
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = stackBanBoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
+    sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: stackban`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: stackban [optional]`,
-        `§4[§6Optional§4]§f: help`,
-        `§4[§6Description§4]§f: Toggles checks for player's with illegal stacks over 64.`,
+        `§4[§6Usage§4]§f: stackban [options]`,
+        `§4[§6Options§4]§f:`,
+        `    -d, --disable   Disable stackBan module`,
+        `    -s, --status    Display the current status of stackBan module`,
+        `    -e, --enable    Enable stackBan module`,
+        `    -h, --help      Display this help message`,
+        `§4[§6Description§4]§f: Toggles checks for players with illegal stacks over 64.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}stackban`,
-        `    ${prefix}stackban help`,
+        `    ${prefix}stackban --disable`,
+        `    ${prefix}speeda --status`,
+        `    ${prefix}stackban --enable`,
+        `    ${prefix}stackban --help`,
     ]);
 }
 
 /**
- * @name stackban
- * @param {ChatSendAfterEvent} message - Message object
+ * @name stackBan
+ * @param {ChatSendAfterEvent} message - Message object.
  * @param {string[]} args - Additional arguments provided (optional).
  */
-export function stackban(message: ChatSendAfterEvent, args: string[]) {
-    // validate that required params are defined
+export function stackBan(message: ChatSendAfterEvent, args: string[]): void {
+    handleStackBan(message, args).catch((error) => {
+        console.error("Paradox Unhandled Rejection: ", error);
+        // Extract stack trace information
+        if (error instanceof Error) {
+            const stackLines = error.stack.split("\n");
+            if (stackLines.length > 1) {
+                const sourceInfo = stackLines;
+                console.error("Error originated from:", sourceInfo[0]);
+            }
+        }
+    });
+}
+
+/**
+ * Handles the stackban command.
+ * @param {ChatSendAfterEvent} message - Message object.
+ * @param {string[]} args - Additional arguments provided (optional).
+ */
+async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Promise<void> {
+    // Validate that required params are defined
     if (!message) {
-        return console.warn(`${new Date()} | ` + "Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/stackban.js:35)");
+        return console.warn(`${new Date()} | Error: ${message} isn't defined. Did you forget to pass it? (./commands/settings/stackban.js:35)`);
     }
 
-    const player = message.sender;
-
-    // Get unique ID
+    const player: Player = message.sender;
     const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
 
     // Make sure the user has permissions to run the command
     if (uniqueId !== player.name) {
-        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
+        return;
     }
 
     // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
+    const configuration: ConfigInterface = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
-    const prefix = getPrefix(player);
+    const prefix: string = getPrefix(player);
 
     // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.stackban) {
+    if ((args[0] && args[0].toLowerCase() === "help") || !configuration.customcommands.stackban) {
         return stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
     }
 
-    if (!configuration.modules.illegalitemsA.enabled && !configuration.modules.illegalitemsB.enabled) {
-        if (configuration.modules.stackBan.enabled) {
-            // In this stage they are likely turning it off so oblige their request
-            configuration.modules.stackBan.enabled = false;
-            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-            return;
-        }
-        // If illegal items are not enabled then let user know this feature is inaccessible
-        // It will not work without one of them
-        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to enable Illegal Items to use this feature.`);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg: string = args[0].toLowerCase();
 
-    if (configuration.modules.stackBan.enabled === false) {
-        // Allow
-        configuration.modules.stackBan.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6StackBans§f!`);
-    } else if (configuration.modules.stackBan.enabled === true) {
-        // Deny
-        configuration.modules.stackBan.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-d":
+            case "--disable":
+                // Disable stackBan module if it's not already disabled
+                if (configuration.modules.stackBan.enabled === false) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §4StackBans§f is already disabled.`);
+                } else {
+                    configuration.modules.stackBan.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
+                }
+                break;
+
+            case "-e":
+            case "--enable":
+                // Enable stackBan module if it's not already enabled
+                if (configuration.modules.stackBan.enabled === true) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §6StackBans§f is already enabled.`);
+                } else {
+                    configuration.modules.stackBan.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6StackBans§f!`);
+                }
+                break;
+
+            case "-h":
+            case "--help":
+                // Display help information
+                stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
+                break;
+            case "-s":
+            case "--status":
+                // Display current status of StackBan module
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f StackBan module is currently ${configuration.modules.stackBan.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            default:
+                // Invalid argument provided
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Please use ${prefix}stackban --help for usage information.`);
+                break;
+        }
+    } else {
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Please use ${prefix}stackban --help for usage information.`);
     }
 }

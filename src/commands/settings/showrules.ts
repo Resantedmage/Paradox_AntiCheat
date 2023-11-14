@@ -4,44 +4,69 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { ShowRules } from "../../gui/showrules/showrules.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function showrulesHelp(player: Player, prefix: string, showrulesBoolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (showrulesBoolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
+/**
+ * Provides help information for the showrules command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {boolean} showrulesBoolean - The status of the showrules module.
+ * @param {boolean} setting - The status of the showrules custom command setting.
+ */
+function showrulesHelp(player: Player, prefix: string, showrulesBoolean: boolean, setting: boolean): void {
+    // Determine the status of the command and module
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = showrulesBoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
+    // Display help information to the player
+    sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: showrules`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: showrules [optional]`,
-        `§4[§6Optional§4]§f: help`,
+        `§4[§6Usage§4]§f: showrules [options]`,
+        `§4[§6Options§4]§f:`,
+        `    -h, --help      Display this help message`,
+        `    -s, --status    Display the current status of ShowRules module`,
+        `    -e, --enable    Enable ShowRules module`,
+        `    -d, --disable   Disable ShowRules module`,
         `§4[§6Description§4]§f: Toggles showing the rules when the player loads in for the first time.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}showrules`,
-        `    ${prefix}showrules help`,
+        `    ${prefix}showrules --help`,
+        `    ${prefix}showrules --status`,
+        `    ${prefix}showrules --enable`,
+        `    ${prefix}showrules --disable`,
     ]);
 }
 
 /**
  * @name showrules
- * @param {ChatSendAfterEvent} message - Message object
+ * @param {ChatSendAfterEvent} message - Message object.
  * @param {string[]} args - Additional arguments provided (optional).
  */
-export function showrules(message: ChatSendAfterEvent, args: string[]) {
-    // validate that required params are defined
+export function showrules(message: ChatSendAfterEvent, args: string[]): void {
+    handleShowRules(message, args).catch((error) => {
+        console.error("Paradox Unhandled Rejection: ", error);
+        // Extract stack trace information
+        if (error instanceof Error) {
+            const stackLines = error.stack.split("\n");
+            if (stackLines.length > 1) {
+                const sourceInfo = stackLines;
+                console.error("Error originated from:", sourceInfo[0]);
+            }
+        }
+    });
+}
+
+/**
+ * Handles the showrules command.
+ * @param {ChatSendAfterEvent} message - Message object.
+ * @param {string[]} args - Additional arguments provided (optional).
+ */
+async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Promise<void> {
+    // Validate that required params are defined
     if (!message) {
-        return console.warn(`${new Date()} | ` + "Error: ${message} isnt defined. Did you forget to pass it? (./commands/moderation/showrules.js:36)");
+        return console.warn(`${new Date()} | ` + `Error: ${message} isnt defined. Did you forget to pass it? (./commands/moderation/showrules.js:36)`);
     }
 
-    const player = message.sender;
+    const player: Player = message.sender;
 
     // Get unique ID
     const uniqueId = dynamicPropertyRegistry.getProperty(player, player?.id);
@@ -51,28 +76,55 @@ export function showrules(message: ChatSendAfterEvent, args: string[]) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to use this command.`);
     }
 
-    // Get Dynamic Property Boolean
-    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
+    const configuration: ConfigInterface = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
 
     // Check for custom prefix
-    const prefix = getPrefix(player);
+    const prefix: string = getPrefix(player);
 
-    // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.showrules) {
-        return showrulesHelp(player, prefix, configuration.modules.showrules.enabled, configuration.customcommands.showrules);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg: string = args[0].toLowerCase();
 
-    if (configuration.modules.showrules.enabled === false) {
-        // Allow
-        configuration.modules.showrules.enabled = true;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6showrules§f!`);
-        ShowRules();
-    } else if (configuration.modules.showrules.enabled === true) {
-        // Deny
-        configuration.modules.showrules.enabled = false;
-        dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4showrules§f!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-h":
+            case "--help":
+                // Display help message
+                showrulesHelp(player, prefix, configuration.modules.showrules.enabled, configuration.customcommands.showrules);
+                break;
+            case "-s":
+            case "--status":
+                // Display current status of ShowRules module
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is currently ${configuration.modules.showrules.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
+                // Enable ShowRules module
+                if (!configuration.modules.showrules.enabled) {
+                    configuration.modules.showrules.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6ShowRules§f!`);
+                    ShowRules();
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Disable ShowRules module
+                if (configuration.modules.showrules.enabled) {
+                    configuration.modules.showrules.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4ShowRules§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already disabled`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}showrules --help for command usage.`);
+                break;
+        }
+    } else {
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}showrules --help for command usage.`);
     }
 }

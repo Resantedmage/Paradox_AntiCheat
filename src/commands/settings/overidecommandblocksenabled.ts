@@ -4,39 +4,45 @@ import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 import { ScoreManager } from "../../classes/ScoreManager.js";
 import ConfigInterface from "../../interfaces/Config.js";
 
-function overrideCBEHelp(player: Player, prefix: string, cmdsscore: number, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (cmdsscore <= 0) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
-    return sendMsgToPlayer(player, [
+/**
+ * Provides help information for the overridecbe command.
+ * @param {Player} player - The player requesting help.
+ * @param {string} prefix - The custom prefix for the player.
+ * @param {number} cmdsscore - The current score for the 'cmds' objective.
+ * @param {boolean} setting - The status of the overridecbe custom command setting.
+ */
+function overrideCBEHelp(player: Player, prefix: string, cmdsscore: number, setting: boolean): void {
+    // Determine the status of the command and module
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = cmdsscore <= 0 ? "§6[§4DISABLED§6]§f" : "§6[§aENABLED§6]§f";
+
+    // Display help information to the player
+    sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: overridecbe`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: overridecbe [optional]`,
-        `§4[§6Optional§4]§f: help`,
+        `§4[§6Usage§4]§f: overridecbe [options]`,
+        `§4[§6Options§4]§f:`,
+        `    -h, --help      Display this help message`,
+        `    -s, --status    Display the current status of CommandBlocksEnabled module`,
+        `    -e, --enable    Enable CommandBlocksEnabled module`,
+        `    -d, --disable   Disable CommandBlocksEnabled module`,
         `§4[§6Description§4]§f: Forces the commandblocksenabled gamerule to be enabled or disabled at all times.`,
         `§4[§6Examples§4]§f:`,
-        `    ${prefix}overridecbe`,
-        `    ${prefix}overridecbe help`,
+        `    ${prefix}overridecbe --help`,
+        `    ${prefix}overridecbe --status`,
+        `    ${prefix}overridecbe --enable`,
+        `    ${prefix}overridecbe --disable`,
     ]);
 }
 
 /**
- * @name overidecommandblocksenabled
- * @param {ChatSendAfterEvent} message - Message object
+ * @name overridecbe
+ * @param {ChatSendAfterEvent} message - Message object.
  * @param {string[]} args - Additional arguments provided (optional).
  */
-export function overidecommandblocksenabled(message: ChatSendAfterEvent, args: string[]) {
-    handleOverideCommandBlocksEnabled(message, args).catch((error) => {
+export function overridecbe(message: ChatSendAfterEvent, args: string[]) {
+    handleOverrideCBE(message, args).catch((error) => {
         console.error("Paradox Unhandled Rejection: ", error);
         // Extract stack trace information
         if (error instanceof Error) {
@@ -49,10 +55,15 @@ export function overidecommandblocksenabled(message: ChatSendAfterEvent, args: s
     });
 }
 
-async function handleOverideCommandBlocksEnabled(message: ChatSendAfterEvent, args: string[]) {
-    // validate that required params are defined
+/**
+ * Handles the overridecbe command.
+ * @param {ChatSendAfterEvent} message - Message object.
+ * @param {string[]} args - Additional arguments provided (optional).
+ */
+async function handleOverrideCBE(message: ChatSendAfterEvent, args: string[]) {
+    // Validate that required params are defined
     if (!message) {
-        return console.warn(`${new Date()} | ` + "Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/overideCommandBlocksEnabled.js:7)");
+        return console.warn(`${new Date()} | ` + `Error: ${message} isnt defined. Did you forget to pass it? (./commands/settings/overridecbe.js:7)`);
     }
 
     const player = message.sender;
@@ -72,24 +83,47 @@ async function handleOverideCommandBlocksEnabled(message: ChatSendAfterEvent, ar
     // Check for custom prefix
     const prefix = getPrefix(player);
 
-    // Was help requested
-    const argCheck = args[0];
-    if ((argCheck && args[0].toLowerCase() === "help") || !configuration.customcommands.overidecommandblocksenabled) {
-        return overrideCBEHelp(player, prefix, cmdsscore, configuration.customcommands.overidecommandblocksenabled);
-    }
+    // Check for additional non-positional arguments
+    if (args.length > 0) {
+        const additionalArg = args[0].toLowerCase();
 
-    if (cmdsscore <= 0) {
-        // Allow
-        player.runCommand(`scoreboard players set paradox:config cmds 1`);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §6enabled§f!`);
-    } else if (cmdsscore === 1) {
-        // Deny
-        player.runCommand(`scoreboard players set paradox:config cmds 2`);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §4disabled§f!`);
-    } else if (cmdsscore >= 2) {
-        // Force
-        player.runCommand(`scoreboard players set paradox:config cmds 0`);
-        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has §etoggled§f Force-CommandBlocksEnabled!`);
+        // Handle additional arguments
+        switch (additionalArg) {
+            case "-h":
+            case "--help":
+                // Display help message
+                overrideCBEHelp(player, prefix, cmdsscore, configuration.customcommands.overidecommandblocksenabled);
+                break;
+            case "-s":
+            case "--status":
+                // Display current status of CommandBlocksEnabled module
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is currently ${cmdsscore <= 0 ? "§4DISABLED" : "§aENABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
+                // Enable CommandBlocksEnabled module
+                if (cmdsscore <= 0) {
+                    player.runCommand(`scoreboard players set paradox:config cmds 1`);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §aenabled§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Disable CommandBlocksEnabled module
+                if (cmdsscore <= 0) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already disabled`);
+                } else {
+                    player.runCommand(`scoreboard players set paradox:config cmds 0`);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §4disabled§f!`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}overridecbe --help for command usage.`);
+                break;
+        }
+    } else {
+        sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}overridecbe --help for command usage.`);
     }
-    return player.runCommand(`scoreboard players operation @a cmds = paradox:config cmds`);
 }
