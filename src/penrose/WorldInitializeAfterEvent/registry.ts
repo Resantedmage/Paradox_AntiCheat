@@ -74,6 +74,23 @@ function diffObjects(obj1: Record<string, any>, obj2: Record<string, any>, path:
 }
 
 /**
+ * Recursively merges differences from `diff` object into `obj`.
+ * @param obj The original object to be merged into.
+ * @param diff The differences to be merged from.
+ * @returns The merged object containing the changes from the `diff` object.
+ */
+function mergeObjects(obj: Record<string, any>, diff: Record<string, any>): Record<string, any> {
+    for (const key in diff) {
+        if (typeof diff[key] === "object" && !Array.isArray(diff[key])) {
+            obj[key] = mergeObjects(obj[key], diff[key]);
+        } else {
+            obj[key] = diff[key];
+        }
+    }
+    return obj;
+}
+
+/**
  * Manage dynamic property registration and configuration changes.
  * @returns A promise that resolves when the registry is updated.
  */
@@ -89,30 +106,30 @@ function registry(): Promise<void> {
         const backupConfig = dynamicPropertyRegistry.getProperty(undefined, "paradoxBackupConfig");
 
         if (!existingConfig) {
-            // Create the "config" property with the new value
+            // Create the "paradoxConfig" property with the new value
             dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", config);
-            // Create the backup with the current "config"
+            // Create the backup with the current config object
             dynamicPropertyRegistry.setProperty(undefined, "paradoxBackupConfig", config);
             resolve();
             return;
         }
 
         if (!backupConfig) {
-            // Create the backup with the current "config"
+            // Create the backup with the current "paradoxBackupConfig"
             dynamicPropertyRegistry.setProperty(undefined, "paradoxBackupConfig", config);
             resolve();
             return;
         }
 
-        // Determine what has changed in the "config" compared to the backup
+        // Determine what has changed in the config object compared to the backup
         const changes = diffObjects(config, backupConfig as object);
 
         if (Object.keys(changes).length > 0) {
-            // Update the backup with the current "config"
+            // Update the backup with the current config object
             dynamicPropertyRegistry.setProperty(undefined, "paradoxBackupConfig", config);
 
-            // Merge the changes into the "config" property
-            const mergedConfig = { ...(existingConfig as object), ...changes };
+            // Merge the changes into the "paradoxConfig" property
+            const mergedConfig = mergeObjects(config, changes);
 
             dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", mergedConfig);
         }
