@@ -29,11 +29,14 @@ function afkHelp(player: Player, prefix: string, configuration: ConfigInterface)
         `       §4[§7Enable AFK§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AFK§4]§f`,
+        `    -m <value>, --minutes <value>`,
+        `       §4[§7Set the timer in minutes§4]§f`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}afk --help`,
         `    ${prefix}afk --status`,
         `    ${prefix}afk --enable`,
         `    ${prefix}afk --disable`,
+        `    ${prefix}afk --minutes ${configuration.modules.afk.minutes}`,
     ]);
 }
 
@@ -116,6 +119,16 @@ async function handleAFK(message: ChatSendAfterEvent, args: string[]): Promise<v
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AFK§f!`);
                 }
+                break;
+            case "-m":
+            case "--minutes":
+                const numberConvert = Number(args[1]);
+                if (isNaN(numberConvert)) {
+                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}afk --help for more information.`);
+                }
+                configuration.modules.afk.minutes = numberConvert;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set §6AFK§f timer to §6${numberConvert}§f minutes!`);
                 break;
             default:
                 // Handle unrecognized flag
