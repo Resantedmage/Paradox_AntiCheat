@@ -159,7 +159,7 @@ export default {
         },
         antikbA: {
             enabled: false,
-            magnitude: -0.078,
+            velocityIntensity: -0.078,
         },
         antiscaffoldA: {
             enabled: true,

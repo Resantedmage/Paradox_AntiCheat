@@ -38,7 +38,7 @@ async function antiknockbacka(id: number) {
         const velocity = player.getVelocity();
         const velocitySum = Math.abs(velocity.y) + Math.abs(velocity.x) + Math.abs(velocity.z);
 
-        if (velocitySum <= configuration.modules.antikbA.magnitude) {
+        if (velocitySum <= configuration.modules.antikbA.velocityIntensity) {
             const tags = player.getTags();
             if (tags.includes("attacked") && !tags.includes("dead") && !player.isGliding && !tags.includes("levitating") && !tags.includes("flying")) {
                 flag(player, "AntiKB", "A", "Movement", null, null, "Magnitude", velocitySum.toFixed(3), true);

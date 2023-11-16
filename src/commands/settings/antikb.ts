@@ -11,9 +11,9 @@ import ConfigInterface from "../../interfaces/Config.js";
  * @param {boolean} antikbBoolean - The status of AntiKnockback module.
  * @param {boolean} setting - The status of the AntiKnockback custom command setting.
  */
-function antikbHelp(player: Player, prefix: string, antikbBoolean: boolean, setting: boolean): void {
-    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
-    const moduleStatus: string = antikbBoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+function antikbHelp(player: Player, prefix: string, configuration: ConfigInterface): void {
+    const commandStatus: string = configuration.customcommands.antikb ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = configuration.modules.antikbA.enabled ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
 
     sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: antikb`,
@@ -30,11 +30,14 @@ function antikbHelp(player: Player, prefix: string, antikbBoolean: boolean, sett
         `       §4[§7Enable AntiKnockback module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiKnockback module§4]§f`,
+        `    -v <value>, --velocity <value>`,
+        `       §4[§7Change velocity intensity§4]§f`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}antikb --help`,
         `    ${prefix}antikb --status`,
         `    ${prefix}antikb --enable`,
         `    ${prefix}antikb --disable`,
+        `    ${prefix}antikb --velocity ${configuration.modules.antikbA.velocityIntensity}`,
     ]);
 }
 
@@ -88,7 +91,7 @@ async function handleAntiKnockback(message: ChatSendAfterEvent, args: string[]):
         switch (additionalArg) {
             case "-h":
             case "--help":
-                return antikbHelp(player, prefix, configuration.modules.antikbA.enabled, configuration.customcommands.antikb);
+                return antikbHelp(player, prefix, configuration);
             case "-s":
             case "--status":
                 // Handle status flag
@@ -116,6 +119,17 @@ async function handleAntiKnockback(message: ChatSendAfterEvent, args: string[]):
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Knockback§f!`);
                 }
+                break;
+            case "-v":
+            case "--velocity":
+                // Handle velocity flag
+                const numberConvert = Number(args[1]);
+                if (isNaN(numberConvert)) {
+                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antikb --help for more information.`);
+                }
+                configuration.modules.antikbA.velocityIntensity = numberConvert;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has updated §6Anti Knockback§f velocity to §6${numberConvert}§f!`);
                 break;
             default:
                 // Handle unrecognized flag

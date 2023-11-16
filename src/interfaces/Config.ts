@@ -160,7 +160,7 @@ interface ConfigInterface {
         };
         antikbA: {
             enabled: boolean;
-            magnitude: number;
+            velocityIntensity: number;
         };
         antiscaffoldA: {
             enabled: boolean;
