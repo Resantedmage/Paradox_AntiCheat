@@ -163,7 +163,6 @@ export default {
         },
         antiscaffoldA: {
             enabled: true,
-            max: 13,
         },
         antinukerA: {
             enabled: true,

@@ -164,7 +164,6 @@ interface ConfigInterface {
         };
         antiscaffoldA: {
             enabled: boolean;
-            max: number;
         };
         antinukerA: {
             enabled: boolean;
