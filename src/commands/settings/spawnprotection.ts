@@ -5,31 +5,28 @@ import { SpawnProtection } from "../../penrose/TickEvent/spawnprotection/spawnPr
 import ConfigInterface from "../../interfaces/Config.js";
 
 function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBoolean: boolean, setting: boolean) {
-    let commandStatus: string;
-    if (!setting) {
-        commandStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        commandStatus = "§6[§aENABLED§6]§f";
-    }
-    let moduleStatus: string;
-    if (spawnProtectionBoolean === false) {
-        moduleStatus = "§6[§4DISABLED§6]§f";
-    } else {
-        moduleStatus = "§6[§aENABLED§6]§f";
-    }
+    // Determine the status of the command and module
+    const commandStatus: string = setting ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+    const moduleStatus: string = spawnProtectionBoolean ? "§6[§aENABLED§6]§f" : "§6[§4DISABLED§6]§f";
+
     // Display help information to the player
     sendMsgToPlayer(player, [
         `\n§o§4[§6Command§4]§f: spawnprotection`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
         `§4[§6Usage§4]§f: spawnprotection [options]`,
-        `§4[§6Options§4]§f:`,
-        `    -d, --disable      Disable spawn protection`,
-        `    -h, --help         Display this help message`,
-        `    -s, --status       Display the current status of stackBan module`,
-        `    <x> <y> <z> <r>    Set spawn protection with center coordinates (x, y, z) and radius (r)`,
-        `    ~ ~ ~ <r>          Set spawn protection with players location and radius (r)`,
         `§4[§6Description§4]§f: Toggles area protection to limit building/mining.`,
+        `§4[§6Options§4]§f:`,
+        `    -d, --disable`,
+        `       §4[§7Disable spawn protection§4]§f`,
+        `    -h, --help`,
+        `       §4[§7Display this help message§4]§f`,
+        `    -s, --status`,
+        `       §4[§7Display the current status of stackBan module§4]§f`,
+        `    <x> <y> <z> <r>`,
+        `       §4[§7Set spawn protection with center coordinates (x, y, z) and radius (r)§4]§f`,
+        `    ~ ~ ~ <r>`,
+        `       §4[§7Set spawn protection with player's location and radius (r)§4]§f`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}spawnprotection --disable`,
         `    ${prefix}spawnprotection --help`,
