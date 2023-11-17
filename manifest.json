@@ -8,9 +8,9 @@
         "min_engine_version": [1, 20, 40]
     },
     "metadata": {
-        "authors": ["MrDiamond64, Visual1mpact"],
+        "authors": ["Visual1mpact, Pete9xi"],
         "license": "GPLv3",
-        "url": "https://github.com/Visual1mpact/Paradox_AntiCheat"
+        "url": "https://github.com/Pete9xi/Paradox_AntiCheat"
     },
     "modules": [
         {
