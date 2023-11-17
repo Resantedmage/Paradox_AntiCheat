@@ -125,6 +125,7 @@ function worldborder(id: number) {
                 const targetZ = z < -overworldSize ? -border + 6 : z >= overworldSize ? border - 6 : z;
                 teleportToBorder(targetX, targetZ);
             }
+            continue;
         }
 
         // Nether
@@ -146,6 +147,7 @@ function worldborder(id: number) {
                 const targetZ = z < -netherSize ? -border + 6 : z >= netherSize ? border - 6 : z;
                 teleportToBorder(targetX, targetZ);
             }
+            continue;
         }
 
         // Nether
@@ -167,6 +169,7 @@ function worldborder(id: number) {
                 const targetZ = z < -endSize ? -border + 6 : z >= endSize ? border - 6 : z;
                 teleportToBorder(targetX, targetZ);
             }
+            continue;
         }
     }
 }
