@@ -1,7 +1,7 @@
 import { DynamicPropertyManager } from "../../classes/DynamicPropertyManager.js";
 import config from "../../data/config.js";
 import { extendPlayerPrototype } from "../../classes/PlayerExtended/Player.js";
-import { extendWorldPrototype } from "../../classes/WorldExtended/World.js";
+import { WorldExtended, extendWorldPrototype } from "../../classes/WorldExtended/World.js";
 import { world } from "@minecraft/server";
 
 // Get the singleton instance of DynamicPropertyManager
@@ -99,6 +99,14 @@ function registry(): Promise<void> {
         // Extend Prototypes here
         extendPlayerPrototype();
         extendWorldPrototype();
+
+        /**
+         * This is global security for strings where applicable
+         */
+        const salt = world.getDynamicProperty("crypt");
+        if (salt === undefined) {
+            world.setDynamicProperty("crypt", (world as WorldExtended).generateRandomUUID());
+        }
 
         // Check if the "config" property already exists
         const existingConfig = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig");
