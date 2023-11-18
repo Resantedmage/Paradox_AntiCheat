@@ -193,7 +193,6 @@ interface ConfigInterface {
             enabled: boolean;
         };
         setHome: {
-            enabled: boolean;
             max: number;
         };
         goHome: {

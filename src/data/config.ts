@@ -192,7 +192,6 @@ export default {
             enabled: false,
         },
         setHome: {
-            enabled: true,
             max: 5,
         },
         goHome: {

@@ -75,7 +75,7 @@ export function uiSAVEDLOCATIONS(savedlocationsResult: ModalFormResponse, Locati
                 return paradoxui(player);
             }
             //Check to make sure they havent exceeded the max locations in config.js
-            if (counter >= configuration.modules.setHome.max && configuration.modules.setHome.enabled) {
+            if (counter >= configuration.modules.setHome.max) {
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You can only have §7${configuration.modules.setHome.max}§f saved locations at a time!`);
                 return paradoxui(player);
             }
