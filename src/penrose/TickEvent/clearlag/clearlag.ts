@@ -9,9 +9,6 @@ const cooldownTimer = new WeakMap();
 // Just a dummy object to use with set/get
 const object = { cooldown: "String" };
 
-let warned = false; // variable to track whether the 60 second warning has been displayed
-let clearLagId: number = null;
-
 function createCountdown(configuration: ConfigInterface) {
     return {
         days: configuration.modules.clearLag.days,
@@ -65,25 +62,26 @@ function clearLag(id: number) {
 
     const countdown = createCountdown(configuration);
 
-    const msSettings = countdown.days * 24 * 60 * 60 * 1000 + countdown.hours * 60 * 60 * 1000 + countdown.minutes * 60 * 1000 + countdown.seconds * 1000;
-    const timeLeft = msSettings - (Date.now() - cooldownVerify);
+    const msSettings = countdown.days * 24 * 60 * 60 + countdown.hours * 60 * 60 + countdown.minutes * 60 + countdown.seconds * 1000;
+    const timePassed = Date.now() - cooldownVerify;
+    const timeLeft = msSettings - timePassed;
 
-    const timeLeftSeconds = Math.ceil(timeLeft / 1000);
+    const timeLeftSeconds = Math.round(timeLeft / 1000); // Round to second
 
     if (timeLeftSeconds <= 0) {
         clearEntityItems();
         clearEntities();
         cooldownTimer.delete(object);
         sendMsg("@a", `§f§4[§6Paradox§4]§f Server lag has been cleared!`);
-        warned = false; // reset the warned variable so that the 60 second warning will display again next time
     } else if (timeLeftSeconds <= 60) {
         if (timeLeftSeconds === 60) {
             sendMsg("@a", `§f§4[§6Paradox§4]§f Server lag will be cleared in 1 minute!`);
-        } else if (!warned && timeLeftSeconds <= 5) {
+        } else if (timeLeftSeconds === 5) {
             sendMsg("@a", `§f§4[§6Paradox§4]§f Server lag will be cleared in ${timeLeftSeconds} seconds!`);
-            warned = true;
+        } else if (timeLeftSeconds <= 5 && timeLeftSeconds > 1) {
+            sendMsg("@a", `§f§4[§6Paradox§4]§f ${timeLeftSeconds} seconds...`);
         } else if (timeLeftSeconds === 1) {
-            sendMsg("@a", `§f§4[§6Paradox§4]§f Server lag will be cleared in ${timeLeftSeconds} second!`);
+            sendMsg("@a", `§f§4[§6Paradox§4]§f ${timeLeftSeconds} second...`);
         }
     }
 }
@@ -94,11 +92,7 @@ function clearLag(id: number) {
  * if needed to do so.
  */
 export function ClearLag() {
-    if (clearLagId !== null) {
-        system.clearRun(clearLagId);
-    }
-
-    clearLagId = system.runInterval(() => {
+    const clearLagId = system.runInterval(() => {
         clearLag(clearLagId);
     }, 20);
 }
