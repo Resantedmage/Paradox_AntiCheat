@@ -1,25 +1,22 @@
-import * as fs from "fs";
-import * as path from "path";
-import * as util from "util";
+import fs from "fs";
+import path from "path";
 import { spawn } from "child_process";
-import * as os from "os";
-import * as fse from "fs-extra";
-import * as glob from "glob";
+import os from "os";
+import fse from "fs-extra";
+import { glob } from "./node_modules/glob/dist/esm/index.js";
+import { promisify } from 'util';
+import { exec as execCallback } from 'child_process';
 
-// Import exec using util.promisify
-import { exec } from "child_process";
-const execPromise = util.promisify(exec);
-
+// Promisify the exec function
+const exec = promisify(execCallback);
 
 // Array to store all spawned child processes
 const spawnedProcesses = [];
 
 // Function to get the latest "bedrock-server-*" directory
-function getLatestBedrockServerDir() {
-    return glob.sync("bedrock-server-*")[0];
-}
+const getLatestBedrockServerDir = () => glob.sync("bedrock-server-*")[0];
 
-async function checkAndBuild() {
+const checkAndBuild = async () => {
     // Clean up the 'build/' directory
     const cleanBuildDir = "build";
     if (fs.existsSync(cleanBuildDir)) {
@@ -52,13 +49,13 @@ async function checkAndBuild() {
         });
     }
 
-    if (bedrockServerDir) {
-        // Remove the ".zip" extension from the directory name if it exists
-        bedrockServerDir = bedrockServerDir.replace(/\.zip$/, "");
-    } else {
+    if (!bedrockServerDir) {
         console.error("> Bedrock server directory not found...\n");
         return;
     }
+
+    // Remove the ".zip" extension from the directory name if it exists
+    bedrockServerDir = bedrockServerDir.replace(/\.zip$/, "");
 
     // Check if the 'worlds' folder exists, and if not, create it
     const worldsDir = path.join(bedrockServerDir, "worlds");
@@ -77,9 +74,9 @@ async function checkAndBuild() {
 
     // Determine the OS type and execute the appropriate build command
     if (os.type() === "Linux") {
-        await execPromise("npm run build");
+        await exec("npm run build");
     } else if (os.type() === "Windows_NT") {
-        await execPromise("npm run build_win");
+        await exec("npm run build_win");
     } else {
         console.error("Unsupported OS: " + os.type());
         return;
@@ -161,6 +158,6 @@ async function checkAndBuild() {
     } else {
         console.error("   - Unsupported OS: " + os.type());
     }
-}
+};
 
 checkAndBuild();

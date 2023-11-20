@@ -4,6 +4,7 @@
     "productName": "Paradox-AntiCheat",
     "description": "A utility to fight against malicious hackers on Bedrock Edition",
     "private": true,
+    "type": "module",
     "devDependencies": {
         "@types/fs-extra": "11.0.3",
         "@types/glob": "8.1.0",
