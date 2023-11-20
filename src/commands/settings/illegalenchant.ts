@@ -31,11 +31,6 @@ function illegalEnchantHelp(player: Player, prefix: string, illegalEnchantmentBo
         `       §4[§7Enable IllegalEnchantments module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable IllegalEnchantments module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}illegalenchant --help`,
-        `    ${prefix}illegalenchant --status`,
-        `    ${prefix}illegalenchant --enable`,
-        `    ${prefix}illegalenchant --disable`,
     ]);
 }
 

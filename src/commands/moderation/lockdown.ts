@@ -24,11 +24,6 @@ function lockdownHelp(player: Player, prefix: string, lockdownBoolean: boolean, 
         `§4[§6Usage§4]§f: lockdown [optional]`,
         `§4[§6Optional§4]§f: help`,
         `§4[§6Description§4]§f: Kicks player's from server excluding Staff for maintenance.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}lockdown`,
-        `        §4- §6Initiate server lockdown for maintenance§f`,
-        `    ${prefix}lockdown help`,
-        `        §4- §6Show command help§f`,
     ]);
 }
 

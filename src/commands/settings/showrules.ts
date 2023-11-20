@@ -32,11 +32,6 @@ function showrulesHelp(player: Player, prefix: string, showrulesBoolean: boolean
         `       §4[§7Enable ShowRules module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ShowRules module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}showrules --help`,
-        `    ${prefix}showrules --status`,
-        `    ${prefix}showrules --enable`,
-        `    ${prefix}showrules --disable`,
     ]);
 }
 

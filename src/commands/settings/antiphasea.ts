@@ -30,11 +30,6 @@ function antiphaseaHelp(player: Player, prefix: string, antiPhaseABoolean: boole
         `       §4[§7Enable AntiPhaseA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiPhaseA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}antiphasea --help`,
-        `    ${prefix}antiphasea --status`,
-        `    ${prefix}antiphasea --enable`,
-        `    ${prefix}antiphasea --disable`,
     ]);
 }
 

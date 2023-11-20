@@ -32,11 +32,6 @@ function spammerCHelp(player: Player, prefix: string, spammerCBoolean: boolean, 
         `       §4[§7Enable SpammerC module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable SpammerC module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}spammerc --help`,
-        `    ${prefix}spammerc --status`,
-        `    ${prefix}spammerc --enable`,
-        `    ${prefix}spammerc --disable`,
     ]);
 }
 

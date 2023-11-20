@@ -32,11 +32,6 @@ function opsHelp(player: Player, prefix: string, opsBoolean: boolean, setting: b
         `       §4[§7Enable OPS module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable OPS module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}ops --help`,
-        `    ${prefix}ops --status`,
-        `    ${prefix}ops --enable`,
-        `    ${prefix}ops --disable`,
     ]);
 }
 

@@ -32,11 +32,6 @@ function auraCheckHelp(player: Player, prefix: string, antiKillAuraBoolean: bool
         `       §4[§7Enable AntiKillAura module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiKillAura module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}auracheck --help`,
-        `    ${prefix}auracheck --status`,
-        `    ${prefix}auracheck --enable`,
-        `    ${prefix}auracheck --disable`,
     ]);
 }
 

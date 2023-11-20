@@ -17,11 +17,6 @@ function freezeHelp(player: Player, prefix: string, setting: boolean) {
         `§4[§6Usage§4]§f: freeze [optional]`,
         `§4[§6Optional§4]§f: username, help`,
         `§4[§6Description§4]§f: Will freeze or unfreeze the specified player.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}freeze ${player.name}`,
-        `        §4- §6Freeze or unfreeze ${player.name}§f`,
-        `    ${prefix}freeze help`,
-        `        §4- §6Show command help§f`,
     ]);
 }
 

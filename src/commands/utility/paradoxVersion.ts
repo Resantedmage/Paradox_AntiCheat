@@ -4,17 +4,7 @@ import { dynamicPropertyRegistry } from "../../penrose/WorldInitializeAfterEvent
 import { getPrefix, sendMsg, sendMsgToPlayer } from "../../util.js";
 
 function versionHelp(player: Player, prefix: string) {
-    return sendMsgToPlayer(player, [
-        `\n§o§4[§6Command§4]§f: version`,
-        `§4[§6Usage§4]§f: version [optional]`,
-        `§4[§6Optional§4]§f: help`,
-        `§4[§6Description§4]§f: Will print out the installed version of paradox`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}version`,
-        `        §4- §6Print out the installed version of paradox§f`,
-        `    ${prefix}version help`,
-        `        §4- §6Show command help§f`,
-    ]);
+    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: version`, `§4[§6Usage§4]§f: version [optional]`, `§4[§6Optional§4]§f: help`, `§4[§6Description§4]§f: Will print out the installed version of paradox`]);
 }
 
 /**

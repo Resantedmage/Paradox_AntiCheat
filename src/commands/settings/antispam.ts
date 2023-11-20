@@ -31,11 +31,6 @@ function antispamHelp(player: Player, prefix: string, antiSpamBoolean: boolean, 
         `       §4[§7Enable AntiSpam module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiSpam module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}antispam --help`,
-        `    ${prefix}antispam --status`,
-        `    ${prefix}antispam --enable`,
-        `    ${prefix}antispam --disable`,
     ]);
 }
 

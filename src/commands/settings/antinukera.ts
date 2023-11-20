@@ -30,11 +30,6 @@ function antinukeraHelp(player: Player, prefix: string, antiNukerABoolean: boole
         `       §4[§7Enable AntiNukerA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiNukerA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}antinukera --help`,
-        `    ${prefix}antinukera --status`,
-        `    ${prefix}antinukera --enable`,
-        `    ${prefix}antinukera --disable`,
     ]);
 }
 

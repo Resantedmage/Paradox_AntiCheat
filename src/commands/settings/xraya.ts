@@ -32,11 +32,6 @@ function xrayAHelp(player: Player, prefix: string, xrayBoolean: boolean, setting
         `       §4[§7Enable XrayA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable XrayA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}xraya --help`,
-        `    ${prefix}xraya --status`,
-        `    ${prefix}xraya --enable`,
-        `    ${prefix}xraya --disable`,
     ]);
 }
 

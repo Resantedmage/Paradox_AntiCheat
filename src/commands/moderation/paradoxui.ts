@@ -12,18 +12,7 @@ function paradoxuiHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [
-        `\n§o§4[§6Command§4]§f: paradoxui`,
-        `§4[§6Status§4]§f: ${commandStatus}`,
-        `§4[§6Usage§4]§f: paradoxui [optional]`,
-        `§4[§6Optional§4]§f: help`,
-        `§4[§6Description§4]§f: Shows GUI for main menu.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}paradoxui`,
-        `        §4- §6Open the Paradox main menu GUI§f`,
-        `    ${prefix}paradoxui help`,
-        `        §4- §6Show command help§f`,
-    ]);
+    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: paradoxui`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: paradoxui [optional]`, `§4[§6Optional§4]§f: help`, `§4[§6Description§4]§f: Shows GUI for main menu.`]);
 }
 
 /**

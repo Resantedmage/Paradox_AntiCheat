@@ -31,11 +31,6 @@ function chatRanksHelp(player: Player, prefix: string, chatRanksBoolean: boolean
         `       §4[§7Enable ChatRanks module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ChatRanks module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}chatranks --help`,
-        `    ${prefix}chatranks --status`,
-        `    ${prefix}chatranks --enable`,
-        `    ${prefix}chatranks --disable`,
     ]);
 }
 

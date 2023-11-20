@@ -16,11 +16,6 @@ function punishHelp(player: Player, prefix: string, setting: boolean) {
         `§4[§6Usage§4]§f: punish [optional]`,
         `§4[§6Optional§4]§f: username, help`,
         `§4[§6Description§4]§f: Removes all items from the player's inventory and ender chest.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}punish ${player.name}`,
-        `        §4- §6Remove all items from ${player.name}§f`,
-        `    ${prefix}punish help`,
-        `        §4- §6Show command help§f`,
     ]);
 }
 

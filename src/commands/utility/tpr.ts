@@ -25,18 +25,7 @@ function tprHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [
-        `\n§o§4[§6Command§4]§f: tpr`,
-        `§4[§6Status§4]§f: ${commandStatus}`,
-        `§4[§6Usage§4]§f: tpr [optional]`,
-        `§4[§6Optional§4]§f: name, help`,
-        `§4[§6Description§4]§f: Will send requests to tp to players.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}tpr ${player.name}`,
-        `        §4- §6Send a teleport request to the specified player§f`,
-        `    ${prefix}tpr help`,
-        `        §4- §6Show command help§f`,
-    ]);
+    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: tpr`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: tpr [optional]`, `§4[§6Optional§4]§f: name, help`, `§4[§6Description§4]§f: Will send requests to tp to players.`]);
 }
 
 // This handles the submission of requests

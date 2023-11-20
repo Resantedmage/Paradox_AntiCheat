@@ -30,11 +30,6 @@ function badpackets2Help(player: Player, prefix: string, badPackets2Boolean: boo
         `       §4[§7Enable BadPackets2§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable BadPackets2§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}badpackets2 --help`,
-        `    ${prefix}badpackets2 --status`,
-        `    ${prefix}badpackets2 --enable`,
-        `    ${prefix}badpackets2 --disable`,
     ]);
 }
 

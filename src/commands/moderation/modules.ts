@@ -17,11 +17,6 @@ function modulesHelp(player: Player, prefix: string, setting: boolean) {
         `§4[§6Usage§4]§f: modules [optional]`,
         `§4[§6Optional§4]§f: help`,
         `§4[§6Description§4]§f: Shows a list of modules that are enabled and disabled in Paradox.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}modules`,
-        `        §4- §6Show a list of enabled and disabled modules§f`,
-        `    ${prefix}modules help`,
-        `        §4- §6Show command help§f`,
     ]);
 }
 

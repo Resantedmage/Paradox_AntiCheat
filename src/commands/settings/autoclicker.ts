@@ -32,11 +32,6 @@ function autoclickerHelp(player: Player, prefix: string, autoClickerBoolean: boo
         `       §4[§7Enable AutoClicker module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AutoClicker module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}autoclicker --help`,
-        `    ${prefix}autoclicker --status`,
-        `    ${prefix}autoclicker --enable`,
-        `    ${prefix}autoclicker --disable`,
     ]);
 }
 

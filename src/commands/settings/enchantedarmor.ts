@@ -32,11 +32,6 @@ function enchantedArmorHelp(player: Player, prefix: string, encharmorscore: numb
         `       §4[§7Enable Enchanted Armor module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Enchanted Armor module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}enchantedarmor --help`,
-        `    ${prefix}enchantedarmor --status`,
-        `    ${prefix}enchantedarmor --enable`,
-        `    ${prefix}enchantedarmor --disable`,
     ]);
 }
 

@@ -31,11 +31,6 @@ function salvageHelp(player: Player, prefix: string, salvageBoolean: boolean, se
         `       §4[§7Enable Salvage module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Salvage module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}salvage --help`,
-        `    ${prefix}salvage --status`,
-        `    ${prefix}salvage --enable`,
-        `    ${prefix}salvage --disable`,
     ]);
 }
 

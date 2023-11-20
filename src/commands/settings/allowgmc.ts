@@ -30,11 +30,6 @@ function allowgmcHelp(player: Player, prefix: string, creativeGMBoolean: boolean
         `       §4[§7Enable Creative Gamemode§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Creative Gamemode§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}allowgmc --help`,
-        `    ${prefix}allowgmc --status`,
-        `    ${prefix}allowgmc --enable`,
-        `    ${prefix}allowgmc --disable`,
     ]);
 }
 

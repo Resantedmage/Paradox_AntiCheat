@@ -10,18 +10,7 @@ function flyHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [
-        `\n§o§4[§6Command§4]§f: fly`,
-        `§4[§6Status§4]§f: ${commandStatus}`,
-        `§4[§6Usage§4]§f: fly [optional]`,
-        `§4[§6Optional§4]§f: username, help`,
-        `§4[§6Description§4]§f: Will grant player the ability to fly.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}fly ${player.name}`,
-        `        §4- §6Grant the ability to fly to ${player.name}§f`,
-        `    ${prefix}fly help`,
-        `        §4- §6Show command help§f`,
-    ]);
+    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: fly`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: fly [optional]`, `§4[§6Optional§4]§f: username, help`, `§4[§6Description§4]§f: Will grant player the ability to fly.`]);
 }
 
 function mayflydisable(player: Player, member: Player) {

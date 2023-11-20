@@ -13,18 +13,7 @@ function statsHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [
-        `\n§o§4[§6Command§4]§f: stats`,
-        `§4[§6Status§4]§f: ${commandStatus}`,
-        `§4[§6Usage§4]§f: stats [optional]`,
-        `§4[§6Optional§4]§f: username, help`,
-        `§4[§6Description§4]§f: Shows logs from the specified user.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}stats ${player.name}`,
-        `        §4- §6Show logs for the specified user§f`,
-        `    ${prefix}stats help`,
-        `        §4- §6Show command help§f`,
-    ]);
+    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: stats`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: stats [optional]`, `§4[§6Optional§4]§f: username, help`, `§4[§6Description§4]§f: Shows logs from the specified user.`]);
 }
 
 /**

@@ -31,11 +31,6 @@ function illegalLoresHelp(player: Player, prefix: string, illegalLoresBoolean: b
         `       §4[§7Enable IllegalLores module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable IllegalLores module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}illegallores --help`,
-        `    ${prefix}illegallores --status`,
-        `    ${prefix}illegallores --enable`,
-        `    ${prefix}illegallores --disable`,
     ]);
 }
 

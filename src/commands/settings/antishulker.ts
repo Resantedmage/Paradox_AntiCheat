@@ -29,11 +29,6 @@ function antishulkerHelp(player: Player, prefix: string, antiShulkerBoolean: boo
         `       §4[§7Enable AntiShulker module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiShulker module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}antishulker --help`,
-        `    ${prefix}antishulker --status`,
-        `    ${prefix}antishulker --enable`,
-        `    ${prefix}antishulker --disable`,
     ]);
 }
 

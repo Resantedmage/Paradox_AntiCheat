@@ -18,10 +18,7 @@ function listItems(player: Player, prefix: string, debug: boolean) {
         `§4[§6Usage§4]§f: listitems [optional]`,
         `§4[§6Optional§4]§f: help`,
         `§4[§6Description§4]§f: Prints every item in the game and their max stack.`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}listitems`,
-        `    ${prefix}listitems help`,
-    ]);
+]);
 }
 
 /**

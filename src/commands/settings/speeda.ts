@@ -32,11 +32,6 @@ function speedAHelp(player: Player, prefix: string, speedBoolean: boolean, setti
         `       §4[§7Enable SpeedA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable SpeedA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}speeda --help`,
-        `    ${prefix}speeda --status`,
-        `    ${prefix}speeda --enable`,
-        `    ${prefix}speeda --disable`,
     ]);
 }
 

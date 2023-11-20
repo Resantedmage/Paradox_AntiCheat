@@ -32,11 +32,6 @@ function removeCBEHelp(player: Player, prefix: string, commandblocksscore: numbe
         `       §4[§7Enable Anti Command Blocks module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Anti Command Blocks module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}removecb --help`,
-        `    ${prefix}removecb --status`,
-        `    ${prefix}removecb --enable`,
-        `    ${prefix}removecb --disable`,
     ]);
 }
 

@@ -32,11 +32,6 @@ function namespoofBHelp(player: Player, prefix: string, nameSpoofBoolean: boolea
         `       §4[§7Enable NamespoofB module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable NamespoofB module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}namespoofb --help`,
-        `    ${prefix}namespoofb --status`,
-        `    ${prefix}namespoofb --enable`,
-        `    ${prefix}namespoofb --disable`,
     ]);
 }
 
