@@ -24,6 +24,17 @@ function rankHelp(player: Player, prefix: string, configuration: ConfigInterface
         `§4[§6Usage§4]§f: rank <username> [optional]`,
         `§4[§6Optional§4]§f: tag, tag--tag, reset, help`,
         `§4[§6Description§4]§f: Gives one or more ranks to a specified player or resets it.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}rank ${player.name} {Admin}`,
+        `        §4- §6Give the "Admin" rank to the specified player§f`,
+        `    ${prefix}rank ${player.name} [Contributor]--{Mod}`,
+        `        §4- §6Give the "Contributor" and "Mod" ranks to the specified player§f`,
+        `    ${prefix}rank ${player.name} (Staff)--Mod--[Helper]`,
+        `        §4- §6Give the "Staff", "Mod", and "Helper" rank to the specified player§f`,
+        `    ${prefix}rank reset ${player.name}`,
+        `        §4- §6Reset all ranks of the specified player§f`,
+        `    ${prefix}rank help`,
+        `        §4- §6Show command help§f`,
     ]);
 }
 

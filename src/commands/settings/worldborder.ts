@@ -34,6 +34,11 @@ function worldBorderHelp(player: Player, prefix: string, worldBorderBoolean: boo
         `       §4[§7Disable the World Border§4]§f`,
         `    -h, --help`,
         `       §4[§7Display this help message§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}worldborder -o 10000 -n 5000 -e 10000`,
+        `    ${prefix}worldborder -o 10000 -n 5000`,
+        `    ${prefix}worldborder -d`,
+        `    ${prefix}worldborder --help`,
     ]);
 }
 

@@ -11,7 +11,18 @@ function listHomeHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: listhome`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: listhome [optional]`, `§4[§6Optional§4]§f: help`, `§4[§6Description§4]§f: Shows a list of saved home locations.`]);
+    return sendMsgToPlayer(player, [
+        `\n§o§4[§6Command§4]§f: listhome`,
+        `§4[§6Status§4]§f: ${commandStatus}`,
+        `§4[§6Usage§4]§f: listhome [optional]`,
+        `§4[§6Optional§4]§f: help`,
+        `§4[§6Description§4]§f: Shows a list of saved home locations.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}listhome`,
+        `        §4- §6Show a list of saved home locations§f`,
+        `    ${prefix}listhome help`,
+        `        §4- §6Show command help§f`,
+    ]);
 }
 
 /**

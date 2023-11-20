@@ -32,6 +32,11 @@ function bedrockValidateHelp(player: Player, prefix: string, bedrockValidateBool
         `       §4[§7Enable BedrockValidate module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable BedrockValidate module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}bedrockvalidate --help`,
+        `    ${prefix}bedrockvalidate --status`,
+        `    ${prefix}bedrockvalidate --enable`,
+        `    ${prefix}bedrockvalidate --disable`,
     ]);
 }
 

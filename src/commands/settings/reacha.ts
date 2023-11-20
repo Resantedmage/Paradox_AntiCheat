@@ -32,6 +32,11 @@ function reachAHelp(player: Player, prefix: string, reachABoolean: boolean, sett
         `       §4[§7Enable ReachA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ReachA module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}reacha --help`,
+        `    ${prefix}reacha --status`,
+        `    ${prefix}reacha --enable`,
+        `    ${prefix}reacha --disable`,
     ]);
 }
 

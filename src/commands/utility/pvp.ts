@@ -16,6 +16,13 @@ function pvpHelp(player: Player, prefix: string, setting: boolean) {
         `§4[§6Usage§4]§f: pvp [optional]`,
         `§4[§6Optional§4]§f: enable, disable, help`,
         `§4[§6Description§4]§f: Enables or Disables PVP. While disabled you wont take damage when another player attacks you.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}pvp enable`,
+        `        §4- §6Enables PVP§f`,
+        `    ${prefix}pvp disable`,
+        `        §4- §6Disables PVP§f`,
+        `    ${prefix}pvp help`,
+        `        §4- §6Show command help§f`,
     ]);
 }
 

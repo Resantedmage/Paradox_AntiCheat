@@ -32,6 +32,12 @@ function antikbHelp(player: Player, prefix: string, configuration: ConfigInterfa
         `       §4[§7Disable AntiKnockback module§4]§f`,
         `    -v <value>, --velocity <value>`,
         `       §4[§7Change velocity intensity§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}antikb --help`,
+        `    ${prefix}antikb --status`,
+        `    ${prefix}antikb --enable`,
+        `    ${prefix}antikb --disable`,
+        `    ${prefix}antikb --velocity ${configuration.modules.antikbA.velocityIntensity}`,
     ]);
 }
 

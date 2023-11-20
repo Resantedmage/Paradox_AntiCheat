@@ -21,6 +21,13 @@ function opHelp(player: Player, prefix: string, configuration: ConfigInterface) 
         `§4[§6Usage§4]§f: ${prefix}op [optional]`,
         `§4[§6Optional§4]§f: username, help`,
         `§4[§6Description§4]§f: Grants permission to use Paradox AntiCheat features.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${commandUsage}`,
+        `        ${passwordDescription}`,
+        `    ${prefix}op help`,
+        `        §4- §6Show command help§f`,
+        `    ${prefix}op <player>`,
+        `        §4- §6Grant Paradox-Op to another player§f`,
     ]);
 }
 

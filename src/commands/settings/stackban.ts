@@ -29,6 +29,11 @@ function stackBanHelp(player: Player, prefix: string, stackBanBoolean: boolean, 
         `       §4[§7Enable stackBan module§4]§f`,
         `    -h, --help`,
         `       §4[§7Display this help message§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}stackban --disable`,
+        `    ${prefix}stackban --status`,
+        `    ${prefix}stackban --enable`,
+        `    ${prefix}stackban --help`,
     ]);
 }
 

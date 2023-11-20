@@ -10,7 +10,18 @@ function creditsHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: credits`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: credits [optional]`, `§4[§6Optional§4]§f: help`, `§4[§6Description§4]§f: Shows credits for Paradox Anti Cheat.`]);
+    return sendMsgToPlayer(player, [
+        `\n§o§4[§6Command§4]§f: credits`,
+        `§4[§6Status§4]§f: ${commandStatus}`,
+        `§4[§6Usage§4]§f: credits [optional]`,
+        `§4[§6Optional§4]§f: help`,
+        `§4[§6Description§4]§f: Shows credits for Paradox Anti Cheat.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}credits`,
+        `        §4- §6Show credits for Paradox Anti Cheat§f`,
+        `    ${prefix}credits help`,
+        `        §4- §6Show command help§f`,
+    ]);
 }
 
 /**

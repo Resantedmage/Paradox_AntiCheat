@@ -30,6 +30,11 @@ function antiscaffoldaHelp(player: Player, prefix: string, antiScaffoldABoolean:
         `       §4[§7Enable AntiScaffoldA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiScaffoldA module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}antiscaffolda --help`,
+        `    ${prefix}antiscaffolda --status`,
+        `    ${prefix}antiscaffolda --enable`,
+        `    ${prefix}antiscaffolda --disable`,
     ]);
 }
 

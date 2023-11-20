@@ -30,6 +30,11 @@ function allowgmsHelp(player: Player, prefix: string, survivalGMBoolean: boolean
         `       §4[§7Enable Survival Gamemode§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Survival Gamemode§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}allowgms --help`,
+        `    ${prefix}allowgms --status`,
+        `    ${prefix}allowgms --enable`,
+        `    ${prefix}allowgms --disable`,
     ]);
 }
 

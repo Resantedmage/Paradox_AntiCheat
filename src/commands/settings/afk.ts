@@ -31,6 +31,12 @@ function afkHelp(player: Player, prefix: string, configuration: ConfigInterface)
         `       §4[§7Disable AFK§4]§f`,
         `    -m <value>, --minutes <value>`,
         `       §4[§7Set the timer in minutes§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}afk --help`,
+        `    ${prefix}afk --status`,
+        `    ${prefix}afk --enable`,
+        `    ${prefix}afk --disable`,
+        `    ${prefix}afk --minutes ${configuration.modules.afk.minutes}`,
     ]);
 }
 

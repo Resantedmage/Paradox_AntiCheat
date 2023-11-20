@@ -16,6 +16,11 @@ function invseeHelp(player: Player, prefix: string, setting: boolean) {
         `§4[§6Usage§4]§f: invsee [optional]`,
         `§4[§6Optional§4]§f: username, help`,
         `§4[§6Description§4]§f: Shows the entire inventory of the specified player.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}invsee ${player.name}`,
+        `        §4- §6Show the inventory of ${player.name}§f`,
+        `    ${prefix}invsee help`,
+        `        §4- §6Show command help§f`,
     ]);
 }
 

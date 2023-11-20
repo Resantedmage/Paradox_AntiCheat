@@ -32,6 +32,11 @@ function reachBHelp(player: Player, prefix: string, reachBBoolean: boolean, sett
         `       §4[§7Enable ReachB module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ReachB module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}reachb --help`,
+        `    ${prefix}reachb --status`,
+        `    ${prefix}reachb --enable`,
+        `    ${prefix}reachb --disable`,
     ]);
 }
 

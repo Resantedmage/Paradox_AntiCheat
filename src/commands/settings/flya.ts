@@ -32,6 +32,11 @@ function flyaHelp(player: Player, prefix: string, flyABoolean: boolean, setting:
         `       §4[§7Enable FlyA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable FlyA module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}flya --help`,
+        `    ${prefix}flya --status`,
+        `    ${prefix}flya --enable`,
+        `    ${prefix}flya --disable`,
     ]);
 }
 

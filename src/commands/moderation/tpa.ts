@@ -10,7 +10,20 @@ function tpaHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: tpa`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: tpa [optional]`, `§4[§6Optional§4]§f: username, help`, `§4[§6Description§4]§f: Teleport to a player or vice versa.`]);
+    return sendMsgToPlayer(player, [
+        `\n§o§4[§6Command§4]§f: tpa`,
+        `§4[§6Status§4]§f: ${commandStatus}`,
+        `§4[§6Usage§4]§f: tpa [optional]`,
+        `§4[§6Optional§4]§f: username, help`,
+        `§4[§6Description§4]§f: Teleport to a player or vice versa.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}tpa ${player.name} Steve`,
+        `        §4- §6Request to teleport to ${player.name} from Steve§f`,
+        `    ${prefix}tpa Steve ${player.name}`,
+        `        §4- §6Request to teleport Steve to ${player.name}§f`,
+        `    ${prefix}tpa help`,
+        `        §4- §6Show command help§f`,
+    ]);
 }
 
 /**

@@ -30,6 +30,11 @@ function antifallaHelp(player: Player, prefix: string, antifallABoolean: boolean
         `       §4[§7Enable AntiFallA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiFallA module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}antifalla --help`,
+        `    ${prefix}antifalla --status`,
+        `    ${prefix}antifalla --enable`,
+        `    ${prefix}antifalla --disable`,
     ]);
 }
 

@@ -32,6 +32,11 @@ function autobanHelp(player: Player, prefix: string, autoBanBoolean: boolean, se
         `       §4[§7Enable AutoBan module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AutoBan module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}autoban --help`,
+        `    ${prefix}autoban --status`,
+        `    ${prefix}autoban --enable`,
+        `    ${prefix}autoban --disable`,
     ]);
 }
 

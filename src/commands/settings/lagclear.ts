@@ -32,6 +32,11 @@ function clearlagHelp(player: Player, prefix: string, clearLagBoolean: boolean, 
         `       §4[§7Enable ClearLag module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ClearLag module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}clearlag --help`,
+        `    ${prefix}clearlag --status`,
+        `    ${prefix}clearlag --enable`,
+        `    ${prefix}clearlag --disable`,
     ]);
 }
 

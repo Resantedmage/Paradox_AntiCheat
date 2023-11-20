@@ -17,6 +17,11 @@ function delhomeHelp(player: Player, prefix: string, setting: boolean) {
         `§4[§6Usage§4]§f: delhome [optional]`,
         `§4[§6Optional§4]§f: name, help`,
         `§4[§6Description§4]§f: Will delete specified saved home location.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}delhome cave`,
+        `        §4- §6Delete the saved home location named "cave"§f`,
+        `    ${prefix}delhome help`,
+        `        §4- §6Show command help§f`,
     ]);
 }
 

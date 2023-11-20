@@ -27,6 +27,12 @@ function spawnprotectionHelp(player: Player, prefix: string, spawnProtectionBool
         `       §4[§7Set spawn protection with center coordinates (x, y, z) and radius (r)§4]§f`,
         `    ~ ~ ~ <r>`,
         `       §4[§7Set spawn protection with player's location and radius (r)§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}spawnprotection --disable`,
+        `    ${prefix}spawnprotection --help`,
+        `    ${prefix}spawnprotection --status`,
+        `    ${prefix}spawnprotection 54 69 -16 90`,
+        `    ${prefix}spawnprotection ~ ~ ~ 90`,
     ]);
 }
 

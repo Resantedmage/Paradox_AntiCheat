@@ -32,6 +32,11 @@ function invalidSprintAHelp(player: Player, prefix: string, invalidSprintABoolea
         `       §4[§7Enable InvalidSprintA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable InvalidSprintA module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}invalidsprinta --help`,
+        `    ${prefix}invalidsprinta --status`,
+        `    ${prefix}invalidsprinta --enable`,
+        `    ${prefix}invalidsprinta --disable`,
     ]);
 }
 

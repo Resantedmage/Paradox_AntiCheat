@@ -32,6 +32,11 @@ function jesusAHelp(player: Player, prefix: string, jesusABoolean: boolean, sett
         `       §4[§7Enable JesusA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable JesusA module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}jesusa --help`,
+        `    ${prefix}jesusa --status`,
+        `    ${prefix}jesusa --enable`,
+        `    ${prefix}jesusa --disable`,
     ]);
 }
 

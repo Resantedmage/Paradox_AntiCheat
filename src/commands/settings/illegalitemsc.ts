@@ -32,6 +32,11 @@ function illegalItemsCHelp(player: Player, prefix: string, illegalItemsCBoolean:
         `       §4[§7Enable IllegalItemsC module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable IllegalItemsC module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}illegalitemsc --help`,
+        `    ${prefix}illegalitemsc --status`,
+        `    ${prefix}illegalitemsc --enable`,
+        `    ${prefix}illegalitemsc --disable`,
     ]);
 }
 

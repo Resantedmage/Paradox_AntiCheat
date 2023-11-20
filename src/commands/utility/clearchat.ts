@@ -10,7 +10,18 @@ function clearChatHelp(player: Player, prefix: string, setting: boolean) {
     } else {
         commandStatus = "§6[§aENABLED§6]§f";
     }
-    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: clearchat`, `§4[§6Status§4]§f: ${commandStatus}`, `§4[§6Usage§4]§f: clearchat [optional]`, `§4[§6Optional§4]§f: help`, `§4[§6Description§4]§f: Will clear the chat.`]);
+    return sendMsgToPlayer(player, [
+        `\n§o§4[§6Command§4]§f: clearchat`,
+        `§4[§6Status§4]§f: ${commandStatus}`,
+        `§4[§6Usage§4]§f: clearchat [optional]`,
+        `§4[§6Optional§4]§f: help`,
+        `§4[§6Description§4]§f: Will clear the chat.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}clearchat`,
+        `        §4- §6Clear the chat§f`,
+        `    ${prefix}clearchat help`,
+        `        §4- §6Show command help§f`,
+    ]);
 }
 
 /**

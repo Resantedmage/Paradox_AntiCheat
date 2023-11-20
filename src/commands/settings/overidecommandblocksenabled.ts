@@ -32,6 +32,11 @@ function overrideCBEHelp(player: Player, prefix: string, cmdsscore: number, sett
         `       §4[§7Enable CommandBlocksEnabled module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable CommandBlocksEnabled module§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}overridecbe --help`,
+        `    ${prefix}overridecbe --status`,
+        `    ${prefix}overridecbe --enable`,
+        `    ${prefix}overridecbe --disable`,
     ]);
 }
 

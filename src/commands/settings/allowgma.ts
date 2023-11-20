@@ -30,6 +30,11 @@ function allowgmaHelp(player: Player, prefix: string, adventureGMBoolean: boolea
         `       §4[§7Enable Adventure Gamemode§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Adventure Gamemode§4]§f`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}allowgma --help`,
+        `    ${prefix}allowgma --status`,
+        `    ${prefix}allowgma --enable`,
+        `    ${prefix}allowgma --disable`,
     ]);
 }
 

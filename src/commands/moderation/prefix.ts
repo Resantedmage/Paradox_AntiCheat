@@ -15,7 +15,21 @@ function resetPrefix(player: Player, configuration: ConfigInterface) {
 }
 
 function prefixHelp(player: Player, prefix: string) {
-    return sendMsgToPlayer(player, [`\n§o§4[§6Command§4]§f: prefix`, `§4[§6Usage§4]§f: prefix [optional]`, `§4[§6Optional§4]§f: prefix, help`, `§4[§6Description§4]§f: Changes the prefix for commands. Max is two characters.`]);
+    return sendMsgToPlayer(player, [
+        `\n§o§4[§6Command§4]§f: prefix`,
+        `§4[§6Usage§4]§f: prefix [optional]`,
+        `§4[§6Optional§4]§f: prefix, help`,
+        `§4[§6Description§4]§f: Changes the prefix for commands. Max is two characters.`,
+        `§4[§6Examples§4]§f:`,
+        `    ${prefix}prefix !!`,
+        `        §4- §6Change command prefix to "!!"§f`,
+        `    ${prefix}prefix @!`,
+        `        §4- §6Change command prefix to "@!"§f`,
+        `    ${prefix}prefix $`,
+        `        §4- §6Change command prefix to "$"§f`,
+        `    ${prefix}prefix help`,
+        `        §4- §6Show command help§f`,
+    ]);
 }
 
 /**
