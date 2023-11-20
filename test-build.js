@@ -1,13 +1,15 @@
-const fs = require("fs");
-const path = require("path");
-const util = require("util");
-const { spawn } = require("child_process");
-const os = require("os");
-const fse = require("fs-extra");
-const glob = require("glob");
+import * as fs from "fs";
+import * as path from "path";
+import * as util from "util";
+import { spawn } from "child_process";
+import * as os from "os";
+import * as fse from "fs-extra";
+import * as glob from "glob";
 
-// Add this line to import exec
-const exec = util.promisify(require("child_process").exec);
+// Import exec using util.promisify
+import { exec } from "child_process";
+const execPromise = util.promisify(exec);
+
 
 // Array to store all spawned child processes
 const spawnedProcesses = [];
@@ -75,9 +77,9 @@ async function checkAndBuild() {
 
     // Determine the OS type and execute the appropriate build command
     if (os.type() === "Linux") {
-        await exec("npm run build");
+        await execPromise("npm run build");
     } else if (os.type() === "Windows_NT") {
-        await exec("npm run build_win");
+        await execPromise("npm run build_win");
     } else {
         console.error("Unsupported OS: " + os.type());
         return;

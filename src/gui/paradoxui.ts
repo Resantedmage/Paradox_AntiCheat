@@ -65,60 +65,60 @@ async function handleParadoxUI(player: Player) {
 
             if (isUnique) {
                 switch (result.selection) {
-                    case 0:
-                        opHandler(player, uniqueId as string, salt as string, hash as string);
-                        break;
-                    case 1:
-                        tprHandler(player);
-                        break;
-                    case 2:
-                        locationHandler(player);
-                        break;
-                    case 3:
-                        reportHandler(player);
-                        break;
-                    case 4:
-                        chatChannelMainMenu(player);
-                        break;
-                    default:
-                        // Handle other selections for isUnique case
-                        break;
+                case 0:
+                    opHandler(player, uniqueId as string, salt as string, hash as string);
+                    break;
+                case 1:
+                    tprHandler(player);
+                    break;
+                case 2:
+                    locationHandler(player);
+                    break;
+                case 3:
+                    reportHandler(player);
+                    break;
+                case 4:
+                    chatChannelMainMenu(player);
+                    break;
+                default:
+                    // Handle other selections for isUnique case
+                    break;
                 }
             } else {
                 switch (result.selection) {
-                    case 0:
-                        opHandler(player, uniqueId as string, salt as string, hash as string);
-                        break;
-                    case 1:
-                        deopHandler(player);
-                        break;
-                    case 2:
-                        moderationui(player);
-                        break;
-                    case 3:
-                        modulesui(player);
-                        break;
-                    case 4:
-                        prefixHandler(player);
-                        break;
-                    case 5:
-                        tprHandler(player);
-                        break;
-                    case 6:
-                        locationHandler(player);
-                        break;
-                    case 7:
-                        statsHandler(player);
-                        break;
-                    case 8:
-                        chatChannelMainMenu(player);
-                        break;
-                    case 9:
-                        managePlayerSavedLocationsHandler(player);
-                        break;
-                    default:
-                        // Handle other selections for non-isUnique case
-                        break;
+                case 0:
+                    opHandler(player, uniqueId as string, salt as string, hash as string);
+                    break;
+                case 1:
+                    deopHandler(player);
+                    break;
+                case 2:
+                    moderationui(player);
+                    break;
+                case 3:
+                    modulesui(player);
+                    break;
+                case 4:
+                    prefixHandler(player);
+                    break;
+                case 5:
+                    tprHandler(player);
+                    break;
+                case 6:
+                    locationHandler(player);
+                    break;
+                case 7:
+                    statsHandler(player);
+                    break;
+                case 8:
+                    chatChannelMainMenu(player);
+                    break;
+                case 9:
+                    managePlayerSavedLocationsHandler(player);
+                    break;
+                default:
+                    // Handle other selections for non-isUnique case
+                    break;
                 }
             }
 

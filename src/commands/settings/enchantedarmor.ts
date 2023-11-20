@@ -94,38 +94,38 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return enchantedArmorHelp(player, prefix, encharmorscore, configuration.customcommands.enchantedarmor);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is currently ${encharmorscore > 0 ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (encharmorscore > 0) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already enabled.`);
-                } else {
-                    player.runCommand(`scoreboard players set paradox:config encharmor 1`);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Enchanted Armor§f!`);
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (encharmorscore <= 0) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already disabled.`);
-                } else {
-                    player.runCommand(`scoreboard players set paradox:config encharmor 0`);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Enchanted Armor§f!`);
-                }
-                break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}enchantedarmor --help for more information.`);
-                break;
+        case "-h":
+        case "--help":
+            return enchantedArmorHelp(player, prefix, encharmorscore, configuration.customcommands.enchantedarmor);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is currently ${encharmorscore > 0 ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (encharmorscore > 0) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already enabled.`);
+            } else {
+                player.runCommand(`scoreboard players set paradox:config encharmor 1`);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Enchanted Armor§f!`);
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (encharmorscore <= 0) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already disabled.`);
+            } else {
+                player.runCommand(`scoreboard players set paradox:config encharmor 0`);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Enchanted Armor§f!`);
+            }
+            break;
+        default:
+            // Handle unrecognized flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}enchantedarmor --help for more information.`);
+            break;
         }
     } else {
         // No additional arguments provided, display help

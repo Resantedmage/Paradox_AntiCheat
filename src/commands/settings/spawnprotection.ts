@@ -88,6 +88,7 @@ export function spawnprotection(message: ChatSendAfterEvent, args: string[]) {
         return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid arguments provided. Please include x y z radius, for example: 10 64 -10 90.`);
     }
 
+    // eslint-disable-next-line prefer-const
     let [x, y, z, radius] = args.slice(0, 4).map((arg) => (arg === "~" ? arg : parseFloat(arg)));
 
     if ((x !== "~" && isNaN(x as number)) || (y !== "~" && isNaN(y as number)) || (z !== "~" && isNaN(z as number)) || isNaN(radius as number)) {

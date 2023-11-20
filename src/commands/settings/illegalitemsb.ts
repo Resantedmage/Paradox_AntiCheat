@@ -93,40 +93,40 @@ async function handleIllegalItemsB(message: ChatSendAfterEvent, args: string[]) 
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return illegalItemsBHelp(player, prefix, configuration.modules.illegalitemsB.enabled, configuration.customcommands.illegalitemsb);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsB module is currently ${configuration.modules.illegalitemsB.enabled ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (configuration.modules.illegalitemsB.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsB module is already enabled.`);
-                } else {
-                    configuration.modules.illegalitemsB.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsB§f!`);
-                    IllegalItemsB();
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (!configuration.modules.illegalitemsB.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsB module is already disabled.`);
-                } else {
-                    configuration.modules.illegalitemsB.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsB§f!`);
-                }
-                break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsb --help for more information.`);
-                break;
+        case "-h":
+        case "--help":
+            return illegalItemsBHelp(player, prefix, configuration.modules.illegalitemsB.enabled, configuration.customcommands.illegalitemsb);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsB module is currently ${configuration.modules.illegalitemsB.enabled ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (configuration.modules.illegalitemsB.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsB module is already enabled.`);
+            } else {
+                configuration.modules.illegalitemsB.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsB§f!`);
+                IllegalItemsB();
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (!configuration.modules.illegalitemsB.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsB module is already disabled.`);
+            } else {
+                configuration.modules.illegalitemsB.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsB§f!`);
+            }
+            break;
+        default:
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsb --help for more information.`);
+            break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}illegalitemsb --help for more information.`);

@@ -93,40 +93,40 @@ async function handleJesusA(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return jesusAHelp(player, prefix, configuration.modules.jesusA.enabled, configuration.customcommands.jesusa);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is currently ${configuration.modules.jesusA.enabled ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (configuration.modules.jesusA.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already enabled.`);
-                } else {
-                    configuration.modules.jesusA.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6JesusA§f!`);
-                    JesusA();
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (!configuration.modules.jesusA.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already disabled.`);
-                } else {
-                    configuration.modules.jesusA.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4JesusA§f!`);
-                }
-                break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}jesusa --help for command usage.`);
-                break;
+        case "-h":
+        case "--help":
+            return jesusAHelp(player, prefix, configuration.modules.jesusA.enabled, configuration.customcommands.jesusa);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is currently ${configuration.modules.jesusA.enabled ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (configuration.modules.jesusA.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already enabled.`);
+            } else {
+                configuration.modules.jesusA.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6JesusA§f!`);
+                JesusA();
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (!configuration.modules.jesusA.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already disabled.`);
+            } else {
+                configuration.modules.jesusA.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4JesusA§f!`);
+            }
+            break;
+        default:
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}jesusa --help for command usage.`);
+            break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}jesusa --help for more information.`);

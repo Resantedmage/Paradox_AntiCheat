@@ -110,6 +110,7 @@ export default {
         },
         namespoofB: {
             enabled: true,
+            // eslint-disable-next-line no-control-regex
             banregex: /[^\x00-\x7F]|[/:\\*?"<>]|^\.$|\.$/gu,
             // Deny any invalid character not within the scope of this regex
             // Only kick because playstation and switch consoles are able to rename themselves

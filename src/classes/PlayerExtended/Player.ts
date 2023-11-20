@@ -33,14 +33,14 @@ function getGameModeForPlayer(player: Player): string | undefined {
 
         if (gameModePlayer.length > 0) {
             switch (gamemode) {
-                case GameMode.creative:
-                    return "creative";
-                case GameMode.survival:
-                    return "survival";
-                case GameMode.adventure:
-                    return "adventure";
-                case GameMode.spectator:
-                    return "spectator";
+            case GameMode.creative:
+                return "creative";
+            case GameMode.survival:
+                return "survival";
+            case GameMode.adventure:
+                return "adventure";
+            case GameMode.spectator:
+                return "spectator";
             }
         }
     }

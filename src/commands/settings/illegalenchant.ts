@@ -92,40 +92,40 @@ async function handleIllegalEnchant(message: ChatSendAfterEvent, args: string[])
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return illegalEnchantHelp(player, prefix, configuration.modules.illegalEnchantment.enabled, configuration.customcommands.illegalenchant);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalEnchantments module is currently ${configuration.modules.illegalEnchantment.enabled ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (configuration.modules.illegalEnchantment.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalEnchantments module is already enabled.`);
-                } else {
-                    configuration.modules.illegalEnchantment.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalEnchantments§f!`);
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (!configuration.modules.illegalEnchantment.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalEnchantments module is already disabled.`);
-                } else {
-                    configuration.modules.illegalEnchantment.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalEnchantments§f!`);
-                }
-                break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalenchant --help for more information.`);
-                break;
+        case "-h":
+        case "--help":
+            return illegalEnchantHelp(player, prefix, configuration.modules.illegalEnchantment.enabled, configuration.customcommands.illegalenchant);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalEnchantments module is currently ${configuration.modules.illegalEnchantment.enabled ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (configuration.modules.illegalEnchantment.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalEnchantments module is already enabled.`);
+            } else {
+                configuration.modules.illegalEnchantment.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalEnchantments§f!`);
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (!configuration.modules.illegalEnchantment.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalEnchantments module is already disabled.`);
+            } else {
+                configuration.modules.illegalEnchantment.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalEnchantments§f!`);
+            }
+            break;
+        default:
+            // Handle unrecognized flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalenchant --help for more information.`);
+            break;
         }
     } else {
         // No additional arguments provided, display help

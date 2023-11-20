@@ -92,40 +92,40 @@ async function handleChatRanks(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return chatRanksHelp(player, prefix, configuration.modules.chatranks.enabled, configuration.customcommands.chatranks);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is currently ${configuration.modules.chatranks.enabled ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (configuration.modules.chatranks.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is already enabled.`);
-                } else {
-                    configuration.modules.chatranks.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ChatRanks§f!`);
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (!configuration.modules.chatranks.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is already disabled.`);
-                } else {
-                    configuration.modules.chatranks.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ChatRanks§f!`);
-                }
-                break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}chatranks --help for more information.`);
-                break;
+        case "-h":
+        case "--help":
+            return chatRanksHelp(player, prefix, configuration.modules.chatranks.enabled, configuration.customcommands.chatranks);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is currently ${configuration.modules.chatranks.enabled ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (configuration.modules.chatranks.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is already enabled.`);
+            } else {
+                configuration.modules.chatranks.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ChatRanks§f!`);
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (!configuration.modules.chatranks.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is already disabled.`);
+            } else {
+                configuration.modules.chatranks.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ChatRanks§f!`);
+            }
+            break;
+        default:
+            // Handle unrecognized flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}chatranks --help for more information.`);
+            break;
         }
     } else {
         // No additional arguments provided, display help

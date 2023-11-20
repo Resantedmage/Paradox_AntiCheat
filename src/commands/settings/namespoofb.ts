@@ -92,42 +92,42 @@ async function handleNamespoofB(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                // Display help message
-                namespoofBHelp(player, prefix, configuration.modules.namespoofB.enabled, configuration.customcommands.namespoofb);
-                break;
-            case "-s":
-            case "--status":
-                // Display current status of NamespoofB module
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is currently ${configuration.modules.namespoofB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-                break;
-            case "-e":
-            case "--enable":
-                // Enable NamespoofB module
-                if (configuration.modules.namespoofB.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already enabled`);
-                } else {
-                    configuration.modules.namespoofB.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6NamespoofB§f!`);
-                    NamespoofB();
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Disable NamespoofB module
-                if (!configuration.modules.namespoofB.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already disabled`);
-                } else {
-                    configuration.modules.namespoofB.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4NamespoofB§f!`);
-                }
-                break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}namespoofb --help for command usage.`);
-                break;
+        case "-h":
+        case "--help":
+            // Display help message
+            namespoofBHelp(player, prefix, configuration.modules.namespoofB.enabled, configuration.customcommands.namespoofb);
+            break;
+        case "-s":
+        case "--status":
+            // Display current status of NamespoofB module
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is currently ${configuration.modules.namespoofB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+            break;
+        case "-e":
+        case "--enable":
+            // Enable NamespoofB module
+            if (configuration.modules.namespoofB.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already enabled`);
+            } else {
+                configuration.modules.namespoofB.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6NamespoofB§f!`);
+                NamespoofB();
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Disable NamespoofB module
+            if (!configuration.modules.namespoofB.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already disabled`);
+            } else {
+                configuration.modules.namespoofB.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4NamespoofB§f!`);
+            }
+            break;
+        default:
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}namespoofb --help for command usage.`);
+            break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}namespoofb --help for command usage.`);

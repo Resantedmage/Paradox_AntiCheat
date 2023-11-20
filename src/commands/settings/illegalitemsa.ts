@@ -93,48 +93,48 @@ async function handleIllegalItemsA(message: ChatSendAfterEvent, args: string[]) 
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return illegalItemsAHelp(player, prefix, configuration.modules.illegalitemsA.enabled, configuration.customcommands.illegalitemsa);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is currently ${configuration.modules.illegalitemsA.enabled ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (configuration.modules.illegalitemsA.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already enabled.`);
-                } else {
-                    configuration.modules.illegalitemsA.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    const nohasTag = world.getPlayers({ excludeTags: ["illegalitemsA"] });
-                    for (const temp of nohasTag) {
-                        temp.addTag("illegalitemsA");
-                    }
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsA§f!`);
-                    IllegalItemsA();
+        case "-h":
+        case "--help":
+            return illegalItemsAHelp(player, prefix, configuration.modules.illegalitemsA.enabled, configuration.customcommands.illegalitemsa);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is currently ${configuration.modules.illegalitemsA.enabled ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (configuration.modules.illegalitemsA.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already enabled.`);
+            } else {
+                configuration.modules.illegalitemsA.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                const nohasTag = world.getPlayers({ excludeTags: ["illegalitemsA"] });
+                for (const temp of nohasTag) {
+                    temp.addTag("illegalitemsA");
                 }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (!configuration.modules.illegalitemsA.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already disabled.`);
-                } else {
-                    configuration.modules.illegalitemsA.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    const hasTag = world.getPlayers({ tags: ["illegalitemsA"] });
-                    for (const temp of hasTag) {
-                        temp.removeTag("illegalitemsA");
-                    }
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsA§f!`);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsA§f!`);
+                IllegalItemsA();
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (!configuration.modules.illegalitemsA.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already disabled.`);
+            } else {
+                configuration.modules.illegalitemsA.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                const hasTag = world.getPlayers({ tags: ["illegalitemsA"] });
+                for (const temp of hasTag) {
+                    temp.removeTag("illegalitemsA");
                 }
-                break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsa --help for more information.`);
-                break;
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsA§f!`);
+            }
+            break;
+        default:
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsa --help for more information.`);
+            break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}illegalitemsa --help for more information.`);

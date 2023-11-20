@@ -91,42 +91,42 @@ async function handleSpammerB(message: ChatSendAfterEvent, args: string[]): Prom
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                // Display help message
-                spammerBHelp(player, prefix, configuration.modules.spammerB.enabled, configuration.customcommands.spammerb);
-                break;
-            case "-s":
-            case "--status":
-                // Display current status of SpammerB module
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerB module is currently ${configuration.modules.spammerB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-                break;
-            case "-e":
-            case "--enable":
-                // Enable SpammerB module
-                if (!configuration.modules.spammerB.enabled) {
-                    configuration.modules.spammerB.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6SpammerB§f!`);
-                    SpammerB();
-                } else {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerB module is already enabled`);
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Disable SpammerB module
-                if (configuration.modules.spammerB.enabled) {
-                    configuration.modules.spammerB.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4SpammerB§f!`);
-                } else {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerB module is already disabled`);
-                }
-                break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}spammerb --help for command usage.`);
-                break;
+        case "-h":
+        case "--help":
+            // Display help message
+            spammerBHelp(player, prefix, configuration.modules.spammerB.enabled, configuration.customcommands.spammerb);
+            break;
+        case "-s":
+        case "--status":
+            // Display current status of SpammerB module
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerB module is currently ${configuration.modules.spammerB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+            break;
+        case "-e":
+        case "--enable":
+            // Enable SpammerB module
+            if (!configuration.modules.spammerB.enabled) {
+                configuration.modules.spammerB.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6SpammerB§f!`);
+                SpammerB();
+            } else {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerB module is already enabled`);
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Disable SpammerB module
+            if (configuration.modules.spammerB.enabled) {
+                configuration.modules.spammerB.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4SpammerB§f!`);
+            } else {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerB module is already disabled`);
+            }
+            break;
+        default:
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}spammerb --help for command usage.`);
+            break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}spammerb --help for command usage.`);

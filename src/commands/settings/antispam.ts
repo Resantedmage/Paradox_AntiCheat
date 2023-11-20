@@ -87,42 +87,42 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                return antispamHelp(player, prefix, configuration.modules.antispam.enabled, configuration.customcommands.antispam);
-            case "-s":
-            case "--status":
-                // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is currently ${configuration.modules.antispam.enabled ? "enabled" : "disabled"}`);
-                break;
-            case "-e":
-            case "--enable":
-                // Handle enable flag
-                if (configuration.modules.antispam.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already enabled.`);
-                } else {
-                    configuration.modules.antispam.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Spam§f!`);
-                    beforeAntiSpam();
-                    afterAntiSpam();
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Handle disable flag
-                if (!configuration.modules.antispam.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already disabled.`);
-                } else {
-                    configuration.modules.antispam.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Spam§f!`);
-                }
-                break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antispam --help for more information.`);
-                break;
+        case "-h":
+        case "--help":
+            return antispamHelp(player, prefix, configuration.modules.antispam.enabled, configuration.customcommands.antispam);
+        case "-s":
+        case "--status":
+            // Handle status flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is currently ${configuration.modules.antispam.enabled ? "enabled" : "disabled"}`);
+            break;
+        case "-e":
+        case "--enable":
+            // Handle enable flag
+            if (configuration.modules.antispam.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already enabled.`);
+            } else {
+                configuration.modules.antispam.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Spam§f!`);
+                beforeAntiSpam();
+                afterAntiSpam();
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Handle disable flag
+            if (!configuration.modules.antispam.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already disabled.`);
+            } else {
+                configuration.modules.antispam.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Spam§f!`);
+            }
+            break;
+        default:
+            // Handle unrecognized flag
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antispam --help for more information.`);
+            break;
         }
     } else {
         // No additional arguments provided, display help

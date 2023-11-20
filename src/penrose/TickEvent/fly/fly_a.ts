@@ -66,8 +66,8 @@ function analyzePlayerData(player: Player) {
         return;
     }
 
-    let fallingCount = fallingData.filter((isFalling) => isFalling).length;
-    let airCount = surroundedByAirData.filter((isSurroundedByAir) => isSurroundedByAir).length;
+    const fallingCount = fallingData.filter((isFalling) => isFalling).length;
+    const airCount = surroundedByAirData.filter((isSurroundedByAir) => isSurroundedByAir).length;
 
     // Adjust threshold based on observation
     const threshold = 2;

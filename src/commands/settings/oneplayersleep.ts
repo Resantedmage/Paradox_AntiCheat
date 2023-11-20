@@ -92,42 +92,42 @@ async function handleOps(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-            case "-h":
-            case "--help":
-                // Display help message
-                opsHelp(player, prefix, configuration.modules.ops.enabled, configuration.customcommands.ops);
-                break;
-            case "-s":
-            case "--status":
-                // Display current status of OPS module
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is currently ${configuration.modules.ops.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-                break;
-            case "-e":
-            case "--enable":
-                // Enable OPS module
-                if (configuration.modules.ops.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already enabled`);
-                } else {
-                    configuration.modules.ops.enabled = true;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6OPS§f!`);
-                    OPS();
-                }
-                break;
-            case "-d":
-            case "--disable":
-                // Disable OPS module
-                if (!configuration.modules.ops.enabled) {
-                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already disabled`);
-                } else {
-                    configuration.modules.ops.enabled = false;
-                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4OPS§f!`);
-                }
-                break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}ops --help for command usage.`);
-                break;
+        case "-h":
+        case "--help":
+            // Display help message
+            opsHelp(player, prefix, configuration.modules.ops.enabled, configuration.customcommands.ops);
+            break;
+        case "-s":
+        case "--status":
+            // Display current status of OPS module
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is currently ${configuration.modules.ops.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+            break;
+        case "-e":
+        case "--enable":
+            // Enable OPS module
+            if (configuration.modules.ops.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already enabled`);
+            } else {
+                configuration.modules.ops.enabled = true;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6OPS§f!`);
+                OPS();
+            }
+            break;
+        case "-d":
+        case "--disable":
+            // Disable OPS module
+            if (!configuration.modules.ops.enabled) {
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already disabled`);
+            } else {
+                configuration.modules.ops.enabled = false;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4OPS§f!`);
+            }
+            break;
+        default:
+            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}ops --help for command usage.`);
+            break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}ops --help for command usage.`);

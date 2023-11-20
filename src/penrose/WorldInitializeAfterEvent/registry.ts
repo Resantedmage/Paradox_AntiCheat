@@ -46,6 +46,7 @@ function deepEqual<T>(obj1: T, obj2: T): boolean {
 
 // Define a structure for representing the differences between two objects
 interface Difference {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     [key: string]: Difference | any;
 }
 
@@ -56,6 +57,7 @@ interface Difference {
  * @param path An array representing the current path in the object hierarchy.
  * @returns An object representing the differences.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function diffObjects(obj1: Record<string, any>, obj2: Record<string, any>, path: string[] = []): Difference {
     const diff: Difference = {};
     for (const key in obj1) {
@@ -79,6 +81,7 @@ function diffObjects(obj1: Record<string, any>, obj2: Record<string, any>, path:
  * @param diff The differences to be merged from.
  * @returns The merged object containing the changes from the `diff` object.
  */
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function mergeObjects(obj: Record<string, any>, diff: Record<string, any>): Record<string, any> {
     for (const key in diff) {
         if (typeof diff[key] === "object" && !Array.isArray(diff[key])) {

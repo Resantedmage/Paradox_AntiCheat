@@ -16,24 +16,24 @@ export function chatChannelMainMenu(player: Player) {
     menu.show(player)
         .then((chatChannelsMenuUIResult) => {
             switch (chatChannelsMenuUIResult.selection) {
-                case 0:
-                    chatChannelsCreateMenuUI(player);
-                    break;
-                case 1:
-                    ChatChannelsJoinMenuUI(player);
-                    break;
-                case 2:
-                    ChatChannelsInviteMenuUI(player);
-                    break;
-                case 3:
-                    chatChannelsLeaveMenuUI(player);
-                    break;
-                case 4:
-                    ChatChannelsDeleteMenuUI(player);
-                    break;
+            case 0:
+                chatChannelsCreateMenuUI(player);
+                break;
+            case 1:
+                ChatChannelsJoinMenuUI(player);
+                break;
+            case 2:
+                ChatChannelsInviteMenuUI(player);
+                break;
+            case 3:
+                chatChannelsLeaveMenuUI(player);
+                break;
+            case 4:
+                ChatChannelsDeleteMenuUI(player);
+                break;
 
-                default:
-                    break;
+            default:
+                break;
             }
         })
         .catch((error) => {

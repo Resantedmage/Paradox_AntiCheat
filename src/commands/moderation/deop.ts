@@ -82,13 +82,12 @@ export function deop(message: ChatSendAfterEvent, args: string[]) {
     // Check for hash/salt and validate password from member
     const memberHash = member.getDynamicProperty("hash");
     const memberSalt = member.getDynamicProperty("salt");
-    let memberEncode: string;
 
     // Use either the operator's ID or the encryption password as the key
     const memberKey = configuration.encryption.password ? configuration.encryption.password : member.id;
 
     // Generate the hash
-    memberEncode = (world as WorldExtended).hashWithSalt(memberSalt as string, memberKey);
+    const memberEncode = (world as WorldExtended).hashWithSalt(memberSalt as string, memberKey);
 
     if (memberEncode && memberHash !== undefined && memberHash === memberEncode) {
         member.setDynamicProperty("hash");
