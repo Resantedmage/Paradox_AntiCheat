@@ -21,7 +21,7 @@ function spammerAHelp(player: Player, prefix: string, spammerABoolean: boolean, 
         `\n§o§4[§6Command§4]§f: spammera`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: spammera [options]`,
+        `§4[§6Usage§4]§f: ${prefix}spammera [options]`,
         `§4[§6Description§4]§f: Toggles checks for messages sent while moving.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function spammerAHelp(player: Player, prefix: string, spammerABoolean: boolean, 
         `       §4[§7Enable SpammerA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable SpammerA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}spammera --help`,
-        `    ${prefix}spammera --status`,
-        `    ${prefix}spammera --enable`,
-        `    ${prefix}spammera --disable`,
     ]);
 }
 
@@ -86,24 +81,29 @@ async function handleSpammerA(message: ChatSendAfterEvent, args: string[]): Prom
     const prefix: string = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg: string = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 spammerAHelp(player, prefix, configuration.modules.spammerA.enabled, configuration.customcommands.spammera);
                 break;
             case "-s":
             case "--status":
                 // Display current status of SpammerA module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerA module is currently ${configuration.modules.spammerA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable SpammerA module
+                validFlagFound = true;
                 if (!configuration.modules.spammerA.enabled) {
                     configuration.modules.spammerA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -116,6 +116,7 @@ async function handleSpammerA(message: ChatSendAfterEvent, args: string[]): Prom
             case "-d":
             case "--disable":
                 // Disable SpammerA module
+                validFlagFound = true;
                 if (configuration.modules.spammerA.enabled) {
                     configuration.modules.spammerA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -124,11 +125,10 @@ async function handleSpammerA(message: ChatSendAfterEvent, args: string[]): Prom
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerA module is already disabled`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}spammera --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}spammera --help for command usage.`);
     }
 }
