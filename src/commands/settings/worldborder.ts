@@ -141,13 +141,15 @@ async function handleWorldBorders(message: ChatSendAfterEvent, args: string[]): 
         const e = configuration.modules.worldBorder.end;
         if (!configuration.modules.worldBorder.enabled && (o !== 0 || n !== 0 || e !== 0)) {
             // Enable Worldborder
+            configuration.modules.worldBorder.enabled = true;
+            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
             sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled the §6World Border§f!`);
             WorldBorder();
             return;
         } else {
             const noBorders = o === 0 && n === 0 && e === 0;
             if (noBorders) {
-                return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Set border size please. Use ${prefix}worldborder --help for command usage.`);
+                return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Set the border size please. Use ${prefix}worldborder --help for command usage.`);
             }
             return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f World Border is already enabled.`);
         }
