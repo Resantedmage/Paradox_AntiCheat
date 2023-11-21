@@ -21,7 +21,7 @@ function jesusAHelp(player: Player, prefix: string, jesusABoolean: boolean, sett
         `\n§o§4[§6Command§4]§f: jesusA`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: jesusA [options]`,
+        `§4[§6Usage§4]§f: ${prefix}jesusA [options]`,
         `§4[§6Description§4]§f: Toggles checks for walking/sprinting on water or lava.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function jesusAHelp(player: Player, prefix: string, jesusABoolean: boolean, sett
         `       §4[§7Enable JesusA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable JesusA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}jesusa --help`,
-        `    ${prefix}jesusa --status`,
-        `    ${prefix}jesusa --enable`,
-        `    ${prefix}jesusa --disable`,
     ]);
 }
 
@@ -88,22 +83,27 @@ async function handleJesusA(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return jesusAHelp(player, prefix, configuration.modules.jesusA.enabled, configuration.customcommands.jesusa);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is currently ${configuration.modules.jesusA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.jesusA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already enabled.`);
                 } else {
@@ -116,6 +116,7 @@ async function handleJesusA(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.jesusA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already disabled.`);
                 } else {
@@ -124,11 +125,10 @@ async function handleJesusA(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4JesusA§f!`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}jesusa --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}jesusa --help for more information.`);
     }
 }
