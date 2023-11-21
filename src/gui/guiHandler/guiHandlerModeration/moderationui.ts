@@ -40,53 +40,53 @@ export function moderationui(player: Player) {
         .show(player)
         .then((ModUIresult) => {
             switch (ModUIresult.selection) {
-            case 0:
-                banHandler(player);
-                break;
-            case 1:
-                unbanHandler(player);
-                break;
-            case 2:
-                rulesHandler(player);
-                break;
-            case 3:
-                chatui(player);
-                break;
-            case 4:
-                lockdownHandler(player);
-                break;
-            case 5:
-                punishHandler(player);
-                break;
-            case 6:
-                tpaHandler(player);
-                break;
-            case 7:
-                kickHandler(player);
-                break;
-            case 8:
-                ecwipeHandler(player);
-                break;
-            case 9:
-                freezeHandler(player);
-                break;
-            case 10:
-                flyHandler(player);
-                break;
-            case 11:
-                vanishHandler(player);
-                break;
-            case 12:
-                despawnHandler(player);
-                break;
-            case 13:
-                autobanHandler(player);
-                break;
-            case 14:
-                inventoryHandler(player);
-                break;
-            default:
-                break;
+                case 0:
+                    banHandler(player);
+                    break;
+                case 1:
+                    unbanHandler(player);
+                    break;
+                case 2:
+                    rulesHandler(player);
+                    break;
+                case 3:
+                    chatui(player);
+                    break;
+                case 4:
+                    lockdownHandler(player);
+                    break;
+                case 5:
+                    punishHandler(player);
+                    break;
+                case 6:
+                    tpaHandler(player);
+                    break;
+                case 7:
+                    kickHandler(player);
+                    break;
+                case 8:
+                    ecwipeHandler(player);
+                    break;
+                case 9:
+                    freezeHandler(player);
+                    break;
+                case 10:
+                    flyHandler(player);
+                    break;
+                case 11:
+                    vanishHandler(player);
+                    break;
+                case 12:
+                    despawnHandler(player);
+                    break;
+                case 13:
+                    autobanHandler(player);
+                    break;
+                case 14:
+                    inventoryHandler(player);
+                    break;
+                default:
+                    break;
             }
         })
         .catch((error) => {

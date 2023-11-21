@@ -93,41 +93,41 @@ async function handleAutoban(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return autobanHelp(player, prefix, configuration.modules.autoBan.enabled, configuration.customcommands.autoban);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return autobanHelp(player, prefix, configuration.modules.autoBan.enabled, configuration.customcommands.autoban);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is currently ${configuration.modules.autoBan.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is currently ${configuration.modules.autoBan.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.autoBan.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is already enabled.`);
-            } else {
-                configuration.modules.autoBan.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AutoBan§f!`);
-                AutoBan();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.autoBan.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is already enabled.`);
+                } else {
+                    configuration.modules.autoBan.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AutoBan§f!`);
+                    AutoBan();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.autoBan.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is already disabled.`);
-            } else {
-                configuration.modules.autoBan.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AutoBan§f!`);
-            }
-            break;
-        default:
+                if (!configuration.modules.autoBan.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is already disabled.`);
+                } else {
+                    configuration.modules.autoBan.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AutoBan§f!`);
+                }
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}autoban --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}autoban --help for more information.`);
+                break;
         }
     } else {
         // No additional arguments provided, display help

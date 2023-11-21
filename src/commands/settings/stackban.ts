@@ -93,44 +93,44 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-d":
-        case "--disable":
+            case "-d":
+            case "--disable":
             // Disable stackBan module if it's not already disabled
-            if (configuration.modules.stackBan.enabled === false) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §4StackBans§f is already disabled.`);
-            } else {
-                configuration.modules.stackBan.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
-            }
-            break;
+                if (configuration.modules.stackBan.enabled === false) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §4StackBans§f is already disabled.`);
+                } else {
+                    configuration.modules.stackBan.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4StackBans§f!`);
+                }
+                break;
 
-        case "-e":
-        case "--enable":
+            case "-e":
+            case "--enable":
             // Enable stackBan module if it's not already enabled
-            if (configuration.modules.stackBan.enabled === true) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §6StackBans§f is already enabled.`);
-            } else {
-                configuration.modules.stackBan.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6StackBans§f!`);
-            }
-            break;
+                if (configuration.modules.stackBan.enabled === true) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §6StackBans§f is already enabled.`);
+                } else {
+                    configuration.modules.stackBan.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6StackBans§f!`);
+                }
+                break;
 
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help information
-            stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
-            break;
-        case "-s":
-        case "--status":
+                stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of StackBan module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f StackBan module is currently ${configuration.modules.stackBan.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-            break;
-        default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f StackBan module is currently ${configuration.modules.stackBan.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            default:
             // Invalid argument provided
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Please use ${prefix}stackban --help for usage information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Please use ${prefix}stackban --help for usage information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Please use ${prefix}stackban --help for usage information.`);

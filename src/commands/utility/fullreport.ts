@@ -86,15 +86,15 @@ async function handleFullReport(message: ChatSendAfterEvent, args: string[]) {
         ];
 
         switch (true) {
-        case member.hasTag("paradoxFreeze"):
-            reportBody.push(`§f§4[§6Paradox§4]§f §6${member.name}§f is frozen by ${member.hasTag("freezeAura") ? "AntiKillAura" : member.hasTag("freezeNukerA") ? "AntiNukerA" : member.hasTag("freezeScaffoldA") ? "AntiScaffoldA" : "Staff"}`);
-            break;
-        case member.hasTag("flying"):
-            reportBody.push(`§f§4[§6Paradox§4]§f §6${member.name}§f is flying`);
-            break;
-        case member.hasTag("vanish"):
-            reportBody.push(`§f§4[§6Paradox§4]§f §6${member.name}§f is vanished`);
-            break;
+            case member.hasTag("paradoxFreeze"):
+                reportBody.push(`§f§4[§6Paradox§4]§f §6${member.name}§f is frozen by ${member.hasTag("freezeAura") ? "AntiKillAura" : member.hasTag("freezeNukerA") ? "AntiNukerA" : member.hasTag("freezeScaffoldA") ? "AntiScaffoldA" : "Staff"}`);
+                break;
+            case member.hasTag("flying"):
+                reportBody.push(`§f§4[§6Paradox§4]§f §6${member.name}§f is flying`);
+                break;
+            case member.hasTag("vanish"):
+                reportBody.push(`§f§4[§6Paradox§4]§f §6${member.name}§f is vanished`);
+                break;
         }
 
         let violationsFound = 0;

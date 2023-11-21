@@ -92,39 +92,39 @@ async function handleIllegalLores(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return illegalLoresHelp(player, prefix, configuration.modules.illegalLores.enabled, configuration.customcommands.illegallores);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return illegalLoresHelp(player, prefix, configuration.modules.illegalLores.enabled, configuration.customcommands.illegallores);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is currently ${configuration.modules.illegalLores.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is currently ${configuration.modules.illegalLores.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.illegalLores.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already enabled.`);
-            } else {
-                configuration.modules.illegalLores.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalLores§f!`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.illegalLores.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already enabled.`);
+                } else {
+                    configuration.modules.illegalLores.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalLores§f!`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.illegalLores.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already disabled.`);
-            } else {
-                configuration.modules.illegalLores.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalLores§f!`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegallores --help for more information.`);
-            break;
+                if (!configuration.modules.illegalLores.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already disabled.`);
+                } else {
+                    configuration.modules.illegalLores.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalLores§f!`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegallores --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}illegallores --help for more information.`);

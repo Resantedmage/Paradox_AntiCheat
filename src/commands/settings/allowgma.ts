@@ -81,48 +81,56 @@ async function handleAllowGMA(message: ChatSendAfterEvent, args: string[]): Prom
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return allowgmaHelp(player, prefix, configuration.modules.adventureGM.enabled, configuration.customcommands.allowgma);
-        case "-s":
-        case "--status":
-            // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Adventure Gamemode is currently ${configuration.modules.adventureGM.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
-            // Handle enable flag
-            if (configuration.modules.adventureGM.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Adventure Gamemode is already enabled.`);
-            } else {
-                configuration.modules.adventureGM.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disallowed §4Gamemode 2 (Adventure)§f to be used!`);
-                Adventure();
-            }
-            break;
-        case "-d":
-        case "--disable":
-            // Handle disable flag
-            if (!configuration.modules.adventureGM.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Adventure Gamemode is already disabled.`);
-            } else {
-                configuration.modules.adventureGM.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 2 (Adventure)§f to be used!`);
-            }
-            break;
-        default:
-            // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgma --help for more information.`);
-            break;
+            case "-h":
+            case "--help":
+                validFlagFound = true;
+                return allowgmaHelp(player, prefix, configuration.modules.adventureGM.enabled, configuration.customcommands.allowgma);
+            case "-s":
+            case "--status":
+                // Handle status flag
+                validFlagFound = true;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Adventure Gamemode is currently ${configuration.modules.adventureGM.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
+                // Handle enable flag
+                validFlagFound = true;
+                if (configuration.modules.adventureGM.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Adventure Gamemode is already enabled.`);
+                } else {
+                    configuration.modules.adventureGM.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disallowed §4Gamemode 2 (Adventure)§f to be used!`);
+                    Adventure();
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Handle disable flag
+                validFlagFound = true;
+                if (!configuration.modules.adventureGM.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Adventure Gamemode is already disabled.`);
+                } else {
+                    configuration.modules.adventureGM.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 2 (Adventure)§f to be used!`);
+                }
+                break;
+            default:
+                // Handle unrecognized flag
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgma --help for more information.`);
+                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}allowgma --help for more information.`);
     }
 }

@@ -147,69 +147,69 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return setHomeHelp(player, prefix, configuration);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return setHomeHelp(player, prefix, configuration);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is currently ${configuration.customcommands.sethome ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is currently ${configuration.customcommands.sethome ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.customcommands.sethome) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is already enabled.`);
-            } else {
-                if (!hasPermission) {
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to enable §6SetHome§f! No permissions.`);
-                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to enable §6SetHome§f.`);
+                if (configuration.customcommands.sethome) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is already enabled.`);
+                } else {
+                    if (!hasPermission) {
+                        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to enable §6SetHome§f! No permissions.`);
+                        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to enable §6SetHome§f.`);
+                    }
+                    configuration.customcommands.sethome = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SetHome§f!`);
                 }
-                configuration.customcommands.sethome = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6SetHome§f!`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.customcommands.sethome) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is already disabled.`);
-            } else {
-                if (!hasPermission) {
-                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to disable §6SetHome§f! No permissions.`);
-                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to disable §6SetHome§f.`);
+                if (!configuration.customcommands.sethome) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is already disabled.`);
+                } else {
+                    if (!hasPermission) {
+                        sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to disable §6SetHome§f! No permissions.`);
+                        return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to disable §6SetHome§f.`);
+                    }
+                    configuration.customcommands.sethome = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SetHome§f!`);
                 }
-                configuration.customcommands.sethome = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4SetHome§f!`);
-            }
-            break;
-        case "-m":
-        case "--max": {
+                break;
+            case "-m":
+            case "--max": {
             // Handle max flag
-            if (!hasPermission) {
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to set max allowed for §6SetHome§f! No permissions.`);
-                return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to set max allowed for §6SetHome§f.`);
+                if (!hasPermission) {
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to set max allowed for §6SetHome§f! No permissions.`);
+                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to set max allowed for §6SetHome§f.`);
+                }
+                const numberConvert = Number(args[1]);
+                if (isNaN(numberConvert)) {
+                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}sethome --help for more information.`);
+                }
+                configuration.modules.setHome.max = numberConvert;
+                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set §6SetHome§f max allowed to §6${numberConvert}§f!`);
+                break;
             }
-            const numberConvert = Number(args[1]);
-            if (isNaN(numberConvert)) {
-                return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}sethome --help for more information.`);
-            }
-            configuration.modules.setHome.max = numberConvert;
-            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-            sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set §6SetHome§f max allowed to §6${numberConvert}§f!`);
-            break;
-        }
-        case "-n":
-        case "--name":
+            case "-n":
+            case "--name":
             // Handle name flag
-            saveHome(player, args, configuration);
-            break;
-        default:
+                saveHome(player, args, configuration);
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}sethome --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}sethome --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}sethome --help for more information.`);

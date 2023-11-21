@@ -91,42 +91,42 @@ async function handleReachB(message: ChatSendAfterEvent, args: string[]): Promis
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help message
-            reachBHelp(player, prefix, configuration.modules.reachB.enabled, configuration.customcommands.reachb);
-            break;
-        case "-s":
-        case "--status":
+                reachBHelp(player, prefix, configuration.modules.reachB.enabled, configuration.customcommands.reachb);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of ReachB module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is currently ${configuration.modules.reachB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is currently ${configuration.modules.reachB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
             // Enable ReachB module
-            if (!configuration.modules.reachB.enabled) {
-                configuration.modules.reachB.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ReachB§f!`);
-                ReachB();
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is already enabled`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (!configuration.modules.reachB.enabled) {
+                    configuration.modules.reachB.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6ReachB§f!`);
+                    ReachB();
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Disable ReachB module
-            if (configuration.modules.reachB.enabled) {
-                configuration.modules.reachB.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ReachB§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is already disabled`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}reachb --help for command usage.`);
-            break;
+                if (configuration.modules.reachB.enabled) {
+                    configuration.modules.reachB.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ReachB§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is already disabled`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}reachb --help for command usage.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}reachb --help for command usage.`);

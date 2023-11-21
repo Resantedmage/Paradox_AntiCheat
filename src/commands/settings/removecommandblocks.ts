@@ -93,39 +93,39 @@ async function handleRemoveCB(message: ChatSendAfterEvent, args: string[]): Prom
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help message
-            removeCBEHelp(player, prefix, commandblocksscore, configuration.customcommands.removecommandblocks);
-            break;
-        case "-s":
-        case "--status":
+                removeCBEHelp(player, prefix, commandblocksscore, configuration.customcommands.removecommandblocks);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of Anti Command Blocks module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Anti Command Blocks module is currently ${commandblocksscore <= 0 ? "§4DISABLED" : "§aENABLED"}§f.`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Anti Command Blocks module is currently ${commandblocksscore <= 0 ? "§4DISABLED" : "§aENABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
             // Enable Anti Command Blocks module
-            if (commandblocksscore <= 0) {
-                player.runCommand(`scoreboard players set paradox:config commandblocks 1`);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Command Blocks§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Anti Command Blocks module is already enabled`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (commandblocksscore <= 0) {
+                    player.runCommand(`scoreboard players set paradox:config commandblocks 1`);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Anti Command Blocks§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Anti Command Blocks module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Disable Anti Command Blocks module
-            if (commandblocksscore <= 0) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Anti Command Blocks module is already disabled`);
-            } else {
-                player.runCommand(`scoreboard players set paradox:config commandblocks 0`);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Command Blocks§f!`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}removecb --help for command usage.`);
-            break;
+                if (commandblocksscore <= 0) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Anti Command Blocks module is already disabled`);
+                } else {
+                    player.runCommand(`scoreboard players set paradox:config commandblocks 0`);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Command Blocks§f!`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}removecb --help for command usage.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}removecb --help for command usage.`);

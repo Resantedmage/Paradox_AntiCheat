@@ -21,23 +21,23 @@ export function chatui(player: Player) {
         .then((chatResult) => {
             // Use a switch statement to handle different selections
             switch (chatResult.selection) {
-            case 0:
-                notifyHandler(player);
-                break;
-            case 1:
-                chatRanksHandler(player);
-                break;
-            case 2:
-                muteHandler(player);
-                break;
-            case 3:
-                unmuteHandler(player);
-                break;
-            case 4:
-                clearChatHandler(player);
-                break;
-            default:
-                break;
+                case 0:
+                    notifyHandler(player);
+                    break;
+                case 1:
+                    chatRanksHandler(player);
+                    break;
+                case 2:
+                    muteHandler(player);
+                    break;
+                case 3:
+                    unmuteHandler(player);
+                    break;
+                case 4:
+                    clearChatHandler(player);
+                    break;
+                default:
+                    break;
             }
         })
         .catch((error) => {

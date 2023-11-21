@@ -93,41 +93,41 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return auraCheckHelp(player, prefix, configuration.modules.antiKillAura.enabled, configuration.customcommands.antikillaura);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return auraCheckHelp(player, prefix, configuration.modules.antiKillAura.enabled, configuration.customcommands.antikillaura);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is currently ${configuration.modules.antiKillAura.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is currently ${configuration.modules.antiKillAura.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.antiKillAura.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is already enabled.`);
-            } else {
-                configuration.modules.antiKillAura.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiKillAura§f!`);
-                KillAura();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.antiKillAura.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is already enabled.`);
+                } else {
+                    configuration.modules.antiKillAura.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiKillAura§f!`);
+                    KillAura();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.antiKillAura.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is already disabled.`);
-            } else {
-                configuration.modules.antiKillAura.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiKillAura§f!`);
-            }
-            break;
-        default:
+                if (!configuration.modules.antiKillAura.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is already disabled.`);
+                } else {
+                    configuration.modules.antiKillAura.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiKillAura§f!`);
+                }
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antikillaura --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antikillaura --help for more information.`);
+                break;
         }
     } else {
         // No additional arguments provided, display help

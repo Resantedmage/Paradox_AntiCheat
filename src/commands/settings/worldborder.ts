@@ -144,18 +144,18 @@ async function handleWorldBorders(message: ChatSendAfterEvent, args: string[]): 
     for (let i = 0; i < length; i++) {
         const arg = args[i].toLowerCase();
         switch (arg) {
-        case "--overworld":
-        case "-o":
-            overworldSize = parseSize(args[i + 1]);
-            break;
-        case "--nether":
-        case "-n":
-            netherSize = parseSize(args[i + 1]);
-            break;
-        case "--end":
-        case "-e":
-            endSize = parseSize(args[i + 1]);
-            break;
+            case "--overworld":
+            case "-o":
+                overworldSize = parseSize(args[i + 1]);
+                break;
+            case "--nether":
+            case "-n":
+                netherSize = parseSize(args[i + 1]);
+                break;
+            case "--end":
+            case "-e":
+                endSize = parseSize(args[i + 1]);
+                break;
         }
     }
 

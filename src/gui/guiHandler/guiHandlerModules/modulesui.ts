@@ -57,80 +57,80 @@ export function modulesui(player: Player) {
         .show(player)
         .then((ModulesUIResult) => {
             switch (ModulesUIResult.selection) {
-            case 0:
-                gamemodesHandler(player);
-                break;
-            case 1:
-                movementui(player);
-                break;
-            case 2:
-                antiKillAuraHandler(player);
-                break;
-            case 3:
-                antiNukerAHandler(player);
-                break;
-            case 4:
-                antiShulkerHandler(player);
-                break;
-            case 5:
-                antiSpamHandler(player);
-                break;
-            case 6:
-                antiAutoClickerHandler(player);
-                break;
-            case 7:
-                badPacketsHandler(player);
-                break;
-            case 8:
-                bedrockValidationHandler(player);
-                break;
-            case 9:
-                antiEnchantedArmorHandler(player);
-                break;
-            case 10:
-                illegalItemsHandler(player);
-                break;
-            case 11:
-                lagClearHandler(player);
-                break;
-            case 12:
-                nameSpoofHandler(player);
-                break;
-            case 13:
-                opsHandler(player);
-                break;
-            case 14:
-                commandBlocksHandler(player);
-                break;
-            case 15:
-                reachHandler(player);
-                break;
-            case 16:
-                salvageHandler(player);
-                break;
-            case 17:
-                spammersHandler(player);
-                break;
-            case 18:
-                worldBorderHandler(player);
-                break;
-            case 19:
-                xrayHandler(player);
-                break;
-            case 20:
-                hotbarHandler(player);
-                break;
-            case 21:
-                afkHandler(player);
-                break;
-            case 22:
-                antiPhaseAHandler(player);
-                break;
-            case 23:
-                spawnProtectionHandler(player);
-                break;
-            default:
-                break;
+                case 0:
+                    gamemodesHandler(player);
+                    break;
+                case 1:
+                    movementui(player);
+                    break;
+                case 2:
+                    antiKillAuraHandler(player);
+                    break;
+                case 3:
+                    antiNukerAHandler(player);
+                    break;
+                case 4:
+                    antiShulkerHandler(player);
+                    break;
+                case 5:
+                    antiSpamHandler(player);
+                    break;
+                case 6:
+                    antiAutoClickerHandler(player);
+                    break;
+                case 7:
+                    badPacketsHandler(player);
+                    break;
+                case 8:
+                    bedrockValidationHandler(player);
+                    break;
+                case 9:
+                    antiEnchantedArmorHandler(player);
+                    break;
+                case 10:
+                    illegalItemsHandler(player);
+                    break;
+                case 11:
+                    lagClearHandler(player);
+                    break;
+                case 12:
+                    nameSpoofHandler(player);
+                    break;
+                case 13:
+                    opsHandler(player);
+                    break;
+                case 14:
+                    commandBlocksHandler(player);
+                    break;
+                case 15:
+                    reachHandler(player);
+                    break;
+                case 16:
+                    salvageHandler(player);
+                    break;
+                case 17:
+                    spammersHandler(player);
+                    break;
+                case 18:
+                    worldBorderHandler(player);
+                    break;
+                case 19:
+                    xrayHandler(player);
+                    break;
+                case 20:
+                    hotbarHandler(player);
+                    break;
+                case 21:
+                    afkHandler(player);
+                    break;
+                case 22:
+                    antiPhaseAHandler(player);
+                    break;
+                case 23:
+                    spawnProtectionHandler(player);
+                    break;
+                default:
+                    break;
             }
         })
         .catch((error) => {

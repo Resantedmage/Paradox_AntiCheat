@@ -91,42 +91,42 @@ async function handleSpammerC(message: ChatSendAfterEvent, args: string[]): Prom
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help message
-            spammerCHelp(player, prefix, configuration.modules.spammerC.enabled, configuration.customcommands.spammerc);
-            break;
-        case "-s":
-        case "--status":
+                spammerCHelp(player, prefix, configuration.modules.spammerC.enabled, configuration.customcommands.spammerc);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of SpammerC module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerC module is currently ${configuration.modules.spammerC.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerC module is currently ${configuration.modules.spammerC.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
             // Enable SpammerC module
-            if (!configuration.modules.spammerC.enabled) {
-                configuration.modules.spammerC.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6SpammerC§f!`);
-                SpammerC();
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerC module is already enabled`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (!configuration.modules.spammerC.enabled) {
+                    configuration.modules.spammerC.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6SpammerC§f!`);
+                    SpammerC();
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerC module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Disable SpammerC module
-            if (configuration.modules.spammerC.enabled) {
-                configuration.modules.spammerC.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4SpammerC§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerC module is already disabled`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}spammerc --help for command usage.`);
-            break;
+                if (configuration.modules.spammerC.enabled) {
+                    configuration.modules.spammerC.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4SpammerC§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerC module is already disabled`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}spammerc --help for command usage.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}spammerc --help for command usage.`);

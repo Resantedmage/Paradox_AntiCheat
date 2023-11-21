@@ -90,41 +90,41 @@ async function handleSalvage(message: ChatSendAfterEvent, args: string[]): Promi
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help message
-            salvageHelp(player, prefix, configuration.modules.salvage.enabled, configuration.customcommands.salvage);
-            break;
-        case "-s":
-        case "--status":
+                salvageHelp(player, prefix, configuration.modules.salvage.enabled, configuration.customcommands.salvage);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of Salvage module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is currently ${configuration.modules.salvage.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is currently ${configuration.modules.salvage.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
             // Enable Salvage module
-            if (!configuration.modules.salvage.enabled) {
-                configuration.modules.salvage.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6Salvage§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is already enabled`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (!configuration.modules.salvage.enabled) {
+                    configuration.modules.salvage.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6Salvage§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Disable Salvage module
-            if (configuration.modules.salvage.enabled) {
-                configuration.modules.salvage.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4Salvage§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is already disabled`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}salvage --help for command usage.`);
-            break;
+                if (configuration.modules.salvage.enabled) {
+                    configuration.modules.salvage.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4Salvage§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is already disabled`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}salvage --help for command usage.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}salvage --help for command usage.`);

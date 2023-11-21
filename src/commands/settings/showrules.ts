@@ -91,42 +91,42 @@ async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Pro
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help message
-            showrulesHelp(player, prefix, configuration.modules.showrules.enabled, configuration.customcommands.showrules);
-            break;
-        case "-s":
-        case "--status":
+                showrulesHelp(player, prefix, configuration.modules.showrules.enabled, configuration.customcommands.showrules);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of ShowRules module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is currently ${configuration.modules.showrules.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is currently ${configuration.modules.showrules.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
             // Enable ShowRules module
-            if (!configuration.modules.showrules.enabled) {
-                configuration.modules.showrules.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6ShowRules§f!`);
-                ShowRules();
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already enabled`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (!configuration.modules.showrules.enabled) {
+                    configuration.modules.showrules.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has enabled §6ShowRules§f!`);
+                    ShowRules();
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Disable ShowRules module
-            if (configuration.modules.showrules.enabled) {
-                configuration.modules.showrules.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4ShowRules§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already disabled`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}showrules --help for command usage.`);
-            break;
+                if (configuration.modules.showrules.enabled) {
+                    configuration.modules.showrules.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f ${player.name}§f has disabled §4ShowRules§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already disabled`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}showrules --help for command usage.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}showrules --help for command usage.`);

@@ -86,41 +86,41 @@ async function handleAntiPhaseA(message: ChatSendAfterEvent, args: string[]): Pr
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return antiphaseaHelp(player, prefix, configuration.modules.antiphaseA.enabled, configuration.customcommands.phase);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return antiphaseaHelp(player, prefix, configuration.modules.antiphaseA.enabled, configuration.customcommands.phase);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is currently ${configuration.modules.antiphaseA.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is currently ${configuration.modules.antiphaseA.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.antiphaseA.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already enabled.`);
-            } else {
-                configuration.modules.antiphaseA.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiPhaseA§f!`);
-                AntiPhaseA();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.antiphaseA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already enabled.`);
+                } else {
+                    configuration.modules.antiphaseA.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiPhaseA§f!`);
+                    AntiPhaseA();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.antiphaseA.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already disabled.`);
-            } else {
-                configuration.modules.antiphaseA.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiPhaseA§f!`);
-            }
-            break;
-        default:
+                if (!configuration.modules.antiphaseA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already disabled.`);
+                } else {
+                    configuration.modules.antiphaseA.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiPhaseA§f!`);
+                }
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antiphasea --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antiphasea --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}antiphasea --help for more information.`);

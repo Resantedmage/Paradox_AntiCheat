@@ -71,41 +71,41 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return badpackets2Help(player, prefix, configuration.modules.badpackets2.enabled, configuration.customcommands.badpackets2);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return badpackets2Help(player, prefix, configuration.modules.badpackets2.enabled, configuration.customcommands.badpackets2);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is currently ${configuration.modules.badpackets2.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is currently ${configuration.modules.badpackets2.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.badpackets2.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already enabled.`);
-            } else {
-                configuration.modules.badpackets2.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Badpackets2§f!`);
-                BadPackets2();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.badpackets2.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already enabled.`);
+                } else {
+                    configuration.modules.badpackets2.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6Badpackets2§f!`);
+                    BadPackets2();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.badpackets2.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already disabled.`);
-            } else {
-                configuration.modules.badpackets2.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
-            }
-            break;
-        default:
+                if (!configuration.modules.badpackets2.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already disabled.`);
+                } else {
+                    configuration.modules.badpackets2.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
+                }
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}badpackets2 --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}badpackets2 --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}badpackets2 --help for more information.`);

@@ -22,29 +22,29 @@ export function movementui(player: Player) {
         .show(player)
         .then((movementResult) => {
             switch (movementResult.selection) {
-            case 0:
-                antiKnockBackHandler(player);
-                break;
-            case 1:
-                antiFallHandler(player);
-                break;
-            case 2:
-                antiFlyHandler(player);
-                break;
-            case 3:
-                invalidSprintHandler(player);
-                break;
-            case 4:
-                speedAHandler(player);
-                break;
-            case 5:
-                antiScaffoldAHandler(player);
-                break;
-            case 6:
-                antiJesusAHandler(player);
-                break;
-            default:
-                break;
+                case 0:
+                    antiKnockBackHandler(player);
+                    break;
+                case 1:
+                    antiFallHandler(player);
+                    break;
+                case 2:
+                    antiFlyHandler(player);
+                    break;
+                case 3:
+                    invalidSprintHandler(player);
+                    break;
+                case 4:
+                    speedAHandler(player);
+                    break;
+                case 5:
+                    antiScaffoldAHandler(player);
+                    break;
+                case 6:
+                    antiJesusAHandler(player);
+                    break;
+                default:
+                    break;
             }
         })
         .catch((error) => {

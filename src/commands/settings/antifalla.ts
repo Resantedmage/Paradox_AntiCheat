@@ -86,41 +86,41 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return antifallaHelp(player, prefix, configuration.modules.antifallA.enabled, configuration.customcommands.antifalla);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return antifallaHelp(player, prefix, configuration.modules.antifallA.enabled, configuration.customcommands.antifalla);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is currently ${configuration.modules.antifallA.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is currently ${configuration.modules.antifallA.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.antifallA.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already enabled.`);
-            } else {
-                configuration.modules.antifallA.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiFallA§f!`);
-                AntiFallA();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.antifallA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already enabled.`);
+                } else {
+                    configuration.modules.antifallA.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AntiFallA§f!`);
+                    AntiFallA();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.antifallA.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already disabled.`);
-            } else {
-                configuration.modules.antifallA.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiFallA§f!`);
-            }
-            break;
-        default:
+                if (!configuration.modules.antifallA.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already disabled.`);
+                } else {
+                    configuration.modules.antifallA.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiFallA§f!`);
+                }
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antifalla --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antifalla --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}antifalla --help for more information.`);

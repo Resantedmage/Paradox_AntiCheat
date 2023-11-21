@@ -93,40 +93,40 @@ async function handleIllegalItemsC(message: ChatSendAfterEvent, args: string[]) 
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return illegalItemsCHelp(player, prefix, configuration.modules.illegalitemsC.enabled, configuration.customcommands.illegalitemsc);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return illegalItemsCHelp(player, prefix, configuration.modules.illegalitemsC.enabled, configuration.customcommands.illegalitemsc);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsC module is currently ${configuration.modules.illegalitemsC.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsC module is currently ${configuration.modules.illegalitemsC.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.illegalitemsC.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsC module is already enabled.`);
-            } else {
-                configuration.modules.illegalitemsC.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsC§f!`);
-                IllegalItemsC();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.illegalitemsC.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsC module is already enabled.`);
+                } else {
+                    configuration.modules.illegalitemsC.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6IllegalItemsC§f!`);
+                    IllegalItemsC();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.illegalitemsC.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsC module is already disabled.`);
-            } else {
-                configuration.modules.illegalitemsC.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsC§f!`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsc --help for more information.`);
-            break;
+                if (!configuration.modules.illegalitemsC.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsC module is already disabled.`);
+                } else {
+                    configuration.modules.illegalitemsC.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsC§f!`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsc --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}illegalitemsc --help for more information.`);

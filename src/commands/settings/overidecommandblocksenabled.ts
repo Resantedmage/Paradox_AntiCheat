@@ -93,39 +93,39 @@ async function handleOverrideCBE(message: ChatSendAfterEvent, args: string[]) {
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
+            case "-h":
+            case "--help":
             // Display help message
-            overrideCBEHelp(player, prefix, cmdsscore, configuration.customcommands.overidecommandblocksenabled);
-            break;
-        case "-s":
-        case "--status":
+                overrideCBEHelp(player, prefix, cmdsscore, configuration.customcommands.overidecommandblocksenabled);
+                break;
+            case "-s":
+            case "--status":
             // Display current status of CommandBlocksEnabled module
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is currently ${cmdsscore <= 0 ? "§4DISABLED" : "§aENABLED"}§f.`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is currently ${cmdsscore <= 0 ? "§4DISABLED" : "§aENABLED"}§f.`);
+                break;
+            case "-e":
+            case "--enable":
             // Enable CommandBlocksEnabled module
-            if (cmdsscore <= 0) {
-                player.runCommand(`scoreboard players set paradox:config cmds 1`);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §aenabled§f!`);
-            } else {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already enabled`);
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (cmdsscore <= 0) {
+                    player.runCommand(`scoreboard players set paradox:config cmds 1`);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §aenabled§f!`);
+                } else {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already enabled`);
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Disable CommandBlocksEnabled module
-            if (cmdsscore <= 0) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already disabled`);
-            } else {
-                player.runCommand(`scoreboard players set paradox:config cmds 0`);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §4disabled§f!`);
-            }
-            break;
-        default:
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}overridecbe --help for command usage.`);
-            break;
+                if (cmdsscore <= 0) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already disabled`);
+                } else {
+                    player.runCommand(`scoreboard players set paradox:config cmds 0`);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §4disabled§f!`);
+                }
+                break;
+            default:
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}overridecbe --help for command usage.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}overridecbe --help for command usage.`);
