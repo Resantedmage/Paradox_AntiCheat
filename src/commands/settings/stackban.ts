@@ -18,7 +18,7 @@ function stackBanHelp(player: Player, prefix: string, stackBanBoolean: boolean, 
         `\n§o§4[§6Command§4]§f: stackban`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: stackban [options]`,
+        `§4[§6Usage§4]§f: ${prefix}stackban [options]`,
         `§4[§6Description§4]§f: Toggles checks for players with illegal stacks over 64.`,
         `§4[§6Options§4]§f:`,
         `    -d, --disable`,
@@ -29,11 +29,6 @@ function stackBanHelp(player: Player, prefix: string, stackBanBoolean: boolean, 
         `       §4[§7Enable stackBan module§4]§f`,
         `    -h, --help`,
         `       §4[§7Display this help message§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}stackban --disable`,
-        `    ${prefix}stackban --status`,
-        `    ${prefix}stackban --enable`,
-        `    ${prefix}stackban --help`,
     ]);
 }
 
@@ -88,14 +83,23 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
     }
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg: string = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
+            case "-h":
+            case "--help":
+                // Display help information
+                validFlagFound = true;
+                return stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
+
             case "-d":
             case "--disable":
                 // Disable stackBan module if it's not already disabled
+                validFlagFound = true;
                 if (configuration.modules.stackBan.enabled === false) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §4StackBans§f is already disabled.`);
                 } else {
@@ -108,6 +112,7 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
             case "-e":
             case "--enable":
                 // Enable stackBan module if it's not already enabled
+                validFlagFound = true;
                 if (configuration.modules.stackBan.enabled === true) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §6StackBans§f is already enabled.`);
                 } else {
@@ -117,22 +122,16 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
                 }
                 break;
 
-            case "-h":
-            case "--help":
-                // Display help information
-                stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
-                break;
             case "-s":
             case "--status":
                 // Display current status of StackBan module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f StackBan module is currently ${configuration.modules.stackBan.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
-            default:
-                // Invalid argument provided
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Please use ${prefix}stackban --help for usage information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Please use ${prefix}stackban --help for usage information.`);
     }
 }
