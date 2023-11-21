@@ -31,12 +31,6 @@ function afkHelp(player: Player, prefix: string, configuration: ConfigInterface)
         `       §4[§7Disable AFK§4]§f`,
         `    -m <value>, --minutes <value>`,
         `       §4[§7Set the timer in minutes§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}afk --help`,
-        `    ${prefix}afk --status`,
-        `    ${prefix}afk --enable`,
-        `    ${prefix}afk --disable`,
-        `    ${prefix}afk --minutes ${configuration.modules.afk.minutes}`,
     ]);
 }
 
@@ -84,59 +78,64 @@ async function handleAFK(message: ChatSendAfterEvent, args: string[]): Promise<v
     const prefix: string = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg: string = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return afkHelp(player, prefix, configuration);
-        case "-s":
-        case "--status":
-            // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AFK is currently ${configuration.modules.afk.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
-            // Handle enable flag
-            if (configuration.modules.afk.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AFK is already enabled.`);
-            } else {
-                configuration.modules.afk.enabled = true;
+            case "-h":
+            case "--help":
+                validFlagFound = true;
+                return afkHelp(player, prefix, configuration);
+            case "-s":
+            case "--status":
+                // Handle status flag
+                validFlagFound = true;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AFK is currently ${configuration.modules.afk.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
+                // Handle enable flag
+                validFlagFound = true;
+                if (configuration.modules.afk.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AFK is already enabled.`);
+                } else {
+                    configuration.modules.afk.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AFK§f!`);
+                    AFK();
+                }
+                break;
+            case "-d":
+            case "--disable":
+                // Handle disable flag
+                validFlagFound = true;
+                if (!configuration.modules.afk.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AFK is already disabled.`);
+                } else {
+                    configuration.modules.afk.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AFK§f!`);
+                }
+                break;
+            case "-m":
+            case "--minutes": {
+                validFlagFound = true;
+                const numberConvert = Number(args[i + 1]);
+                if (isNaN(numberConvert)) {
+                    return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}afk --help for more information.`);
+                }
+                configuration.modules.afk.minutes = numberConvert;
                 dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled §6AFK§f!`);
-                AFK();
+                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set §6AFK§f timer to §6${numberConvert}§f minutes!`);
+                break;
             }
-            break;
-        case "-d":
-        case "--disable":
-            // Handle disable flag
-            if (!configuration.modules.afk.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AFK is already disabled.`);
-            } else {
-                configuration.modules.afk.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AFK§f!`);
-            }
-            break;
-        case "-m":
-        case "--minutes": {
-            const numberConvert = Number(args[1]);
-            if (isNaN(numberConvert)) {
-                return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}afk --help for more information.`);
-            }
-            configuration.modules.afk.minutes = numberConvert;
-            dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-            sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set §6AFK§f timer to §6${numberConvert}§f minutes!`);
-            break;
         }
-        default:
-            // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}afk --help for more information.`);
-            break;
-        }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}afk --help for more information.`);
     }
 }
