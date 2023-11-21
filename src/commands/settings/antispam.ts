@@ -20,7 +20,7 @@ function antispamHelp(player: Player, prefix: string, antiSpamBoolean: boolean, 
         `\n§o§4[§6Command§4]§f: antispam`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: antispam [options]`,
+        `§4[§6Usage§4]§f: ${prefix}antispam [options]`,
         `§4[§6Description§4]§f: Implements a 2-second chat cooldown to detect and prevent spam in chat.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -31,11 +31,6 @@ function antispamHelp(player: Player, prefix: string, antiSpamBoolean: boolean, 
         `       §4[§7Enable AntiSpam module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiSpam module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}antispam --help`,
-        `    ${prefix}antispam --status`,
-        `    ${prefix}antispam --enable`,
-        `    ${prefix}antispam --disable`,
     ]);
 }
 
@@ -82,22 +77,27 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return antispamHelp(player, prefix, configuration.modules.antispam.enabled, configuration.customcommands.antispam);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is currently ${configuration.modules.antispam.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.antispam.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already enabled.`);
                 } else {
@@ -111,6 +111,7 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.antispam.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already disabled.`);
                 } else {
@@ -119,12 +120,10 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Spam§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antispam --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         // No additional arguments provided, display help
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}antispam --help for more information.`);
     }
