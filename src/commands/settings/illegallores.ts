@@ -20,7 +20,7 @@ function illegalLoresHelp(player: Player, prefix: string, illegalLoresBoolean: b
         `\n§o§4[§6Command§4]§f: illegallores`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: illegallores [options]`,
+        `§4[§6Usage§4]§f: ${prefix}illegallores [options]`,
         `§4[§6Description§4]§f: Toggles checks for illegal lores on items.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -31,11 +31,6 @@ function illegalLoresHelp(player: Player, prefix: string, illegalLoresBoolean: b
         `       §4[§7Enable IllegalLores module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable IllegalLores module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}illegallores --help`,
-        `    ${prefix}illegallores --status`,
-        `    ${prefix}illegallores --enable`,
-        `    ${prefix}illegallores --disable`,
     ]);
 }
 
@@ -87,22 +82,27 @@ async function handleIllegalLores(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return illegalLoresHelp(player, prefix, configuration.modules.illegalLores.enabled, configuration.customcommands.illegallores);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is currently ${configuration.modules.illegalLores.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.illegalLores.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already enabled.`);
                 } else {
@@ -114,6 +114,7 @@ async function handleIllegalLores(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.illegalLores.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already disabled.`);
                 } else {
@@ -122,11 +123,10 @@ async function handleIllegalLores(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalLores§f!`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegallores --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}illegallores --help for more information.`);
     }
 }
