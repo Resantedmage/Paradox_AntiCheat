@@ -21,7 +21,7 @@ function reachAHelp(player: Player, prefix: string, reachABoolean: boolean, sett
         `\n§o§4[§6Command§4]§f: reacha`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: reacha [options]`,
+        `§4[§6Usage§4]§f: ${prefix}reacha [options]`,
         `§4[§6Description§4]§f: Toggles checks for a player placing blocks beyond reach.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function reachAHelp(player: Player, prefix: string, reachABoolean: boolean, sett
         `       §4[§7Enable ReachA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ReachA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}reacha --help`,
-        `    ${prefix}reacha --status`,
-        `    ${prefix}reacha --enable`,
-        `    ${prefix}reacha --disable`,
     ]);
 }
 
@@ -86,24 +81,29 @@ async function handleReachA(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 reachAHelp(player, prefix, configuration.modules.reachA.enabled, configuration.customcommands.reacha);
                 break;
             case "-s":
             case "--status":
                 // Display current status of ReachA module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachA module is currently ${configuration.modules.reachA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable ReachA module
+                validFlagFound = true;
                 if (!configuration.modules.reachA.enabled) {
                     configuration.modules.reachA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -116,6 +116,7 @@ async function handleReachA(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Disable ReachA module
+                validFlagFound = true;
                 if (configuration.modules.reachA.enabled) {
                     configuration.modules.reachA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -124,11 +125,10 @@ async function handleReachA(message: ChatSendAfterEvent, args: string[]) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachA module is already disabled`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}reacha --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}reacha --help for command usage.`);
     }
 }
