@@ -21,7 +21,7 @@ function flyaHelp(player: Player, prefix: string, flyABoolean: boolean, setting:
         `\n§o§4[§6Command§4]§f: flya`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: flya [options]`,
+        `§4[§6Usage§4]§f: ${prefix}flya [options]`,
         `§4[§6Description§4]§f: Toggles checks for illegal flying in survival.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function flyaHelp(player: Player, prefix: string, flyABoolean: boolean, setting:
         `       §4[§7Enable FlyA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable FlyA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}flya --help`,
-        `    ${prefix}flya --status`,
-        `    ${prefix}flya --enable`,
-        `    ${prefix}flya --disable`,
     ]);
 }
 
@@ -88,22 +83,27 @@ async function handleFlyA(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return flyaHelp(player, prefix, configuration.modules.flyA.enabled, configuration.customcommands.flya);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f FlyA module is currently ${configuration.modules.flyA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.flyA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f FlyA module is already enabled.`);
                 } else {
@@ -116,6 +116,7 @@ async function handleFlyA(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.flyA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f FlyA module is already disabled.`);
                 } else {
@@ -124,12 +125,10 @@ async function handleFlyA(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4FlyA§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}flya --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         // No additional arguments provided, display help
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}flya --help for more information.`);
     }
