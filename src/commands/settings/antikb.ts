@@ -123,7 +123,7 @@ async function handleAntiKnockback(message: ChatSendAfterEvent, args: string[]):
             case "--velocity": {
                 // Handle velocity flag
                 validFlagFound = true;
-                const numberConvert = Number(args[1]);
+                const numberConvert = Number(args[i + 1]);
                 if (isNaN(numberConvert)) {
                     return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antikb --help for more information.`);
                 }
