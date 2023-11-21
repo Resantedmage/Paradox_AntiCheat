@@ -21,7 +21,7 @@ function enchantedArmorHelp(player: Player, prefix: string, encharmorscore: numb
         `\n§o§4[§6Command§4]§f: enchantedarmor`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: enchantedarmor [options]`,
+        `§4[§6Usage§4]§f: ${prefix}enchantedarmor [options]`,
         `§4[§6Description§4]§f: Toggles Anti Enchanted Armor for all players.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function enchantedArmorHelp(player: Player, prefix: string, encharmorscore: numb
         `       §4[§7Enable Enchanted Armor module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Enchanted Armor module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}enchantedarmor --help`,
-        `    ${prefix}enchantedarmor --status`,
-        `    ${prefix}enchantedarmor --enable`,
-        `    ${prefix}enchantedarmor --disable`,
     ]);
 }
 
@@ -89,22 +84,27 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return enchantedArmorHelp(player, prefix, encharmorscore, configuration.customcommands.enchantedarmor);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is currently ${encharmorscore > 0 ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (encharmorscore > 0) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already enabled.`);
                 } else {
@@ -115,6 +115,7 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (encharmorscore <= 0) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already disabled.`);
                 } else {
@@ -122,15 +123,14 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Anti Enchanted Armor§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}enchantedarmor --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         // No additional arguments provided, display help
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}enchantedarmor --help for more information.`);
         return;
     }
+
     return player.runCommand(`scoreboard players operation @a encharmor = paradox:config encharmor`);
 }
