@@ -21,7 +21,7 @@ function speedAHelp(player: Player, prefix: string, speedBoolean: boolean, setti
         `\n§o§4[§6Command§4]§f: speeda`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: speeda [options]`,
+        `§4[§6Usage§4]§f: ${prefix}speeda [options]`,
         `§4[§6Description§4]§f: Toggles checks for player's speed hacking.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function speedAHelp(player: Player, prefix: string, speedBoolean: boolean, setti
         `       §4[§7Enable SpeedA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable SpeedA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}speeda --help`,
-        `    ${prefix}speeda --status`,
-        `    ${prefix}speeda --enable`,
-        `    ${prefix}speeda --disable`,
     ]);
 }
 
@@ -86,24 +81,29 @@ async function handleSpeedA(message: ChatSendAfterEvent, args: string[]): Promis
     const prefix: string = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg: string = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 speedAHelp(player, prefix, configuration.modules.speedA.enabled, configuration.customcommands.speeda);
                 break;
             case "-s":
             case "--status":
                 // Display current status of SpeedA module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpeedA module is currently ${configuration.modules.speedA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable SpeedA module
+                validFlagFound = true;
                 if (!configuration.modules.speedA.enabled) {
                     configuration.modules.speedA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -116,6 +116,7 @@ async function handleSpeedA(message: ChatSendAfterEvent, args: string[]): Promis
             case "-d":
             case "--disable":
                 // Disable SpeedA module
+                validFlagFound = true;
                 if (configuration.modules.speedA.enabled) {
                     configuration.modules.speedA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -124,11 +125,10 @@ async function handleSpeedA(message: ChatSendAfterEvent, args: string[]): Promis
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpeedA module is already disabled`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}speeda --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}speeda --help for command usage.`);
     }
 }
