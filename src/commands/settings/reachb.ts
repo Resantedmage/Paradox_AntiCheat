@@ -21,7 +21,7 @@ function reachBHelp(player: Player, prefix: string, reachBBoolean: boolean, sett
         `\n§o§4[§6Command§4]§f: reachb`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: reachb [options]`,
+        `§4[§6Usage§4]§f: ${prefix}reachb [options]`,
         `§4[§6Description§4]§f: Toggles checks for a player's attacking beyond reach.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function reachBHelp(player: Player, prefix: string, reachBBoolean: boolean, sett
         `       §4[§7Enable ReachB module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ReachB module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}reachb --help`,
-        `    ${prefix}reachb --status`,
-        `    ${prefix}reachb --enable`,
-        `    ${prefix}reachb --disable`,
     ]);
 }
 
@@ -86,24 +81,29 @@ async function handleReachB(message: ChatSendAfterEvent, args: string[]): Promis
     const prefix: string = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg: string = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 reachBHelp(player, prefix, configuration.modules.reachB.enabled, configuration.customcommands.reachb);
                 break;
             case "-s":
             case "--status":
                 // Display current status of ReachB module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is currently ${configuration.modules.reachB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable ReachB module
+                validFlagFound = true;
                 if (!configuration.modules.reachB.enabled) {
                     configuration.modules.reachB.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -116,6 +116,7 @@ async function handleReachB(message: ChatSendAfterEvent, args: string[]): Promis
             case "-d":
             case "--disable":
                 // Disable ReachB module
+                validFlagFound = true;
                 if (configuration.modules.reachB.enabled) {
                     configuration.modules.reachB.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -124,11 +125,10 @@ async function handleReachB(message: ChatSendAfterEvent, args: string[]): Promis
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is already disabled`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}reachb --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}reachb --help for command usage.`);
     }
 }
