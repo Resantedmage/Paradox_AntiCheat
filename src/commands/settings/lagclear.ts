@@ -21,7 +21,7 @@ function clearlagHelp(player: Player, prefix: string, clearLagBoolean: boolean, 
         `\n§o§4[§6Command§4]§f: clearlag`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: clearlag [options]`,
+        `§4[§6Usage§4]§f: ${prefix}clearlag [options]`,
         `§4[§6Description§4]§f: Clears items and entities with a timer.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function clearlagHelp(player: Player, prefix: string, clearLagBoolean: boolean, 
         `       §4[§7Enable ClearLag module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ClearLag module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}clearlag --help`,
-        `    ${prefix}clearlag --status`,
-        `    ${prefix}clearlag --enable`,
-        `    ${prefix}clearlag --disable`,
     ]);
 }
 
@@ -87,22 +82,27 @@ async function handleClearlag(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return clearlagHelp(player, prefix, configuration.modules.clearLag.enabled, configuration.customcommands.clearlag);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ClearLag module is currently ${configuration.modules.clearLag.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.clearLag.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ClearLag module is already enabled`);
                 } else {
@@ -115,6 +115,7 @@ async function handleClearlag(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.clearLag.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ClearLag module is already disabled`);
                 } else {
@@ -123,11 +124,10 @@ async function handleClearlag(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4ClearLag§f!`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}clearlag --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}clearlag --help for more information.`);
     }
 }
