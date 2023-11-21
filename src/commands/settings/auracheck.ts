@@ -21,7 +21,7 @@ function auraCheckHelp(player: Player, prefix: string, antiKillAuraBoolean: bool
         `\n§o§4[§6Command§4]§f: auracheck`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: auracheck [options]`,
+        `§4[§6Usage§4]§f: ${prefix}auracheck [options]`,
         `§4[§6Description§4]§f: Toggles checks for attacks outside a 90-degree angle in AntiKillAura module.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function auraCheckHelp(player: Player, prefix: string, antiKillAuraBoolean: bool
         `       §4[§7Enable AntiKillAura module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiKillAura module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}auracheck --help`,
-        `    ${prefix}auracheck --status`,
-        `    ${prefix}auracheck --enable`,
-        `    ${prefix}auracheck --disable`,
     ]);
 }
 
@@ -88,22 +83,27 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return auraCheckHelp(player, prefix, configuration.modules.antiKillAura.enabled, configuration.customcommands.antikillaura);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is currently ${configuration.modules.antiKillAura.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.antiKillAura.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is already enabled.`);
                 } else {
@@ -116,6 +116,7 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.antiKillAura.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiKillAura module is already disabled.`);
                 } else {
@@ -124,12 +125,10 @@ async function handleAuraCheck(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiKillAura§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antikillaura --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         // No additional arguments provided, display help
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}antikillaura --help for more information.`);
     }
