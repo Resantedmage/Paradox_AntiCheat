@@ -30,11 +30,6 @@ function badpackets2Help(player: Player, prefix: string, badPackets2Boolean: boo
         `       §4[§7Enable BadPackets2§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable BadPackets2§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}badpackets2 --help`,
-        `    ${prefix}badpackets2 --status`,
-        `    ${prefix}badpackets2 --enable`,
-        `    ${prefix}badpackets2 --disable`,
     ]);
 }
 
@@ -66,22 +61,27 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return badpackets2Help(player, prefix, configuration.modules.badpackets2.enabled, configuration.customcommands.badpackets2);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is currently ${configuration.modules.badpackets2.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.badpackets2.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already enabled.`);
                 } else {
@@ -94,6 +94,7 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.badpackets2.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets2 is already disabled.`);
                 } else {
@@ -102,12 +103,10 @@ export function badpackets2(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4Badpackets2§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}badpackets2 --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}badpackets2 --help for more information.`);
     }
 }
