@@ -86,41 +86,41 @@ async function handleAllowGMC(message: ChatSendAfterEvent, args: string[]): Prom
 
         // Handle additional arguments
         switch (additionalArg) {
-        case "-h":
-        case "--help":
-            return allowgmcHelp(player, prefix, configuration.modules.creativeGM.enabled, configuration.customcommands.allowgmc);
-        case "-s":
-        case "--status":
+            case "-h":
+            case "--help":
+                return allowgmcHelp(player, prefix, configuration.modules.creativeGM.enabled, configuration.customcommands.allowgmc);
+            case "-s":
+            case "--status":
             // Handle status flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is currently ${configuration.modules.creativeGM.enabled ? "enabled" : "disabled"}`);
-            break;
-        case "-e":
-        case "--enable":
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is currently ${configuration.modules.creativeGM.enabled ? "enabled" : "disabled"}`);
+                break;
+            case "-e":
+            case "--enable":
             // Handle enable flag
-            if (configuration.modules.creativeGM.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is already enabled.`);
-            } else {
-                configuration.modules.creativeGM.enabled = true;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disallowed §4Gamemode 1 (Creative)§f to be used!`);
-                Creative();
-            }
-            break;
-        case "-d":
-        case "--disable":
+                if (configuration.modules.creativeGM.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is already enabled.`);
+                } else {
+                    configuration.modules.creativeGM.enabled = true;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disallowed §4Gamemode 1 (Creative)§f to be used!`);
+                    Creative();
+                }
+                break;
+            case "-d":
+            case "--disable":
             // Handle disable flag
-            if (!configuration.modules.creativeGM.enabled) {
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is already disabled.`);
-            } else {
-                configuration.modules.creativeGM.enabled = false;
-                dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
-                sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 1 (Creative)§f to be used!`);
-            }
-            break;
-        default:
+                if (!configuration.modules.creativeGM.enabled) {
+                    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is already disabled.`);
+                } else {
+                    configuration.modules.creativeGM.enabled = false;
+                    dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
+                    sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 1 (Creative)§f to be used!`);
+                }
+                break;
+            default:
             // Handle unrecognized flag
-            sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgmc --help for more information.`);
-            break;
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgmc --help for more information.`);
+                break;
         }
     } else {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}allowgmc --help for more information.`);
