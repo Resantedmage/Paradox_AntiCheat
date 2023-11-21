@@ -21,7 +21,7 @@ function illegalItemsAHelp(player: Player, prefix: string, illegalItemsABoolean:
         `\n§o§4[§6Command§4]§f: illegalitemsa`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: illegalitemsa [options]`,
+        `§4[§6Usage§4]§f: ${prefix}illegalitemsa [options]`,
         `§4[§6Description§4]§f: Toggles checks for players who have illegal items in their inventory.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function illegalItemsAHelp(player: Player, prefix: string, illegalItemsABoolean:
         `       §4[§7Enable IllegalItemsA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable IllegalItemsA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}illegalitemsa --help`,
-        `    ${prefix}illegalitemsa --status`,
-        `    ${prefix}illegalitemsa --enable`,
-        `    ${prefix}illegalitemsa --disable`,
     ]);
 }
 
@@ -88,22 +83,27 @@ async function handleIllegalItemsA(message: ChatSendAfterEvent, args: string[]) 
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return illegalItemsAHelp(player, prefix, configuration.modules.illegalitemsA.enabled, configuration.customcommands.illegalitemsa);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is currently ${configuration.modules.illegalitemsA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.illegalitemsA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already enabled.`);
                 } else {
@@ -120,6 +120,7 @@ async function handleIllegalItemsA(message: ChatSendAfterEvent, args: string[]) 
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.illegalitemsA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already disabled.`);
                 } else {
@@ -132,11 +133,10 @@ async function handleIllegalItemsA(message: ChatSendAfterEvent, args: string[]) 
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4IllegalItemsA§f!`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}illegalitemsa --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}illegalitemsa --help for more information.`);
     }
 }
