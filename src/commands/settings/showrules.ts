@@ -21,7 +21,7 @@ function showrulesHelp(player: Player, prefix: string, showrulesBoolean: boolean
         `\n§o§4[§6Command§4]§f: showrules`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: showrules [options]`,
+        `§4[§6Usage§4]§f: ${prefix}showrules [options]`,
         `§4[§6Description§4]§f: Toggles showing the rules when the player loads in for the first time.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function showrulesHelp(player: Player, prefix: string, showrulesBoolean: boolean
         `       §4[§7Enable ShowRules module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable ShowRules module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}showrules --help`,
-        `    ${prefix}showrules --status`,
-        `    ${prefix}showrules --enable`,
-        `    ${prefix}showrules --disable`,
     ]);
 }
 
@@ -86,24 +81,29 @@ async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Pro
     const prefix: string = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg: string = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 showrulesHelp(player, prefix, configuration.modules.showrules.enabled, configuration.customcommands.showrules);
                 break;
             case "-s":
             case "--status":
                 // Display current status of ShowRules module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is currently ${configuration.modules.showrules.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable ShowRules module
+                validFlagFound = true;
                 if (!configuration.modules.showrules.enabled) {
                     configuration.modules.showrules.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -116,6 +116,7 @@ async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Pro
             case "-d":
             case "--disable":
                 // Disable ShowRules module
+                validFlagFound = true;
                 if (configuration.modules.showrules.enabled) {
                     configuration.modules.showrules.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -124,11 +125,10 @@ async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Pro
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is already disabled`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}showrules --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}showrules --help for command usage.`);
     }
 }
