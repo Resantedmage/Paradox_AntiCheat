@@ -21,7 +21,7 @@ function namespoofBHelp(player: Player, prefix: string, nameSpoofBoolean: boolea
         `\n§o§4[§6Command§4]§f: namespoofb`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: namespoofb [options]`,
+        `§4[§6Usage§4]§f: ${prefix}namespoofb [options]`,
         `§4[§6Description§4]§f: Toggles checks for a player's name that has Non-ASCII characters.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function namespoofBHelp(player: Player, prefix: string, nameSpoofBoolean: boolea
         `       §4[§7Enable NamespoofB module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable NamespoofB module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}namespoofb --help`,
-        `    ${prefix}namespoofb --status`,
-        `    ${prefix}namespoofb --enable`,
-        `    ${prefix}namespoofb --disable`,
     ]);
 }
 
@@ -87,24 +82,29 @@ async function handleNamespoofB(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 namespoofBHelp(player, prefix, configuration.modules.namespoofB.enabled, configuration.customcommands.namespoofb);
                 break;
             case "-s":
             case "--status":
                 // Display current status of NamespoofB module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is currently ${configuration.modules.namespoofB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable NamespoofB module
+                validFlagFound = true;
                 if (configuration.modules.namespoofB.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already enabled`);
                 } else {
@@ -117,6 +117,7 @@ async function handleNamespoofB(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Disable NamespoofB module
+                validFlagFound = true;
                 if (!configuration.modules.namespoofB.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already disabled`);
                 } else {
@@ -125,11 +126,10 @@ async function handleNamespoofB(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4NamespoofB§f!`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}namespoofb --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}namespoofb --help for command usage.`);
     }
 }
