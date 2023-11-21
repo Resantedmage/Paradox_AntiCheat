@@ -21,7 +21,7 @@ function worldBorderHelp(player: Player, prefix: string, worldBorderBoolean: boo
         `\n§o§4[§6Command§4]§f: worldborder`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: worldborder [options]`,
+        `§4[§6Usage§4]§f: ${prefix}worldborder [options]`,
         `§4[§6Description§4]§f: Sets the world border and restricts players to that border.`,
         `§4[§6Options§4]§f:`,
         `    -o, --overworld`,
@@ -32,13 +32,10 @@ function worldBorderHelp(player: Player, prefix: string, worldBorderBoolean: boo
         `       §4[§7Set the size of the end border§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable the World Border§4]§f`,
+        `    -e, --enable`,
+        `       §4[§7Enable the World Border§4]§f`,
         `    -h, --help`,
         `       §4[§7Display this help message§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}worldborder -o 10000 -n 5000 -e 10000`,
-        `    ${prefix}worldborder -o 10000 -n 5000`,
-        `    ${prefix}worldborder -d`,
-        `    ${prefix}worldborder --help`,
     ]);
 }
 
@@ -127,7 +124,7 @@ async function handleWorldBorders(message: ChatSendAfterEvent, args: string[]): 
     }
 
     // Shutdown worldborder
-    if (["--disable", "-d"].includes(args[0].toLowerCase())) {
+    if (length <= 0 || ["--disable", "-d"].includes(args[0].toLowerCase())) {
         // Disable Worldborder
         sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled the §6World Border§f!`);
         configuration.modules.worldBorder.overworld = 0;
@@ -135,6 +132,25 @@ async function handleWorldBorders(message: ChatSendAfterEvent, args: string[]): 
         configuration.modules.worldBorder.end = 0;
         configuration.modules.worldBorder.enabled = false;
         return;
+    }
+
+    // Enable worldborder
+    if (length <= 0 || ["--enable", "-e"].includes(args[0].toLowerCase())) {
+        const o = configuration.modules.worldBorder.overworld;
+        const n = configuration.modules.worldBorder.nether;
+        const e = configuration.modules.worldBorder.end;
+        if (!configuration.modules.worldBorder.enabled && (o !== 0 || n !== 0 || e !== 0)) {
+            // Enable Worldborder
+            sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has enabled the §6World Border§f!`);
+            WorldBorder();
+            return;
+        } else {
+            const noBorders = o === 0 && n === 0 && e === 0;
+            if (noBorders) {
+                return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Set border size please. Use ${prefix}worldborder --help for command usage.`);
+            }
+            return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f World Border is already enabled.`);
+        }
     }
 
     let overworldSize = configuration.modules.worldBorder.overworld || 0;
@@ -164,5 +180,5 @@ async function handleWorldBorders(message: ChatSendAfterEvent, args: string[]): 
         return;
     }
 
-    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}salvage --help for command usage.`);
+    sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}worldborder --help for command usage.`);
 }
