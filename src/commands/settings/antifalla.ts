@@ -19,7 +19,7 @@ function antifallaHelp(player: Player, prefix: string, antifallABoolean: boolean
         `\n§o§4[§6Command§4]§f: antifalla`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: antifalla [options]`,
+        `§4[§6Usage§4]§f: ${prefix}antifalla [options]`,
         `§4[§6Description§4]§f: Allows toggling of checks to prevent taking fall damage in survival mode.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
