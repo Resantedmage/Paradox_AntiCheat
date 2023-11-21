@@ -21,7 +21,7 @@ function bedrockValidateHelp(player: Player, prefix: string, bedrockValidateBool
         `\n§o§4[§6Command§4]§f: bedrockvalidate`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: bedrockvalidate [options]`,
+        `§4[§6Usage§4]§f: ${prefix}bedrockvalidate [options]`,
         `§4[§6Description§4]§f: Toggles checks for bedrock validations.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function bedrockValidateHelp(player: Player, prefix: string, bedrockValidateBool
         `       §4[§7Enable BedrockValidate module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable BedrockValidate module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}bedrockvalidate --help`,
-        `    ${prefix}bedrockvalidate --status`,
-        `    ${prefix}bedrockvalidate --enable`,
-        `    ${prefix}bedrockvalidate --disable`,
     ]);
 }
 
@@ -88,22 +83,27 @@ async function handleBedrockValidate(message: ChatSendAfterEvent, args: string[]
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return bedrockValidateHelp(player, prefix, configuration.modules.bedrockValidate.enabled, configuration.customcommands.bedrockvalidate);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f BedrockValidate module is currently ${configuration.modules.bedrockValidate.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.bedrockValidate.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f BedrockValidate module is already enabled.`);
                 } else {
@@ -116,6 +116,7 @@ async function handleBedrockValidate(message: ChatSendAfterEvent, args: string[]
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.bedrockValidate.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f BedrockValidate module is already disabled.`);
                 } else {
@@ -124,12 +125,10 @@ async function handleBedrockValidate(message: ChatSendAfterEvent, args: string[]
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4BedrockValidate§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}bedrockvalidate --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         // No additional arguments provided, display help
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}bedrockvalidate --help for more information.`);
     }
