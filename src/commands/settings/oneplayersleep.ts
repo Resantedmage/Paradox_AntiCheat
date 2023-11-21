@@ -21,7 +21,7 @@ function opsHelp(player: Player, prefix: string, opsBoolean: boolean, setting: b
         `\n§o§4[§6Command§4]§f: ops`,
         `§4[§6Status§4]§f: ${commandStatus}`,
         `§4[§6Module§4]§f: ${moduleStatus}`,
-        `§4[§6Usage§4]§f: ops [options]`,
+        `§4[§6Usage§4]§f: ${prefix}ops [options]`,
         `§4[§6Description§4]§f: Toggles One Player Sleep (OPS) for all online players.`,
         `§4[§6Options§4]§f:`,
         `    -h, --help`,
@@ -32,11 +32,6 @@ function opsHelp(player: Player, prefix: string, opsBoolean: boolean, setting: b
         `       §4[§7Enable OPS module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable OPS module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}ops --help`,
-        `    ${prefix}ops --status`,
-        `    ${prefix}ops --enable`,
-        `    ${prefix}ops --disable`,
     ]);
 }
 
@@ -87,24 +82,29 @@ async function handleOps(message: ChatSendAfterEvent, args: string[]) {
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
                 // Display help message
+                validFlagFound = true;
                 opsHelp(player, prefix, configuration.modules.ops.enabled, configuration.customcommands.ops);
                 break;
             case "-s":
             case "--status":
                 // Display current status of OPS module
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is currently ${configuration.modules.ops.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
                 // Enable OPS module
+                validFlagFound = true;
                 if (configuration.modules.ops.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already enabled`);
                 } else {
@@ -117,6 +117,7 @@ async function handleOps(message: ChatSendAfterEvent, args: string[]) {
             case "-d":
             case "--disable":
                 // Disable OPS module
+                validFlagFound = true;
                 if (!configuration.modules.ops.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already disabled`);
                 } else {
@@ -125,11 +126,10 @@ async function handleOps(message: ChatSendAfterEvent, args: string[]) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4OPS§f!`);
                 }
                 break;
-            default:
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}ops --help for command usage.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}ops --help for command usage.`);
     }
 }
