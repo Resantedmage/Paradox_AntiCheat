@@ -30,11 +30,6 @@ function antifallaHelp(player: Player, prefix: string, antifallABoolean: boolean
         `       §4[§7Enable AntiFallA module§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable AntiFallA module§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}antifalla --help`,
-        `    ${prefix}antifalla --status`,
-        `    ${prefix}antifalla --enable`,
-        `    ${prefix}antifalla --disable`,
     ]);
 }
 
@@ -81,22 +76,27 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return antifallaHelp(player, prefix, configuration.modules.antifallA.enabled, configuration.customcommands.antifalla);
             case "-s":
             case "--status":
                 // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is currently ${configuration.modules.antifallA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
                 // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.antifallA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already enabled.`);
                 } else {
@@ -109,6 +109,7 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
             case "-d":
             case "--disable":
                 // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.antifallA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already disabled.`);
                 } else {
@@ -117,12 +118,10 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has disabled §4AntiFallA§f!`);
                 }
                 break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antifalla --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}antifalla --help for more information.`);
     }
 }
