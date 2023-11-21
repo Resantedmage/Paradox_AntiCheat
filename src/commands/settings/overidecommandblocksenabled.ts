@@ -95,17 +95,17 @@ async function handleOverrideCBE(message: ChatSendAfterEvent, args: string[]) {
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 overrideCBEHelp(player, prefix, cmdsscore, configuration.customcommands.overidecommandblocksenabled);
                 break;
             case "-s":
             case "--status":
-            // Display current status of CommandBlocksEnabled module
+                // Display current status of CommandBlocksEnabled module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is currently ${cmdsscore <= 0 ? "§4DISABLED" : "§aENABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable CommandBlocksEnabled module
+                // Enable CommandBlocksEnabled module
                 if (cmdsscore <= 0) {
                     player.runCommand(`scoreboard players set paradox:config cmds 1`);
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has set CommandBlocksEnabled as §aenabled§f!`);
@@ -115,7 +115,7 @@ async function handleOverrideCBE(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Disable CommandBlocksEnabled module
+                // Disable CommandBlocksEnabled module
                 if (cmdsscore <= 0) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f CommandBlocksEnabled module is already disabled`);
                 } else {

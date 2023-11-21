@@ -30,11 +30,6 @@ function allowgmsHelp(player: Player, prefix: string, survivalGMBoolean: boolean
         `       §4[§7Enable Survival Gamemode§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Survival Gamemode§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}allowgms --help`,
-        `    ${prefix}allowgms --status`,
-        `    ${prefix}allowgms --enable`,
-        `    ${prefix}allowgms --disable`,
     ]);
 }
 
@@ -81,22 +76,27 @@ async function handleAllowGMS(message: ChatSendAfterEvent, args: string[]): Prom
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return allowgmsHelp(player, prefix, configuration.modules.survivalGM.enabled, configuration.customcommands.allowgms);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Survival Gamemode is currently ${configuration.modules.survivalGM.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.survivalGM.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Survival Gamemode is already enabled.`);
                 } else {
@@ -108,7 +108,8 @@ async function handleAllowGMS(message: ChatSendAfterEvent, args: string[]): Prom
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.survivalGM.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Survival Gamemode is already disabled.`);
                 } else {
@@ -117,12 +118,10 @@ async function handleAllowGMS(message: ChatSendAfterEvent, args: string[]): Prom
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 0 (Survival)§f to be used!`);
                 }
                 break;
-            default:
-            // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgms --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}allowgms --help for more information.`);
     }
 }

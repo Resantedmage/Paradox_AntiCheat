@@ -93,17 +93,17 @@ async function handleReachA(message: ChatSendAfterEvent, args: string[]) {
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 reachAHelp(player, prefix, configuration.modules.reachA.enabled, configuration.customcommands.reacha);
                 break;
             case "-s":
             case "--status":
-            // Display current status of ReachA module
+                // Display current status of ReachA module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachA module is currently ${configuration.modules.reachA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable ReachA module
+                // Enable ReachA module
                 if (!configuration.modules.reachA.enabled) {
                     configuration.modules.reachA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -115,7 +115,7 @@ async function handleReachA(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Disable ReachA module
+                // Disable ReachA module
                 if (configuration.modules.reachA.enabled) {
                     configuration.modules.reachA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);

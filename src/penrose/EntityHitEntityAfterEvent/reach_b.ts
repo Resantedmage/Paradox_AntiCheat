@@ -92,8 +92,14 @@ function reachb(object: EntityHitEntityAfterEvent) {
 }
 
 function isWithinReach(
-    previousHitEntityData: { location: { x: number; y: number; z: number }; velocity: { x: number; y: number; z: number } },
-    previousDamagingEntityData: { location: { x: number; y: number; z: number }; velocity: { x: number; y: number; z: number } },
+    previousHitEntityData: {
+        location: { x: number; y: number; z: number };
+        velocity: { x: number; y: number; z: number };
+    },
+    previousDamagingEntityData: {
+        location: { x: number; y: number; z: number };
+        velocity: { x: number; y: number; z: number };
+    },
     currentHitEntityLocation: { x: number; y: number; z: number },
     currentDamagingEntityLocation: { x: number; y: number; z: number },
     configuration: ConfigInterface
@@ -119,8 +125,14 @@ function calculateDistanceSquared(position1: { x: number; y: number; z: number }
 }
 
 function calculateReachDistanceWithVelocity(
-    previousDamagingEntityData: { location: { x: number; y: number; z: number }; velocity: { x: number; y: number; z: number } },
-    previousHitEntityData: { location: { x: number; y: number; z: number }; velocity: { x: number; y: number; z: number } },
+    previousDamagingEntityData: {
+        location: { x: number; y: number; z: number };
+        velocity: { x: number; y: number; z: number };
+    },
+    previousHitEntityData: {
+        location: { x: number; y: number; z: number };
+        velocity: { x: number; y: number; z: number };
+    },
     currentDamagingEntityLocation: { x: number; y: number; z: number },
     currentHitEntityLocation: { x: number; y: number; z: number }
 ): number {

@@ -93,17 +93,17 @@ async function handleSpeedA(message: ChatSendAfterEvent, args: string[]): Promis
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 speedAHelp(player, prefix, configuration.modules.speedA.enabled, configuration.customcommands.speeda);
                 break;
             case "-s":
             case "--status":
-            // Display current status of SpeedA module
+                // Display current status of SpeedA module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpeedA module is currently ${configuration.modules.speedA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable SpeedA module
+                // Enable SpeedA module
                 if (!configuration.modules.speedA.enabled) {
                     configuration.modules.speedA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -115,7 +115,7 @@ async function handleSpeedA(message: ChatSendAfterEvent, args: string[]): Promis
                 break;
             case "-d":
             case "--disable":
-            // Disable SpeedA module
+                // Disable SpeedA module
                 if (configuration.modules.speedA.enabled) {
                     configuration.modules.speedA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);

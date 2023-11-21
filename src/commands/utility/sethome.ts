@@ -152,12 +152,12 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
                 return setHomeHelp(player, prefix, configuration);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is currently ${configuration.customcommands.sethome ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.customcommands.sethome) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is already enabled.`);
                 } else {
@@ -172,7 +172,7 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.customcommands.sethome) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is already disabled.`);
                 } else {
@@ -187,7 +187,7 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-m":
             case "--max": {
-            // Handle max flag
+                // Handle max flag
                 if (!hasPermission) {
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f failed to set max allowed for §6SetHome§f! No permissions.`);
                     return sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f You need to be Paradox-Opped to set max allowed for §6SetHome§f.`);
@@ -203,11 +203,11 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
             }
             case "-n":
             case "--name":
-            // Handle name flag
+                // Handle name flag
                 saveHome(player, args, configuration);
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}sethome --help for more information.`);
                 break;
         }

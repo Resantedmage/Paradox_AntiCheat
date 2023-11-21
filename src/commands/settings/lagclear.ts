@@ -97,12 +97,12 @@ async function handleClearlag(message: ChatSendAfterEvent, args: string[]) {
                 return clearlagHelp(player, prefix, configuration.modules.clearLag.enabled, configuration.customcommands.clearlag);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ClearLag module is currently ${configuration.modules.clearLag.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.clearLag.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ClearLag module is already enabled`);
                 } else {
@@ -114,7 +114,7 @@ async function handleClearlag(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.clearLag.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ClearLag module is already disabled`);
                 } else {

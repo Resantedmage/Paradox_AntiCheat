@@ -94,17 +94,17 @@ async function handleNamespoofB(message: ChatSendAfterEvent, args: string[]) {
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 namespoofBHelp(player, prefix, configuration.modules.namespoofB.enabled, configuration.customcommands.namespoofb);
                 break;
             case "-s":
             case "--status":
-            // Display current status of NamespoofB module
+                // Display current status of NamespoofB module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is currently ${configuration.modules.namespoofB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable NamespoofB module
+                // Enable NamespoofB module
                 if (configuration.modules.namespoofB.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already enabled`);
                 } else {
@@ -116,7 +116,7 @@ async function handleNamespoofB(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Disable NamespoofB module
+                // Disable NamespoofB module
                 if (!configuration.modules.namespoofB.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f NamespoofB module is already disabled`);
                 } else {

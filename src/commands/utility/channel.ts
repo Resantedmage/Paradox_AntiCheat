@@ -259,7 +259,7 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
             });
 
             if (isOwner) {
-            // If the leaving player is the owner, transfer ownership to another member
+                // If the leaving player is the owner, transfer ownership to another member
                 const newOwnerId = Array.from(channelToLeave.members)[0]; // Get the first member as new owner
 
                 if (newOwnerId) {
@@ -267,7 +267,7 @@ export function chatChannel(message: ChatSendAfterEvent, args: string[]) {
                     const newOwnerObject = (world as WorldExtended).getPlayerById(newOwnerId);
                     sendMsgToPlayer(newOwnerObject, `§f§4[§6Paradox§4]§f Ownership of chat channel '§7${channelNameToLeave}§f' transferred to '§7${newOwnerObject.name}§f'.`);
                 } else {
-                // If no other members, delete the channel
+                    // If no other members, delete the channel
                     ChatChannelManager.deleteChatChannel(channelNameToLeave, channelToLeave.password);
                 }
             }

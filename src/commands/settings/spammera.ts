@@ -93,17 +93,17 @@ async function handleSpammerA(message: ChatSendAfterEvent, args: string[]): Prom
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 spammerAHelp(player, prefix, configuration.modules.spammerA.enabled, configuration.customcommands.spammera);
                 break;
             case "-s":
             case "--status":
-            // Display current status of SpammerA module
+                // Display current status of SpammerA module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SpammerA module is currently ${configuration.modules.spammerA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable SpammerA module
+                // Enable SpammerA module
                 if (!configuration.modules.spammerA.enabled) {
                     configuration.modules.spammerA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -115,7 +115,7 @@ async function handleSpammerA(message: ChatSendAfterEvent, args: string[]): Prom
                 break;
             case "-d":
             case "--disable":
-            // Disable SpammerA module
+                // Disable SpammerA module
                 if (configuration.modules.spammerA.enabled) {
                     configuration.modules.spammerA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);

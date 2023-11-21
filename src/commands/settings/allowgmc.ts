@@ -30,11 +30,6 @@ function allowgmcHelp(player: Player, prefix: string, creativeGMBoolean: boolean
         `       §4[§7Enable Creative Gamemode§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Creative Gamemode§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}allowgmc --help`,
-        `    ${prefix}allowgmc --status`,
-        `    ${prefix}allowgmc --enable`,
-        `    ${prefix}allowgmc --disable`,
     ]);
 }
 
@@ -81,22 +76,27 @@ async function handleAllowGMC(message: ChatSendAfterEvent, args: string[]): Prom
     const prefix = getPrefix(player);
 
     // Check for additional non-positional arguments
-    if (args.length > 0) {
-        const additionalArg = args[0].toLowerCase();
+    const length = args.length;
+    let validFlagFound = false; // Flag to track if any valid flag is encountered
+    for (let i = 0; i < length; i++) {
+        const additionalArg: string = args[i].toLowerCase();
 
         // Handle additional arguments
         switch (additionalArg) {
             case "-h":
             case "--help":
+                validFlagFound = true;
                 return allowgmcHelp(player, prefix, configuration.modules.creativeGM.enabled, configuration.customcommands.allowgmc);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
+                validFlagFound = true;
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is currently ${configuration.modules.creativeGM.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
+                validFlagFound = true;
                 if (configuration.modules.creativeGM.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is already enabled.`);
                 } else {
@@ -108,7 +108,8 @@ async function handleAllowGMC(message: ChatSendAfterEvent, args: string[]): Prom
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
+                validFlagFound = true;
                 if (!configuration.modules.creativeGM.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Creative Gamemode is already disabled.`);
                 } else {
@@ -117,12 +118,10 @@ async function handleAllowGMC(message: ChatSendAfterEvent, args: string[]): Prom
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 1 (Creative)§f to be used!`);
                 }
                 break;
-            default:
-            // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgmc --help for more information.`);
-                break;
         }
-    } else {
+    }
+
+    if (!validFlagFound) {
         sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid command. Use ${prefix}allowgmc --help for more information.`);
     }
 }

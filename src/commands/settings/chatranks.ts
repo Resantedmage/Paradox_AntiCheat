@@ -97,12 +97,12 @@ async function handleChatRanks(message: ChatSendAfterEvent, args: string[]) {
                 return chatRanksHelp(player, prefix, configuration.modules.chatranks.enabled, configuration.customcommands.chatranks);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is currently ${configuration.modules.chatranks.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.chatranks.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is already enabled.`);
                 } else {
@@ -113,7 +113,7 @@ async function handleChatRanks(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.chatranks.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ChatRanks module is already disabled.`);
                 } else {
@@ -123,7 +123,7 @@ async function handleChatRanks(message: ChatSendAfterEvent, args: string[]) {
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}chatranks --help for more information.`);
                 break;
         }

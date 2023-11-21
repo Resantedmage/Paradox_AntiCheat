@@ -92,12 +92,12 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
                 return antispamHelp(player, prefix, configuration.modules.antispam.enabled, configuration.customcommands.antispam);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is currently ${configuration.modules.antispam.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.antispam.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already enabled.`);
                 } else {
@@ -110,7 +110,7 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.antispam.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiSpam module is already disabled.`);
                 } else {
@@ -120,7 +120,7 @@ async function handleAntiSpam(message: ChatSendAfterEvent, args: string[]): Prom
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antispam --help for more information.`);
                 break;
         }

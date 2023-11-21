@@ -93,17 +93,17 @@ async function handleReachB(message: ChatSendAfterEvent, args: string[]): Promis
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 reachBHelp(player, prefix, configuration.modules.reachB.enabled, configuration.customcommands.reachb);
                 break;
             case "-s":
             case "--status":
-            // Display current status of ReachB module
+                // Display current status of ReachB module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ReachB module is currently ${configuration.modules.reachB.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable ReachB module
+                // Enable ReachB module
                 if (!configuration.modules.reachB.enabled) {
                     configuration.modules.reachB.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -115,7 +115,7 @@ async function handleReachB(message: ChatSendAfterEvent, args: string[]): Promis
                 break;
             case "-d":
             case "--disable":
-            // Disable ReachB module
+                // Disable ReachB module
                 if (configuration.modules.reachB.enabled) {
                     configuration.modules.reachB.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);

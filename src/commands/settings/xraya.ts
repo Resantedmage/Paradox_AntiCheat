@@ -93,17 +93,17 @@ async function handleXrayA(message: ChatSendAfterEvent, args: string[]): Promise
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 xrayAHelp(player, prefix, configuration.modules.xrayA.enabled, configuration.customcommands.xraya);
                 break;
             case "-s":
             case "--status":
-            // Display current status of XrayA module
+                // Display current status of XrayA module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f XrayA module is currently ${configuration.modules.xrayA.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable XrayA module
+                // Enable XrayA module
                 if (!configuration.modules.xrayA.enabled) {
                     configuration.modules.xrayA.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -115,7 +115,7 @@ async function handleXrayA(message: ChatSendAfterEvent, args: string[]): Promise
                 break;
             case "-d":
             case "--disable":
-            // Disable XrayA module
+                // Disable XrayA module
                 if (configuration.modules.xrayA.enabled) {
                     configuration.modules.xrayA.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -125,7 +125,7 @@ async function handleXrayA(message: ChatSendAfterEvent, args: string[]): Promise
                 }
                 break;
             default:
-            // Invalid argument
+                // Invalid argument
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Use ${prefix}xraya --help for command usage.`);
                 break;
         }

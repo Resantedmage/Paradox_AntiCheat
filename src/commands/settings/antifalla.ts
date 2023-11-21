@@ -91,12 +91,12 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
                 return antifallaHelp(player, prefix, configuration.modules.antifallA.enabled, configuration.customcommands.antifalla);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is currently ${configuration.modules.antifallA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.antifallA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already enabled.`);
                 } else {
@@ -108,7 +108,7 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.antifallA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiFallA module is already disabled.`);
                 } else {
@@ -118,7 +118,7 @@ async function handleAntiFallA(message: ChatSendAfterEvent, args: string[]): Pro
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antifalla --help for more information.`);
                 break;
         }

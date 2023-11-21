@@ -98,12 +98,12 @@ async function handleAutoban(message: ChatSendAfterEvent, args: string[]) {
                 return autobanHelp(player, prefix, configuration.modules.autoBan.enabled, configuration.customcommands.autoban);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is currently ${configuration.modules.autoBan.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.autoBan.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is already enabled.`);
                 } else {
@@ -115,7 +115,7 @@ async function handleAutoban(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.autoBan.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AutoBan module is already disabled.`);
                 } else {
@@ -125,7 +125,7 @@ async function handleAutoban(message: ChatSendAfterEvent, args: string[]) {
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}autoban --help for more information.`);
                 break;
         }

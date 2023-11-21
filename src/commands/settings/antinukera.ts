@@ -91,12 +91,12 @@ async function handleAntiNukerA(message: ChatSendAfterEvent, args: string[]): Pr
                 return antinukeraHelp(player, prefix, configuration.modules.antinukerA.enabled, configuration.customcommands.antinukera);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiNukerA module is currently ${configuration.modules.antinukerA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.antinukerA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiNukerA module is already enabled.`);
                 } else {
@@ -108,7 +108,7 @@ async function handleAntiNukerA(message: ChatSendAfterEvent, args: string[]): Pr
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.antinukerA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiNukerA module is already disabled.`);
                 } else {
@@ -118,7 +118,7 @@ async function handleAntiNukerA(message: ChatSendAfterEvent, args: string[]): Pr
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antinukera --help for more information.`);
                 break;
         }

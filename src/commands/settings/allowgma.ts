@@ -30,11 +30,6 @@ function allowgmaHelp(player: Player, prefix: string, adventureGMBoolean: boolea
         `       §4[§7Enable Adventure Gamemode§4]§f`,
         `    -d, --disable`,
         `       §4[§7Disable Adventure Gamemode§4]§f`,
-        `§4[§6Examples§4]§f:`,
-        `    ${prefix}allowgma --help`,
-        `    ${prefix}allowgma --status`,
-        `    ${prefix}allowgma --enable`,
-        `    ${prefix}allowgma --disable`,
     ]);
 }
 
@@ -122,10 +117,6 @@ async function handleAllowGMA(message: ChatSendAfterEvent, args: string[]): Prom
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
                     sendMsg("@a[tag=paradoxOpped]", `§f§4[§6Paradox§4]§f §7${player.name}§f has allowed §6Gamemode 2 (Adventure)§f to be used!`);
                 }
-                break;
-            default:
-                // Handle unrecognized flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}allowgma --help for more information.`);
                 break;
         }
     }

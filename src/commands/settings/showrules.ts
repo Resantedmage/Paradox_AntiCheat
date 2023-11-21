@@ -93,17 +93,17 @@ async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Pro
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 showrulesHelp(player, prefix, configuration.modules.showrules.enabled, configuration.customcommands.showrules);
                 break;
             case "-s":
             case "--status":
-            // Display current status of ShowRules module
+                // Display current status of ShowRules module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f ShowRules module is currently ${configuration.modules.showrules.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable ShowRules module
+                // Enable ShowRules module
                 if (!configuration.modules.showrules.enabled) {
                     configuration.modules.showrules.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -115,7 +115,7 @@ async function handleShowRules(message: ChatSendAfterEvent, args: string[]): Pro
                 break;
             case "-d":
             case "--disable":
-            // Disable ShowRules module
+                // Disable ShowRules module
                 if (configuration.modules.showrules.enabled) {
                     configuration.modules.showrules.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);

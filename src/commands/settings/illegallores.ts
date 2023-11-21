@@ -97,12 +97,12 @@ async function handleIllegalLores(message: ChatSendAfterEvent, args: string[]) {
                 return illegalLoresHelp(player, prefix, configuration.modules.illegalLores.enabled, configuration.customcommands.illegallores);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is currently ${configuration.modules.illegalLores.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.illegalLores.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already enabled.`);
                 } else {
@@ -113,7 +113,7 @@ async function handleIllegalLores(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.illegalLores.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalLores module is already disabled.`);
                 } else {

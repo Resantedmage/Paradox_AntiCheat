@@ -5,7 +5,6 @@ import * as path from "path";
 import * as AdmZip from "adm-zip";
 import * as os from "os";
 
-
 // Function to retrieve the latest BDS version
 function getLatestVersion() {
     const apiURL = "https://ssk.taiyu.workers.dev/zh-hans/download/server/bedrock";

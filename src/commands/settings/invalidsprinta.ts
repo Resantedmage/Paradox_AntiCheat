@@ -98,12 +98,12 @@ async function handleInvalidSprintA(message: ChatSendAfterEvent, args: string[])
                 return invalidSprintAHelp(player, prefix, configuration.modules.invalidsprintA.enabled, configuration.customcommands.invalidsprinta);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f InvalidSprintA module is currently ${configuration.modules.invalidsprintA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.invalidsprintA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f InvalidSprintA module is already enabled.`);
                 } else {
@@ -115,7 +115,7 @@ async function handleInvalidSprintA(message: ChatSendAfterEvent, args: string[])
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.invalidsprintA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f InvalidSprintA module is already disabled.`);
                 } else {

@@ -94,17 +94,17 @@ async function handleOps(message: ChatSendAfterEvent, args: string[]) {
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 opsHelp(player, prefix, configuration.modules.ops.enabled, configuration.customcommands.ops);
                 break;
             case "-s":
             case "--status":
-            // Display current status of OPS module
+                // Display current status of OPS module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is currently ${configuration.modules.ops.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable OPS module
+                // Enable OPS module
                 if (configuration.modules.ops.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already enabled`);
                 } else {
@@ -116,7 +116,7 @@ async function handleOps(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Disable OPS module
+                // Disable OPS module
                 if (!configuration.modules.ops.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f OPS module is already disabled`);
                 } else {

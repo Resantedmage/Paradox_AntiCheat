@@ -90,12 +90,12 @@ async function handleAntiShulker(message: ChatSendAfterEvent, args: string[]): P
                 return antishulkerHelp(player, prefix, configuration.modules.antishulker.enabled, configuration.customcommands.antishulker);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiShulker module is currently ${configuration.modules.antishulker.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.antishulker.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiShulker module is already enabled.`);
                 } else {
@@ -106,7 +106,7 @@ async function handleAntiShulker(message: ChatSendAfterEvent, args: string[]): P
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.antishulker.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiShulker module is already disabled.`);
                 } else {
@@ -116,7 +116,7 @@ async function handleAntiShulker(message: ChatSendAfterEvent, args: string[]): P
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antishulker --help for more information.`);
                 break;
         }

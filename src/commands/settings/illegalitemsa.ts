@@ -98,12 +98,12 @@ async function handleIllegalItemsA(message: ChatSendAfterEvent, args: string[]) 
                 return illegalItemsAHelp(player, prefix, configuration.modules.illegalitemsA.enabled, configuration.customcommands.illegalitemsa);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is currently ${configuration.modules.illegalitemsA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.illegalitemsA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already enabled.`);
                 } else {
@@ -119,7 +119,7 @@ async function handleIllegalItemsA(message: ChatSendAfterEvent, args: string[]) 
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.illegalitemsA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f IllegalItemsA module is already disabled.`);
                 } else {

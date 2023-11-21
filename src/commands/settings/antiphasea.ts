@@ -91,12 +91,12 @@ async function handleAntiPhaseA(message: ChatSendAfterEvent, args: string[]): Pr
                 return antiphaseaHelp(player, prefix, configuration.modules.antiphaseA.enabled, configuration.customcommands.phase);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is currently ${configuration.modules.antiphaseA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.antiphaseA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already enabled.`);
                 } else {
@@ -108,7 +108,7 @@ async function handleAntiPhaseA(message: ChatSendAfterEvent, args: string[]): Pr
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.antiphaseA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f AntiPhaseA module is already disabled.`);
                 } else {
@@ -118,7 +118,7 @@ async function handleAntiPhaseA(message: ChatSendAfterEvent, args: string[]): Pr
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}antiphasea --help for more information.`);
                 break;
         }

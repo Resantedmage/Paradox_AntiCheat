@@ -92,17 +92,17 @@ async function handleSalvage(message: ChatSendAfterEvent, args: string[]): Promi
         switch (additionalArg) {
             case "-h":
             case "--help":
-            // Display help message
+                // Display help message
                 salvageHelp(player, prefix, configuration.modules.salvage.enabled, configuration.customcommands.salvage);
                 break;
             case "-s":
             case "--status":
-            // Display current status of Salvage module
+                // Display current status of Salvage module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Salvage module is currently ${configuration.modules.salvage.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             case "-e":
             case "--enable":
-            // Enable Salvage module
+                // Enable Salvage module
                 if (!configuration.modules.salvage.enabled) {
                     configuration.modules.salvage.enabled = true;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);
@@ -113,7 +113,7 @@ async function handleSalvage(message: ChatSendAfterEvent, args: string[]): Promi
                 break;
             case "-d":
             case "--disable":
-            // Disable Salvage module
+                // Disable Salvage module
                 if (configuration.modules.salvage.enabled) {
                     configuration.modules.salvage.enabled = false;
                     dynamicPropertyRegistry.setProperty(undefined, "paradoxConfig", configuration);

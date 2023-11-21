@@ -4,8 +4,8 @@ import { spawn } from "child_process";
 import os from "os";
 import fse from "fs-extra";
 import { glob } from "./node_modules/glob/dist/esm/index.js";
-import { promisify } from 'util';
-import { exec as execCallback } from 'child_process';
+import { promisify } from "util";
+import { exec as execCallback } from "child_process";
 
 // Promisify the exec function
 const exec = promisify(execCallback);

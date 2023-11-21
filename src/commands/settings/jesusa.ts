@@ -98,12 +98,12 @@ async function handleJesusA(message: ChatSendAfterEvent, args: string[]) {
                 return jesusAHelp(player, prefix, configuration.modules.jesusA.enabled, configuration.customcommands.jesusa);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is currently ${configuration.modules.jesusA.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.jesusA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already enabled.`);
                 } else {
@@ -115,7 +115,7 @@ async function handleJesusA(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.jesusA.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f JesusA module is already disabled.`);
                 } else {

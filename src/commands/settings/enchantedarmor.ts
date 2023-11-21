@@ -99,12 +99,12 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
                 return enchantedArmorHelp(player, prefix, encharmorscore, configuration.customcommands.enchantedarmor);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is currently ${encharmorscore > 0 ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (encharmorscore > 0) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already enabled.`);
                 } else {
@@ -114,7 +114,7 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (encharmorscore <= 0) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Enchanted Armor module is already disabled.`);
                 } else {
@@ -123,7 +123,7 @@ async function handleEnchantedArmor(message: ChatSendAfterEvent, args: string[])
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}enchantedarmor --help for more information.`);
                 break;
         }

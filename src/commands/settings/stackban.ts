@@ -95,7 +95,7 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
         switch (additionalArg) {
             case "-d":
             case "--disable":
-            // Disable stackBan module if it's not already disabled
+                // Disable stackBan module if it's not already disabled
                 if (configuration.modules.stackBan.enabled === false) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §4StackBans§f is already disabled.`);
                 } else {
@@ -107,7 +107,7 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
 
             case "-e":
             case "--enable":
-            // Enable stackBan module if it's not already enabled
+                // Enable stackBan module if it's not already enabled
                 if (configuration.modules.stackBan.enabled === true) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f §6StackBans§f is already enabled.`);
                 } else {
@@ -119,16 +119,16 @@ async function handleStackBan(message: ChatSendAfterEvent, args: string[]): Prom
 
             case "-h":
             case "--help":
-            // Display help information
+                // Display help information
                 stackBanHelp(player, prefix, configuration.modules.stackBan.enabled, configuration.customcommands.stackban);
                 break;
             case "-s":
             case "--status":
-            // Display current status of StackBan module
+                // Display current status of StackBan module
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f StackBan module is currently ${configuration.modules.stackBan.enabled ? "§aENABLED" : "§4DISABLED"}§f.`);
                 break;
             default:
-            // Invalid argument provided
+                // Invalid argument provided
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid argument. Please use ${prefix}stackban --help for usage information.`);
                 break;
         }

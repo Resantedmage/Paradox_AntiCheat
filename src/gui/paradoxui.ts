@@ -81,7 +81,7 @@ async function handleParadoxUI(player: Player) {
                         chatChannelMainMenu(player);
                         break;
                     default:
-                    // Handle other selections for isUnique case
+                        // Handle other selections for isUnique case
                         break;
                 }
             } else {
@@ -117,7 +117,7 @@ async function handleParadoxUI(player: Player) {
                         managePlayerSavedLocationsHandler(player);
                         break;
                     default:
-                    // Handle other selections for non-isUnique case
+                        // Handle other selections for non-isUnique case
                         break;
                 }
             }

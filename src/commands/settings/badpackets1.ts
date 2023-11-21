@@ -76,12 +76,12 @@ export function badpackets1(message: ChatSendAfterEvent, args: string[]) {
                 return badpackets1Help(player, prefix, configuration.modules.badpackets1.enabled, configuration.customcommands.badpackets1);
             case "-s":
             case "--status":
-            // Handle status flag
+                // Handle status flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets1 is currently ${configuration.modules.badpackets1.enabled ? "enabled" : "disabled"}`);
                 break;
             case "-e":
             case "--enable":
-            // Handle enable flag
+                // Handle enable flag
                 if (configuration.modules.badpackets1.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets1 is already enabled.`);
                 } else {
@@ -93,7 +93,7 @@ export function badpackets1(message: ChatSendAfterEvent, args: string[]) {
                 break;
             case "-d":
             case "--disable":
-            // Handle disable flag
+                // Handle disable flag
                 if (!configuration.modules.badpackets1.enabled) {
                     sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Badpackets1 is already disabled.`);
                 } else {
@@ -103,7 +103,7 @@ export function badpackets1(message: ChatSendAfterEvent, args: string[]) {
                 }
                 break;
             default:
-            // Handle unrecognized flag
+                // Handle unrecognized flag
                 sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f Invalid option. Use ${prefix}badpackets1 --help for more information.`);
                 break;
         }
