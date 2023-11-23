@@ -27,6 +27,26 @@ const afterChatFilter = () => {
             msg.sendToTargets = false;
 
             if (!msg.sendToTargets) {
+                /**
+                if (configuration.customcommands.tpr) {
+                    // Array for tpr
+                    const keywords = ["approve", "approved", "deny", "denied"];
+
+                    // Extracting the custom message part
+                    const messageParts = msg.message.split("§r");
+                    const extractedMessage = messageParts.length > 1 ? messageParts[1] : "";
+
+                    // Split the extracted message into words
+                    const words = extractedMessage.trim().toLowerCase().split(" ");
+
+                    // Check if the extracted message contains exactly one of the keywords and no extra words
+                    const isMatch = words.length === 1 && keywords.includes(words[0]);
+                    if (isMatch) {
+                        return;
+                    }
+                }
+                 */
+
                 if (channelName) {
                     // Retrieve player objects of members in the same channel
                     const channelMembers = ChatChannelManager.getChatChannelByName(channelName).members;
@@ -48,7 +68,6 @@ const afterChatFilter = () => {
                         targetPlayers.length = 0;
                     }
                 } else {
-                    // Send the formatted chat message to all players
                     sendMsg("@a", formattedMessage);
                 }
 

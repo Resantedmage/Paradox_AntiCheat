@@ -96,11 +96,18 @@ function teleportRequestHandler({ sender, message }: ChatSendAfterEvent, configu
 // This handles requests pending approval
 function teleportRequestApprovalHandler(object: ChatSendAfterEvent) {
     const { sender, message } = object;
-
-    const lowercaseMessage = (world as WorldExtended).decryptString(message, sender.id).toLowerCase();
-    // Extract the response from the decrypted string
-    const refChar = lowercaseMessage.split("§r");
-    const extractedPhrase = refChar[1];
+    const configuration = dynamicPropertyRegistry.getProperty(undefined, "paradoxConfig") as ConfigInterface;
+    let lowercaseMessage: string;
+    let refChar: string[];
+    let extractedPhrase: string;
+    if (configuration.modules.chatranks.enabled) {
+        lowercaseMessage = (world as WorldExtended).decryptString(message, sender.id).toLowerCase();
+        // Extract the response from the decrypted string
+        refChar = lowercaseMessage.split("§r");
+        extractedPhrase = refChar[1];
+    } else {
+        extractedPhrase = message;
+    }
     const isApprovalRequest = extractedPhrase === "approved" || extractedPhrase === "approve";
     const isDenialRequest = extractedPhrase === "denied" || extractedPhrase === "deny";
 
