@@ -2,10 +2,30 @@
 
 ## !afk
 
-The AFK command kicks people from the world after the specified time in config.js if they are not paradox opped. The command acts as a toggle to enable and disable the module.
+The AFK command kicks people from the world after the specified time in config.js if they are not paradox opped. The command acts as a toggle to enable and disable the module. It can now be configured in game.
 
-> ```Toggle
-> !afk
+Enable flag allows you to enable the module.
+
+> ```flag
+> !afk -e
+> ```
+
+Disable flag allows you to disable the module
+
+> ```flag
+> !afk -d
+> ```
+
+The Status flag shows the current status of the AFK module
+
+> ```flag
+> !afk -s
+> ```
+
+The m flag is a variable for time in minutes this is a number, running this will update the time value for the AFK module this is a persistent setting. In the example below we are setting the time value to 20 minutes
+
+> ```flag
+> !afk -m 20
 > ```
 
 ## !allowgma
@@ -53,8 +73,6 @@ This module detects players using NoFall damage hacks if a player is detected th
 > ```Toggle
 > !antifalla
 > ```
-
-
 
 ## !antikillaura
 
@@ -224,20 +242,25 @@ File: `scripts/data/config.js`
 
 > ```js
 > 		clearLag: {
+> ```
+
             enabled: false,
             seconds: 0,
             minutes: 10,
             hours: 0,
             days: 0,
         },
+
+> ```
+>
 > ```
 
-File: `scripts/data/clearlag.js` 
+File: `scripts/data/clearlag.js`
 
 This contains all items/entitys that are cleared from the world when the module is active.
 
-
 ## !credits
+
 This command shows the credits which contains all members who have worked on paradox in the past as well as the current devlopers.
 
 > ```Command
@@ -276,7 +299,6 @@ If you want to remove all entites around you in the current loaded chunks you ca
 > !despawn all
 > ```
 
-
 ## !ecwipe
 
 This command allows you to wipe a players enderchest inventory, you can run the following command.
@@ -284,7 +306,6 @@ This command allows you to wipe a players enderchest inventory, you can run the 
 > ```Command
 > !ecwipe Pete9xi
 > ```
-
 
 ## !enchantedarmor
 
@@ -312,7 +333,6 @@ This module checks for players using Fly hacks, when a player is detected using 
 > !flya
 > ```
 
-
 ## !freeze
 
 The freeze command allows you to freeze a player, they wont be able to see but will see an image saying they are frozen. The same command acts as a toggle to freeze and unfreeze a player.
@@ -320,7 +340,6 @@ The freeze command allows you to freeze a player, they wont be able to see but w
 > ```Toggle
 > !freeze Pete9xi
 > ```
-
 
 ## !fullreport
 
@@ -331,6 +350,7 @@ This command prints in chat to the paradox opped player that ran the command a f
 > ```
 
 ## !gohome
+
 ?> The gohome command can be used by all players
 
 This command allows a player to teleport to a saved location. There is a cool down timer that can be configured in config.js
@@ -343,13 +363,17 @@ File: `scripts/data/config.js`
 
 > ```js
 > 		goHome: {
+> ```
+
             seconds: 0,
             minutes: 5,
             hours: 0,
             days: 0,
         },
-> ```
 
+> ```
+>
+> ```
 
 ## !help
 
@@ -398,6 +422,7 @@ File: `scripts/data/itemban.js`
 > ```
 
 ## !illegalitemsb
+
 This module checks for players placing illegal items within the world, if detected they are also banned. for example if a player placed an end portal frame.
 
 > ```Toggle
@@ -421,8 +446,8 @@ This module checks for illegal lores on items.
 > ```
 
 ## !invsee
-This command allows you to view the invetory of another player it will print all items to chat as well as there enchantment status, this is only shown to the paradox opped player who ran the command
 
+This command allows you to view the invetory of another player it will print all items to chat as well as there enchantment status, this is only shown to the paradox opped player who ran the command
 
 > ```Command
 > !invsee Pete9xi
@@ -430,7 +455,7 @@ This command allows you to view the invetory of another player it will print all
 
 ## !invalidsprinta
 
-This module checks for illegal sprinting with blindness effect applied. 
+This module checks for illegal sprinting with blindness effect applied.
 
 > ```Toggle
 > !invalidsprinta
@@ -473,7 +498,6 @@ This command allows you to mute the specified user and optionally gives reason a
 > ```Command
 > !mute Pete9xi Spamming offensive words in chat.
 > ```
-
 
 ## !namespoofa
 
@@ -617,10 +641,9 @@ This is a command to be used by normal players it allows them to report people w
 > !report Pete9xi possible reach hacks.
 > ```
 
-
 ## !salvage
 
-This allows you to enable or disable the salvage system, what this does is when an block is placed paradox removes the placed block encase it contains NBT data that could be used as an exploit, what it will do is replace a vanilla copy of this block in the same place the previous one was placed. 
+This allows you to enable or disable the salvage system, what this does is when an block is placed paradox removes the placed block encase it contains NBT data that could be used as an exploit, what it will do is replace a vanilla copy of this block in the same place the previous one was placed.
 
 > ```Toggle
 > !salvage
@@ -640,9 +663,14 @@ File: `scripts/data/config.js`
 
 > ```js
 > 		 setHome: {
+> ```
+
             enabled: true,
             max: 5,
         },
+
+> ```
+>
 > ```
 
 ## !showrules
@@ -653,11 +681,12 @@ This allows you to enable or disable the module to display server rules when a p
 > !showrules
 > ```
 
-
 File: `scripts/data/config.js`
 
 > ```js
 > 		 showrules: {
+> ```
+
             enabled: true,
             rule1: "Rule1: No hacking allowed.",
             rule2: "Rule2: Don't grief other players' builds.",
@@ -665,9 +694,10 @@ File: `scripts/data/config.js`
             rule4: "Rule4: Follow the staff's instructions.",
             rule5: "Rule5: No spamming or advertising.",
         },
+
 > ```
-
-
+>
+> ```
 
 ## !spammera
 
@@ -685,7 +715,6 @@ This module when enabled checks for messages sent while swinging.
 > !spammerb
 > ```
 
-
 ## !spammerc
 
 This module when enabled checks for messages sent while using items.
@@ -694,12 +723,11 @@ This module when enabled checks for messages sent while using items.
 > !spammerc
 > ```
 
-
 ## !spawnprotection
 
 This module allows you to set a center coordinate, once set you can then specify the radius to check within, once enabled any player who is not paradox opped will be placed into adventure mode preventing them from mining and building within the spawn area. When they are out side of the radius they will be put into survival mode allowing them to mine and build.
 
-In this example configuration i have set a radius of 90 this means within 90 blocks around the center coordinate. 
+In this example configuration i have set a radius of 90 this means within 90 blocks around the center coordinate.
 
 > ```Command
 > !spawnprotection 54 69 -16 90
@@ -726,7 +754,6 @@ This command allows you to pull the stats for a player.
 > ```Command
 > !stats Pete9xi
 > ```
-
 
 ## !tpr
 
@@ -778,10 +805,9 @@ This command will print the current version of paradox that is installed and run
 > !version
 > ```
 
-
 ## !worldborder
 
-This module when enable prevents player going past a set of coordinate if they attempt to they are then telported back inside the wall. 
+This module when enable prevents player going past a set of coordinate if they attempt to they are then telported back inside the wall.
 
 When enabling you can set a worldborder for each dimension the the command below sets a boarder of 10k in the overworld.
 
@@ -806,7 +832,6 @@ To disable the worldborder run the following command.
 > ```Command
 > !worldborder disable
 > ```
-
 
 ## !xraya
 
