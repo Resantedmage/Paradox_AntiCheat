@@ -6,25 +6,25 @@ The AFK command kicks people from the world after the specified time in config.j
 
 Enable flag allows you to enable the module.
 
-> ```flag
+> ```Flag
 > !afk -e
 > ```
 
 Disable flag allows you to disable the module
 
-> ```flag
+> ```Flag
 > !afk -d
 > ```
 
 The Status flag shows the current status of the AFK module
 
-> ```flag
+> ```Flag
 > !afk -s
 > ```
 
 The m flag is a variable for time in minutes this is a number, running this will update the time value for the AFK module this is a persistent setting. In the example below we are setting the time value to 20 minutes
 
-> ```flag
+> ```Flag
 > !afk -m 20
 > ```
 
@@ -32,10 +32,28 @@ The m flag is a variable for time in minutes this is a number, running this will
 
 !> Note one mode has to stay enabled by default if all modes are not allowed, and this is Adventure.
 
-This modules allows players to be in game mode adventure. All paradox Opped players are excluded from checks.
+This modules allows players to be in game mode adventure. All paradox Opped players are excluded from checks. To enabled it use the command below.
 
-> ```Toggle
-> !allowgma
+> ```Flag
+> !allowgma -e
+> ```
+
+To disable it run the command below
+
+> ```Flag
+> !allowgma -d
+> ```
+
+To see the current status you can run this command
+
+> ```Flag
+> !allowgma -s
+> ```
+
+The help command can be ran as follows.
+
+> ```Flag
+> !allowgma -h
 > ```
 
 ## !allowgmc
@@ -44,8 +62,26 @@ This modules allows players to be in game mode adventure. All paradox Opped play
 
 This modules allows players to be in game mode creative. All paradox Opped players are excluded from checks.
 
-> ```Toggle
-> !allowgmc
+> ```Flag
+> !allowgmc -e
+> ```
+
+To disable it run the command below
+
+> ```Flag
+> !allowgmc -d
+> ```
+
+To see the current status you can run this command
+
+> ```Flag
+> !allowgmc -s
+> ```
+
+The help command can be ran as follows.
+
+> ```Flag
+> !allowgmc -h
 > ```
 
 ## !allowgms
@@ -54,16 +90,58 @@ This modules allows players to be in game mode creative. All paradox Opped playe
 
 This modules allows players to be in game mode survival. All paradox Opped players are excluded from checks.
 
-> ```Toggle
-> !allowgms
+> ```Flag
+> !allowgms -e
+> ```
+
+To disable it run the command below
+
+> ```Flag
+> !allowgms -d
+> ```
+
+To see the current status you can run this command
+
+> ```Flag
+> !allowgms -s
+> ```
+
+The help command can be ran as follows.
+
+> ```Flag
+> !allowgms -h
 > ```
 
 ## !antikb
 
 This module monitors players for using possible hacks to prevent taking knockback it can be enabled and disabled via the command in chat.
 
-> ```Toggle
-> !antikb
+> ```Flag
+> !antikb -e
+> ```
+
+To disable it run the command below
+
+> ```Flag
+> !antikb -d
+> ```
+
+To see the current status you can run this command
+
+> ```Flag
+> !antikb -s
+> ```
+
+The help command can be ran as follows.
+
+> ```Flag
+> !antikb -h
+> ```
+
+Lastly you can edit the velocity value that paradox looks for this can be changed by using the following flag within the command
+
+> ```Flag
+> !antikb -v -0.078
 > ```
 
 ## !antifalla
