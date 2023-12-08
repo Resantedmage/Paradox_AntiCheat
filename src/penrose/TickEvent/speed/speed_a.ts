@@ -1,4 +1,4 @@
-import { world, system, EntityQueryOptions, GameMode, PlayerLeaveAfterEvent, EntityHurtAfterEvent, PlayerSpawnAfterEvent } from "@minecraft/server";
+import { world, system, EntityQueryOptions, GameMode, PlayerLeaveAfterEvent, EntityHurtAfterEvent, PlayerSpawnAfterEvent, EntityEquippableComponent, EquipmentSlot } from "@minecraft/server";
 import { flag, isTimerExpired } from "../../../util.js";
 import { dynamicPropertyRegistry } from "../../WorldInitializeAfterEvent/registry.js";
 import ConfigInterface from "../../../interfaces/Config.js";
@@ -102,6 +102,12 @@ function speeda(id: number) {
 
         const rideCheck = player.hasTag("riding");
         if (rideCheck) {
+            continue;
+        }
+        //trident check
+        const equipment = player.getComponent("equippable") as EntityEquippableComponent;
+        const mainhand = equipment.getEquipment(EquipmentSlot.Mainhand);
+        if (mainhand && mainhand.typeId === "minecraft:trident") {
             continue;
         }
 
