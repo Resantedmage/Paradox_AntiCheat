@@ -153,7 +153,7 @@ export function sethome(message: ChatSendAfterEvent, args: string[]) {
             case "-s":
             case "--status":
                 // Handle status flag
-                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is currently ${configuration.customcommands.sethome ? "enabled" : "disabled"}`);
+                sendMsgToPlayer(player, `§f§4[§6Paradox§4]§f SetHome is currently ${configuration.customcommands.sethome ? "enabled" : "disabled"} Allow Value: ${configuration.modules.setHome.max}`);
                 break;
             case "-e":
             case "--enable":
