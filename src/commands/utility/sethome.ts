@@ -110,6 +110,7 @@ function setHomeHelp(player: Player, prefix: string, configuration: ConfigInterf
         `       §4[§7Display the current status of SetHome§4]§f`,
         `§4[§6Examples§4]§f:`,
         `    ${prefix}sethome --name barn`,
+        `    ${prefix}sethome -n barn`,
         `    ${prefix}sethome --help`,
         `    ${prefix}sethome --max ${configuration.modules.setHome.max}`,
         `    ${prefix}sethome --disable`,
