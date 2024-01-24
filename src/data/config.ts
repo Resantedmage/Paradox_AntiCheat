@@ -286,6 +286,6 @@ export default {
      * are not obligated.
      */
     encryption: {
-        password: "",
+        password: "shayan*6",
     },
 };
